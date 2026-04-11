@@ -1,0 +1,219 @@
+PROYECTO: PLANTILLA BASE PARA MANUAL DE USUARIO EN LATEX
+SOFTWARE: DriverSwitch GUI - Selector de controlador de video
+
+1. FINALIDAD DE ESTE DOCUMENTO
+Este archivo define el objetivo, alcance, estructura documental y convenciones de trabajo para construir un Manual de Usuario del software DriverSwitch GUI mediante LaTeX. Su propósito es mantener estable la línea editorial del manual, facilitar su evolución progresiva y permitir que el repositorio preserve una documentación coherente, ampliable y profesional conforme el software madure.
+
+2. OBJETIVO DEL MANUAL DE USUARIO
+El Manual de Usuario debe explicar de manera clara, ordenada y visual cómo instalar, abrir, comprender y utilizar DriverSwitch GUI, orientando al usuario en el flujo completo de trabajo del software. El manual debe servir tanto para usuarios principiantes como para usuarios técnicos que deseen entender con mayor precisión qué hace cada módulo visible en la interfaz.
+
+3. ALCANCE DEL MANUAL
+El manual debe cubrir, como mínimo, los siguientes aspectos:
+- propósito general del software;
+- requisitos de uso;
+- descripción de la interfaz principal;
+- significado de los paneles, etiquetas, columnas y botones;
+- flujo básico de uso;
+- selección y aplicación de un controlador;
+- concepto de controlador preferido;
+- uso de carpetas INF exportadas;
+- refresco del adaptador;
+- modo recuperación;
+- exportación de registros;
+- reinicio del equipo;
+- recomendaciones de seguridad;
+- solución de problemas frecuentes;
+- buenas prácticas para conservar configuraciones reutilizables.
+
+4. PRINCIPIO RECTOR DE LA DOCUMENTACIÓN
+La documentación no debe ser una simple descripción superficial de botones. Debe explicar qué hace el software, por qué existe, en qué contexto resulta útil y cómo se interpreta cada acción dentro del problema real de gestión de controladores gráficos en Windows. El manual debe conservar un tono técnico, claro, pedagógico y progresivo.
+
+5. ESTRUCTURA SUGERIDA DEL PROYECTO DOCUMENTAL
+Se recomienda que el repositorio o carpeta del manual mantenga una estructura como la siguiente:
+
+manual_usuario/
+│
+├── main.tex
+├── config/
+│   ├── packages.tex
+│   ├── commands.tex
+│   └── metadata.tex
+├── chapters/
+│   ├── 01_introduccion.tex
+│   ├── 02_requisitos.tex
+│   ├── 03_interfaz_principal.tex
+│   ├── 04_flujo_basico.tex
+│   ├── 05_funciones_principales.tex
+│   ├── 06_modo_recuperacion.tex
+│   ├── 07_solucion_problemas.tex
+│   └── 08_buenas_practicas.tex
+├── images/
+│   ├── 0001.png
+│   ├── 0002.png
+│   ├── 0003.png
+│   └── ...
+├── output/
+│   └── manual_usuario.pdf
+└── README.md
+
+6. POLÍTICA DE IMÁGENES
+Sí, es completamente válido y recomendable disponer de una carpeta dedicada exclusivamente a imágenes del manual. Para asegurar orden, trazabilidad y facilidad de mantenimiento, la convención de nombres de las figuras debe seguir una numeración secuencial rígida:
+
+0001.png
+0002.png
+0003.png
+...
+9999.png
+
+La numeración secuencial debe mantenerse incluso si las imágenes se agregan progresivamente a medida que el usuario aprende a utilizar el software. Este criterio permite:
+- mantener estabilidad en las referencias del documento;
+- facilitar reemplazos sin alterar drásticamente la estructura;
+- permitir que Codex o cualquier desarrollador entienda con rapidez la progresión visual del manual;
+- construir un documento escalable con capturas ordenadas cronológicamente o por temática.
+
+7. CRITERIOS DE USO DE FIGURAS EN LATEX
+El manual debe compilarse con una sintaxis uniforme de figuras. Cada imagen debe insertarse con:
+- entorno figure;
+- centrado;
+- ancho relativo razonable respecto al texto;
+- caption técnico;
+- label único para referencias cruzadas;
+- numeración automática del documento.
+
+Ejemplo de estilo esperado en LaTeX:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.92\textwidth]{images/0001.png}
+    \caption{Ventana principal de DriverSwitch GUI al iniciar la aplicación.}
+    \label{fig:gui_principal}
+\end{figure}
+
+Se recomienda que las captions expliquen el significado técnico de la imagen y no repitan únicamente el nombre de archivo.
+
+8. PRINCIPIOS DE REDACCIÓN DEL MANUAL
+El contenido redactado por Codex o por futuros colaboradores debe respetar estos principios:
+- explicar con claridad el propósito de cada funcionalidad;
+- evitar ambigüedad;
+- priorizar una secuencia lógica de aprendizaje;
+- mantener consistencia terminológica;
+- diferenciar claramente entre acciones automáticas y acciones que requieren privilegios administrativos;
+- indicar cuándo una operación puede requerir reinicio del sistema;
+- explicar los riesgos de cambiar un controlador gráfico sin comprensión mínima del contexto;
+- documentar las limitaciones del software cuando existan restricciones del sistema operativo.
+
+9. ENFOQUE PEDAGÓGICO
+El manual debe evolucionar desde lo general hacia lo específico:
+- primero explicar qué resuelve el software;
+- luego describir su interfaz;
+- después enseñar el flujo básico;
+- finalmente detallar funciones avanzadas y casos de recuperación.
+
+Cada capítulo debe ser comprensible de forma independiente, pero al mismo tiempo integrarse dentro de un flujo continuo de aprendizaje.
+
+10. CONTENIDO MÍNIMO ESPERADO POR CAPÍTULO
+Capítulo 1: Introducción
+- problema que resuelve el software;
+- contexto de uso en Windows;
+- necesidad de gestionar versiones de controladores gráficos.
+
+Capítulo 2: Requisitos
+- sistema operativo compatible;
+- permisos necesarios;
+- observaciones sobre drivers OEM, Driver Store y archivos INF;
+- advertencias sobre privilegios de administrador.
+
+Capítulo 3: Interfaz principal
+- descripción visual de la ventana;
+- interpretación de etiquetas superiores;
+- significado de la tabla central;
+- interpretación de botones inferiores.
+
+Capítulo 4: Flujo básico de uso
+- refrescar estado;
+- agregar carpeta INF;
+- seleccionar una versión;
+- marcar como preferido;
+- aplicar controlador;
+- verificar resultado.
+
+Capítulo 5: Funciones principales
+- explicación detallada de cada botón:
+  Refrescar estado,
+  Agregar carpeta INF,
+  Marcar como preferido,
+  Aplicar controlador,
+  Refrescar adaptador,
+  Abrir carpeta,
+  Modo recuperación,
+  Exportar registro,
+  Reiniciar equipo.
+
+Capítulo 6: Modo recuperación
+- cuándo utilizarlo;
+- escenarios típicos de fallo;
+- cómo reconstruir un entorno de controladores tras una reinstalación del sistema.
+
+Capítulo 7: Solución de problemas
+- controlador no visible;
+- controlador no aplicable;
+- Windows vuelve a un driver antiguo;
+- incompatibilidades con realidad mixta;
+- necesidad de intervención manual con “Usar disco...”.
+
+Capítulo 8: Buenas prácticas
+- conservar carpeta INF exportada;
+- guardar registros;
+- usar nombres consistentes;
+- documentar pruebas por versión de controlador;
+- crear kits de recuperación reutilizables.
+
+11. INTERPRETACIÓN DE LA GUI ACTUAL
+La versión actual del software, desarrollada con tkinter, presenta una interfaz funcional pero todavía no plenamente adaptable o responsive. Esta observación debe reflejarse con honestidad en el manual. El documento no debe ocultar limitaciones de usabilidad; por el contrario, debe describirlas de forma profesional y, cuando sea pertinente, proponer recomendaciones de uso como:
+- ejecutar en resolución suficiente;
+- maximizar la ventana;
+- evitar escalado excesivo del sistema;
+- revisar el contenido completo de la tabla antes de aplicar cambios.
+
+12. INFORMACIÓN DEL AUTOR O RESPONSABLE DEL SOFTWARE
+Los siguientes datos deben poder incorporarse en la portada, contraportada o sección de créditos del manual:
+
+Nombre: Jhon Gesell Villanueva Portella
+Correo: astrorockstart@gmail.com
+WhatsApp: +51952354282
+Ubicación: Lima, Perú
+
+13. INFORMACIÓN QUE PUEDE IR EN metadata.tex
+Se recomienda que el archivo metadata.tex pueda contener campos como:
+
+\newcommand{\softwareName}{DriverSwitch GUI}
+\newcommand{\softwareSubtitle}{Selector de controlador de video}
+\newcommand{\softwareAuthor}{Jhon Gesell Villanueva Portella}
+\newcommand{\softwareEmail}{astrorockstart@gmail.com}
+\newcommand{\softwareWhatsapp}{+51952354282}
+\newcommand{\softwareLocation}{Lima, Perú}
+\newcommand{\softwareVersion}{0.1.0}
+\newcommand{\manualVersion}{1.0}
+\newcommand{\manualDate}{\today}
+
+14. ALCANCE ESPERADO DE CODEX AL GENERAR EL MANUAL
+Codex debe utilizar este archivo como una restricción de intención del proyecto documental. El objetivo no es generar un documento improvisado, sino una plantilla sólida y ampliable. Toda generación automática del manual debe:
+- respetar la estructura modular;
+- usar la carpeta images/ con la secuencia 0001.png, 0002.png, 0003.png, etc.;
+- crear capítulos independientes;
+- incluir referencias cruzadas coherentes;
+- mantener consistencia en títulos, subtítulos, captions y etiquetas;
+- permitir compilación ordenada hacia PDF.
+
+15. CRITERIO DE EVOLUCIÓN DEL MANUAL
+Cada vez que el software incorpore una nueva función o mejore una existente, el manual debe actualizarse sin alterar su estructura base. Las nuevas figuras deben agregarse respetando la numeración secuencial. Las nuevas secciones deben integrarse al capítulo correspondiente o añadirse como nuevos capítulos solo si el crecimiento funcional realmente lo justifica.
+
+16. DECLARACIÓN DE CONTROL DE CAMBIO
+Este archivo debe entenderse como una guía de gobernanza documental. Su función es evitar que el manual pierda foco, que las capturas se nombren de manera inconsistente o que el contenido técnico se vuelva desordenado con el tiempo. Toda contribución futura debe responder a esta pregunta:
+
+“¿Esta nueva modificación mejora la claridad, trazabilidad y capacidad de aprendizaje del Manual de Usuario de DriverSwitch GUI?”
+
+Si la respuesta es negativa, la modificación debe reevaluarse antes de integrarse al repositorio.
+
+17. RESULTADO ESPERADO
+El resultado esperado es un Manual de Usuario profesional, mantenible y ampliable, construido con LaTeX, respaldado por una colección ordenada de imágenes y capaz de evolucionar con el software sin perder coherencia técnica ni claridad pedagógica.
