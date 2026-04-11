@@ -113,6 +113,9 @@ class DriverSwitchApp(tk.Tk):
         help_text.configure(state="disabled")
         help_text.pack(fill="both", expand=True)
 
+        self.block_updates_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(self, text="Bloquear actualización automática de drivers (opcional)", variable=self.block_updates_var).pack(anchor="w", padx=12, pady=(0,4))
+
         actions = ttk.Frame(self)
         actions.pack(fill="x", padx=10, pady=5)
         buttons = [
@@ -273,13 +276,16 @@ class DriverSwitchApp(tk.Tk):
             return
 
         def worker() -> None:
-            ok, detail = self.action_service.apply_and_refresh(plan)
-            if ok:
-                self.log_human("Aplicación completada. Se recomienda reiniciar.")
-                self.after(0, lambda: messagebox.showinfo("Resultado", detail))
+            result = self.action_service.apply_and_verify(plan, self.state, block_updates=self.block_updates_var.get())
+            self.log_human(f"Driver antes: {result.before_version} | después: {result.after_version}")
+            if result.ok:
+                self.log_human("Driver aplicado correctamente.")
+                self.after(0, lambda: messagebox.showinfo("Resultado", result.message))
             else:
-                self.log_error(detail)
-                self.after(0, lambda: messagebox.showwarning("Fallo", detail))
+                if result.reverted:
+                    self.log_error("Windows revirtió el driver automáticamente.")
+                self.log_error(result.message)
+                self.after(0, lambda: messagebox.showwarning("Fallo", result.message))
             self.refresh_all_async()
 
         self._run_bg("Aplicar controlador Intel objetivo", worker)

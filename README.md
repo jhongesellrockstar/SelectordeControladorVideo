@@ -1,24 +1,18 @@
 # DriverSwitch GUI - Selector de controlador de video
 
-Aplicación de escritorio en Python/Tkinter para Windows 11 centrada en resolver el caso real Intel + Meta Quest 3.
+Aplicación de escritorio en Python/Tkinter para Windows 11 centrada en resolver Intel + Meta Quest 3.
 
-## Enfoque actual (caso real)
-- Diagnóstico basado en **GPU física Intel** (no en Meta Virtual Monitor).
-- Detección separada de adaptador virtual y adaptador Intel objetivo.
-- Prioridad de INF para `Intel2115\iigd_dch.inf` si existe.
-- Validación previa antes de aplicar (dispositivo objetivo, INF, versión/meta, admin).
-- Confirmación explícita: INF exacto + destino Intel UHD + motivo de selección.
+## Flujo real implementado
+- Agrega driver con: `pnputil /add-driver <INF> /install /force`.
+- Detecta `InstanceId` Intel (`pnputil /enum-devices /class Display`).
+- Actualiza dispositivo con: `pnputil /update-driver oemXX.inf <InstanceId>`.
+- Refresca adaptador Intel y verifica versión post-instalación.
+- Si la versión final no es `31.0.101.2115`, informa reversión automática de Windows.
 
 ## Funcionalidad clave
-- Log en tiempo real dentro de la GUI (humano) y log técnico exportable.
-- Modo "Resolver mi caso real" y botón "Diagnosticar mi equipo".
-- Ejecución no bloqueante (`threading` + `queue` + `after`).
-- Detección de administrador + botón "Reabrir como administrador".
-- Aplicación de driver con timeout extendido y detalle de comando/INF/dispositivo en caso de fallo.
-
-## Ejecutar
-```powershell
-python app.py
-```
-
-> Recomendado: abrir siempre como administrador.
+- Detección separada: adaptador virtual vs GPU Intel física objetivo.
+- Validación previa estricta antes de aplicar INF.
+- Confirmación explícita (INF, destino, motivo).
+- Log humano en GUI + log técnico exportable.
+- Modo administrador detectado + botón "Reabrir como administrador".
+- Opción opcional para bloquear actualización automática de drivers.
