@@ -11,9 +11,8 @@ class ProfileService:
         profile = ProfileData()
         profile.sections = {
             "PERFIL": {"nombre": "Perfil sin nombre", "descripcion": ""},
-            "EQUIPO": {"equipo": "", "gpu": ""},
-            "DRIVER": {"provider": "", "version": "", "inf": "", "fecha": ""},
-            "REALIDAD_MIXTA": {"version_objetivo": "31.0.101.2115"},
+            "EQUIPO": {"equipo": "", "gpu": "Intel(R) UHD Graphics"},
+            "DRIVER": {"provider": "Intel", "version": "31.0.101.2115", "inf": "iigd_dch.inf", "fecha": ""},
             "RUTAS": {"intel2115": ""},
         }
         return profile
@@ -22,7 +21,6 @@ class ProfileService:
         profile = ProfileData()
         current_section = "GENERAL"
         profile.sections[current_section] = {}
-
         for raw_line in ruta.read_text(encoding="utf-8", errors="ignore").splitlines():
             line = raw_line.strip()
             if not line or line.startswith("#") or line.startswith(";"):
@@ -34,7 +32,6 @@ class ProfileService:
             if "=" in line:
                 key, value = line.split("=", 1)
                 profile.sections.setdefault(current_section, {})[key.strip()] = value.strip()
-
         return profile
 
     def guardar_perfil(self, ruta: Path, profile: ProfileData) -> None:
@@ -49,10 +46,10 @@ class ProfileService:
     def comparar_perfil_vs_sistema(self, profile: ProfileData, state: SystemState) -> ProfileComparison:
         checks = [
             ("EQUIPO/equipo", profile.get("EQUIPO", "equipo"), state.computer_name),
-            ("EQUIPO/gpu", profile.get("EQUIPO", "gpu"), state.active_adapter),
-            ("DRIVER/provider", profile.get("DRIVER", "provider"), state.provider),
-            ("DRIVER/version", profile.get("DRIVER", "version"), state.driver_version),
-            ("DRIVER/inf", profile.get("DRIVER", "inf"), state.inf_name),
+            ("EQUIPO/gpu", profile.get("EQUIPO", "gpu"), state.intel_adapter),
+            ("DRIVER/provider", profile.get("DRIVER", "provider"), state.intel_provider),
+            ("DRIVER/version", profile.get("DRIVER", "version"), state.intel_driver_version),
+            ("DRIVER/inf", profile.get("DRIVER", "inf"), state.intel_inf_name),
         ]
         details: list[str] = []
         matches = True
@@ -60,10 +57,9 @@ class ProfileService:
             if not expected:
                 details.append(f"{label}: sin valor en perfil (omitido)")
                 continue
-            if expected.lower() == (actual or "").lower():
+            if expected.lower() in (actual or "").lower():
                 details.append(f"{label}: coincide ({actual})")
             else:
                 details.append(f"{label}: difiere (perfil={expected} / sistema={actual})")
                 matches = False
-
         return ProfileComparison(matches=matches, details=details)

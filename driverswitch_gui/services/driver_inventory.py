@@ -8,6 +8,8 @@ from typing import Callable
 
 from driverswitch_gui.models import DriverCandidate
 
+TARGET_VERSION = "31.0.101.2115"
+
 
 class DriverInventoryService:
     def __init__(self, log: Callable[[str], None] | None = None) -> None:
@@ -17,7 +19,6 @@ class DriverInventoryService:
     def list_driver_store(self, active_inf: str = "") -> list[DriverCandidate]:
         if not self.is_windows:
             return []
-
         self.log("Leyendo Driver Store (pnputil /enum-drivers /class Display)...")
         try:
             proc = subprocess.run(
@@ -25,16 +26,15 @@ class DriverInventoryService:
                 capture_output=True,
                 text=True,
                 check=False,
-                timeout=25,
+                timeout=30,
                 encoding="utf-8",
                 errors="replace",
             )
         except subprocess.TimeoutExpired:
             self.log("Error: pnputil tardó demasiado al enumerar drivers.")
             return []
-
         if proc.returncode != 0:
-            self.log(f"Error al enumerar drivers: {proc.stderr.strip()[:200]}")
+            self.log(f"Error al enumerar drivers: {proc.stderr.strip()[:220]}")
             return []
 
         drivers: list[DriverCandidate] = []
@@ -97,24 +97,38 @@ class DriverInventoryService:
         return candidates
 
     def autodetect_intel2115(self, roots: list[Path]) -> DriverCandidate | None:
-        self.log("Buscando carpeta Intel2115 / iigd_dch.inf...")
+        self.log("Buscando Intel2115\\iigd_dch.inf con prioridad por carpeta Intel2115...")
+        found: list[Path] = []
         for root in roots:
             if not root.exists() or not root.is_dir():
                 continue
             for path in root.rglob("iigd_dch.inf"):
-                self.log(f"Carpeta Intel2115 encontrada en: {path}")
-                return DriverCandidate(
-                    source_type="external",
-                    provider="Intel",
-                    version="31.0.101.2115",
-                    driver_date="No disponible",
-                    inf_name=path.name,
-                    source_path=str(path),
-                    status="Intel2115 detectado",
-                    compatible=True,
-                )
-        self.log("No se encontró iigd_dch.inf en rutas de búsqueda rápidas.")
-        return None
+                found.append(path)
+
+        if not found:
+            self.log("No se encontró iigd_dch.inf en rutas de búsqueda.")
+            return None
+
+        def score(path: Path) -> tuple[int, int]:
+            lowered = str(path).lower()
+            folder_boost = 2 if "intel2115" in lowered else 0
+            legacy_penalty = -1 if any(s in lowered for s in ["2019", "2620100", "oem"]) else 0
+            return (folder_boost + legacy_penalty, len(str(path)))
+
+        best = sorted(found, key=score, reverse=True)[0]
+        self.log(f"INF Intel candidato seleccionado: {best}")
+        status = "Intel2115 detectado" if "intel2115" in str(best).lower() else "INF Intel detectado"
+        version = TARGET_VERSION if "intel2115" in str(best).lower() else "No detectado"
+        return DriverCandidate(
+            source_type="external",
+            provider="Intel",
+            version=version,
+            driver_date="No disponible",
+            inf_name=best.name,
+            source_path=str(best),
+            status=status,
+            compatible=True,
+        )
 
     @staticmethod
     def _parse_key_values(block: str) -> dict[str, str]:

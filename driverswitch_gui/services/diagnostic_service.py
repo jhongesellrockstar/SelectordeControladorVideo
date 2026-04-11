@@ -23,36 +23,34 @@ class DiagnosticService:
         profile_comparison: ProfileComparison,
         intel2115: DriverCandidate | None,
     ) -> DiagnosticResult:
-        checklist: list[str] = []
-        checklist.append(f"GPU principal: {state.active_adapter}")
-        checklist.append(f"Driver activo: {state.driver_version}")
-        checklist.append(f"INF activo: {state.inf_name}")
-        checklist.append(f"Perfil coincide: {'Sí' if profile_comparison.matches else 'No'}")
-        checklist.append(f"Intel2115 detectado: {'Sí' if intel2115 else 'No'}")
+        checklist = [
+            f"Adaptador virtual detectado: {state.virtual_adapter}",
+            f"GPU física Intel detectada: {state.intel_adapter}",
+            f"Driver Intel activo: {state.intel_driver_version}",
+            f"INF Intel activo: {state.intel_inf_name}",
+            f"Perfil coincide: {'Sí' if profile_comparison.matches else 'No'}",
+            f"Intel2115 detectado: {'Sí' if intel2115 else 'No'}",
+        ]
 
-        version_ok = state.driver_version == TARGET
-        if version_ok:
-            checklist.append("Meta Quest 3: versión objetivo detectada.")
+        if state.intel_driver_version == TARGET:
             return DiagnosticResult(
                 ok=True,
-                summary="El driver objetivo para Meta Quest 3 ya está activo.",
+                summary="La GPU Intel ya está en la versión objetivo para Meta Quest 3.",
                 checklist=checklist,
-                next_step="Abre Windows App/Vínculo de realidad mixta y verifica conexión.",
+                next_step="Verifica conexión en Windows App y vuelve a diagnosticar si falla.",
             )
 
         if intel2115:
             return DiagnosticResult(
                 ok=False,
-                summary=(
-                    "Tu controlador actual no coincide con 31.0.101.2115, pero se detectó iigd_dch.inf de Intel2115."
-                ),
+                summary="Intel no está en la versión objetivo, pero se detectó Intel2115\\iigd_dch.inf listo para aplicar.",
                 checklist=checklist,
-                next_step="Selecciona la fila Intel2115 y pulsa 'Aplicar controlador'. Luego reinicia y vuelve a diagnosticar.",
+                next_step="Pulsa 'Aplicar controlador Intel objetivo', reinicia y rediagnostica.",
             )
 
         return DiagnosticResult(
             ok=False,
-            summary="El controlador activo no coincide con el objetivo y no se encontró Intel2115 automáticamente.",
+            summary="Intel no está en la versión objetivo y no se detectó Intel2115 automáticamente.",
             checklist=checklist,
-            next_step="Pulsa 'Agregar carpeta INF', selecciona la carpeta Intel2115, aplica el driver y reinicia.",
+            next_step="Usa 'Agregar carpeta INF' con Intel2115 y repite diagnóstico.",
         )
