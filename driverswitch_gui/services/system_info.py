@@ -1,0 +1,101 @@
+from __future__ import annotations
+
+import json
+import os
+import platform
+import subprocess
+from dataclasses import dataclass
+from typing import Any
+
+
+@dataclass(slots=True)
+class SystemState:
+    computer_name: str
+    active_adapter: str
+    driver_version: str
+    driver_date: str
+    inf_name: str
+    provider: str
+    pnp_device_id: str
+
+
+class SystemInfoService:
+    def __init__(self) -> None:
+        self.is_windows = platform.system().lower() == "windows"
+
+    def get_system_state(self) -> SystemState:
+        if not self.is_windows:
+            return SystemState(
+                computer_name=platform.node() or "Equipo desconocido",
+                active_adapter="No disponible fuera de Windows",
+                driver_version="N/D",
+                driver_date="N/D",
+                inf_name="N/D",
+                provider="N/D",
+                pnp_device_id="",
+            )
+
+        adapters = self._run_powershell_json(
+            "Get-CimInstance Win32_VideoController | "
+            "Select-Object Name,PNPDeviceID,Status | ConvertTo-Json -Depth 3"
+        )
+        drivers = self._run_powershell_json(
+            "Get-CimInstance Win32_PnPSignedDriver | "
+            "Where-Object {$_.DeviceClass -eq 'DISPLAY'} | "
+            "Select-Object DeviceName,DriverVersion,DriverDate,InfName,Manufacturer,DeviceID | "
+            "ConvertTo-Json -Depth 3"
+        )
+
+        adapter_list = adapters if isinstance(adapters, list) else [adapters]
+        driver_list = drivers if isinstance(drivers, list) else [drivers]
+
+        active_adapter = next(
+            (a for a in adapter_list if (a or {}).get("Status", "").upper() == "OK"),
+            adapter_list[0] if adapter_list else {},
+        )
+        adapter_name = (active_adapter or {}).get("Name", "Desconocido")
+        pnp_device_id = (active_adapter or {}).get("PNPDeviceID", "")
+
+        active_driver = next(
+            (
+                d
+                for d in driver_list
+                if (d or {}).get("DeviceID") == pnp_device_id
+                or (d or {}).get("DeviceName") == adapter_name
+            ),
+            driver_list[0] if driver_list else {},
+        )
+
+        return SystemState(
+            computer_name=os.environ.get("COMPUTERNAME", platform.node() or "Equipo"),
+            active_adapter=adapter_name,
+            driver_version=(active_driver or {}).get("DriverVersion", "Desconocido"),
+            driver_date=self._normalize_date((active_driver or {}).get("DriverDate", "")),
+            inf_name=(active_driver or {}).get("InfName", "Desconocido"),
+            provider=(active_driver or {}).get("Manufacturer", "Desconocido"),
+            pnp_device_id=pnp_device_id,
+        )
+
+    @staticmethod
+    def _normalize_date(raw: str) -> str:
+        if not raw:
+            return "Desconocida"
+        return raw.split("T")[0]
+
+    @staticmethod
+    def _run_powershell_json(command: str) -> Any:
+        proc = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", command],
+            capture_output=True,
+            text=True,
+            check=False,
+            encoding="utf-8",
+            errors="replace",
+        )
+        output = proc.stdout.strip()
+        if proc.returncode != 0 or not output:
+            return []
+        try:
+            return json.loads(output)
+        except json.JSONDecodeError:
+            return []
