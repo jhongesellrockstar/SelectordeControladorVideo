@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 import platform
+import re
 import subprocess
 from dataclasses import dataclass
 from typing import Any
@@ -35,26 +36,31 @@ class SystemInfoService:
                 pnp_device_id="",
             )
 
-        adapters = self._run_powershell_json(
+        video = self._run_powershell_json(
             "Get-CimInstance Win32_VideoController | "
-            "Select-Object Name,PNPDeviceID,Status | ConvertTo-Json -Depth 3"
+            "Select-Object Name,PNPDeviceID,DriverVersion,DriverDate,Status,InfFilename,AdapterCompatibility | "
+            "ConvertTo-Json -Depth 4"
         )
-        drivers = self._run_powershell_json(
+        pnp_display = self._run_powershell_json(
+            "Get-PnpDevice -Class Display | "
+            "Select-Object FriendlyName,InstanceId,Status,Class | ConvertTo-Json -Depth 4"
+        )
+        signed_drivers = self._run_powershell_json(
             "Get-CimInstance Win32_PnPSignedDriver | "
             "Where-Object {$_.DeviceClass -eq 'DISPLAY'} | "
             "Select-Object DeviceName,DriverVersion,DriverDate,InfName,Manufacturer,DeviceID | "
-            "ConvertTo-Json -Depth 3"
+            "ConvertTo-Json -Depth 4"
         )
 
-        adapter_list = adapters if isinstance(adapters, list) else [adapters]
-        driver_list = drivers if isinstance(drivers, list) else [drivers]
+        video_list = self._to_list(video)
+        pnp_list = self._to_list(pnp_display)
+        driver_list = self._to_list(signed_drivers)
 
-        active_adapter = next(
-            (a for a in adapter_list if (a or {}).get("Status", "").upper() == "OK"),
-            adapter_list[0] if adapter_list else {},
-        )
-        adapter_name = (active_adapter or {}).get("Name", "Desconocido")
-        pnp_device_id = (active_adapter or {}).get("PNPDeviceID", "")
+        active_video = next((d for d in video_list if str((d or {}).get("Status", "")).upper() == "OK"), video_list[0] if video_list else {})
+        active_pnp = next((d for d in pnp_list if str((d or {}).get("Status", "")).upper() == "OK"), pnp_list[0] if pnp_list else {})
+
+        adapter_name = (active_video or {}).get("Name") or (active_pnp or {}).get("FriendlyName") or "Desconocido"
+        pnp_device_id = (active_video or {}).get("PNPDeviceID") or (active_pnp or {}).get("InstanceId") or ""
 
         active_driver = next(
             (
@@ -69,18 +75,34 @@ class SystemInfoService:
         return SystemState(
             computer_name=os.environ.get("COMPUTERNAME", platform.node() or "Equipo"),
             active_adapter=adapter_name,
-            driver_version=(active_driver or {}).get("DriverVersion", "Desconocido"),
-            driver_date=self._normalize_date((active_driver or {}).get("DriverDate", "")),
-            inf_name=(active_driver or {}).get("InfName", "Desconocido"),
-            provider=(active_driver or {}).get("Manufacturer", "Desconocido"),
+            driver_version=(active_driver or {}).get("DriverVersion") or (active_video or {}).get("DriverVersion", "Desconocido"),
+            driver_date=self._normalize_date((active_driver or {}).get("DriverDate") or (active_video or {}).get("DriverDate", "")),
+            inf_name=(active_driver or {}).get("InfName") or (active_video or {}).get("InfFilename", "Desconocido"),
+            provider=(active_driver or {}).get("Manufacturer") or (active_video or {}).get("AdapterCompatibility", "Desconocido"),
             pnp_device_id=pnp_device_id,
         )
+
+    @staticmethod
+    def _to_list(payload: Any) -> list[dict[str, Any]]:
+        if isinstance(payload, list):
+            return [p for p in payload if isinstance(p, dict)]
+        if isinstance(payload, dict):
+            return [payload]
+        return []
 
     @staticmethod
     def _normalize_date(raw: str) -> str:
         if not raw:
             return "Desconocida"
-        return raw.split("T")[0]
+        text = str(raw)
+        if text.startswith("/Date("):
+            match = re.search(r"/Date\((\d+)", text)
+            if match:
+                import datetime
+
+                dt = datetime.datetime.utcfromtimestamp(int(match.group(1)) / 1000)
+                return dt.strftime("%Y-%m-%d")
+        return text.split("T")[0]
 
     @staticmethod
     def _run_powershell_json(command: str) -> Any:

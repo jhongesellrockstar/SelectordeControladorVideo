@@ -5,11 +5,23 @@ import subprocess
 from pathlib import Path
 
 from driverswitch_gui.models import DriverCandidate
+from driverswitch_gui.services.system_info import SystemState
 
 
 class DriverActionService:
     def __init__(self) -> None:
         self.is_windows = platform.system().lower() == "windows"
+
+    def validate_candidate(self, candidate: DriverCandidate, state: SystemState) -> tuple[bool, str]:
+        if not candidate:
+            return False, "No hay controlador seleccionado."
+        if not candidate.inf_name.lower().endswith(".inf"):
+            return False, "El elemento seleccionado no expone un INF válido."
+        if candidate.source_type == "external" and not candidate.source_path:
+            return False, "La selección externa no tiene ruta de INF."
+        if "display" not in state.active_adapter.lower() and "intel" not in candidate.provider.lower():
+            return True, "Compatibilidad no concluyente: se permitirá intentar instalación."
+        return True, "Compatibilidad básica validada."
 
     def apply_driver(self, candidate: DriverCandidate) -> tuple[bool, str]:
         if not self.is_windows:
@@ -30,7 +42,6 @@ class DriverActionService:
             encoding="utf-8",
             errors="replace",
         )
-
         if proc.returncode == 0:
             return True, proc.stdout.strip() or "Controlador aplicado correctamente."
 
@@ -54,6 +65,15 @@ class DriverActionService:
         if proc.returncode == 0:
             return True, proc.stdout.strip() or "Adaptador reiniciado."
         return False, (proc.stdout + "\n" + proc.stderr).strip()
+
+    def apply_and_refresh(self, candidate: DriverCandidate, pnp_device_id: str) -> tuple[bool, str]:
+        ok, detail = self.apply_driver(candidate)
+        if not ok:
+            return False, detail
+        ok_refresh, refresh_detail = self.refresh_adapter(pnp_device_id)
+        if ok_refresh:
+            return True, f"{detail}\n{refresh_detail}"
+        return True, f"{detail}\nNo se pudo refrescar automáticamente: {refresh_detail}"
 
     def request_reboot(self) -> tuple[bool, str]:
         if not self.is_windows:

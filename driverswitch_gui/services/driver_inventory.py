@@ -27,30 +27,30 @@ class DriverInventoryService:
         if proc.returncode != 0:
             return []
 
-        blocks = re.split(r"\n\s*\n", proc.stdout)
         drivers: list[DriverCandidate] = []
-        for block in blocks:
-            published = self._field(block, r"Published Name\s*:\s*(.+)")
-            original = self._field(block, r"Original Name\s*:\s*(.+)")
-            provider = self._field(block, r"Provider Name\s*:\s*(.+)")
-            version_line = self._field(block, r"Driver Version\s*:\s*(.+)")
-            signer = self._field(block, r"Signer Name\s*:\s*(.+)")
+        for block in re.split(r"\r?\n\s*\r?\n", proc.stdout):
+            fields = self._parse_key_values(block)
+            published = self._pick(fields, ["published name", "nombre publicado"])
+            original = self._pick(fields, ["original name", "nombre original"])
+            provider = self._pick(fields, ["provider name", "nombre del proveedor"])
+            version_line = self._pick(fields, ["driver version", "versión del controlador"])
+            signer = self._pick(fields, ["signer name", "firmante"])
             if not published:
                 continue
             date_part, version_part = self._split_version_line(version_line)
-            status = "Disponible"
-            if original.lower() == active_inf.lower() or published.lower() == active_inf.lower():
-                status = "Activo"
+            inf_name = original or published
+            status = "Activo" if inf_name.lower() == active_inf.lower() else "Disponible"
             drivers.append(
                 DriverCandidate(
                     source_type="driver_store",
                     provider=provider or "Desconocido",
                     version=version_part or "Desconocida",
                     driver_date=date_part or "Desconocida",
-                    inf_name=original or published,
+                    inf_name=inf_name,
                     published_name=published,
                     signer=signer,
                     status=status,
+                    compatible=True,
                 )
             )
         return drivers
@@ -79,9 +79,45 @@ class DriverInventoryService:
                     inf_name=inf_path.name,
                     source_path=str(inf_path),
                     status="Disponible (externo)",
+                    compatible=True,
                 )
             )
         return candidates
+
+    def autodetect_intel2115(self, roots: list[Path]) -> DriverCandidate | None:
+        for root in roots:
+            if not root.exists() or not root.is_dir():
+                continue
+            for path in root.rglob("iigd_dch.inf"):
+                return DriverCandidate(
+                    source_type="external",
+                    provider="Intel",
+                    version="31.0.101.2115",
+                    driver_date="Desconocida",
+                    inf_name=path.name,
+                    source_path=str(path),
+                    status="Intel2115 detectado",
+                    compatible=True,
+                )
+        return None
+
+    @staticmethod
+    def _parse_key_values(block: str) -> dict[str, str]:
+        fields: dict[str, str] = {}
+        for line in block.splitlines():
+            if ":" not in line:
+                continue
+            key, value = line.split(":", 1)
+            fields[key.strip().lower()] = value.strip()
+        return fields
+
+    @staticmethod
+    def _pick(fields: dict[str, str], candidates: list[str]) -> str:
+        for key, value in fields.items():
+            for candidate in candidates:
+                if candidate in key:
+                    return value
+        return ""
 
     @staticmethod
     def _is_display_inf(content: str) -> bool:
@@ -95,10 +131,13 @@ class DriverInventoryService:
 
     @staticmethod
     def _split_version_line(version_line: str) -> tuple[str, str]:
-        if "/" in version_line and " " in version_line:
-            parts = version_line.split(" ")
+        line = version_line.strip()
+        if not line:
+            return "", ""
+        if "," in line:
+            left, right = line.split(",", 1)
+            return left.strip(), right.strip()
+        parts = line.split()
+        if len(parts) >= 2 and "/" in parts[0]:
             return parts[0], parts[-1]
-        if "," in version_line:
-            date_part, version_part = version_line.split(",", maxsplit=1)
-            return date_part.strip(), version_part.strip()
-        return "", version_line.strip()
+        return "", line
