@@ -1,43 +1,31 @@
 # DriverSwitch GUI - Selector de controlador de video
 
-Herramienta de escritorio en Python/Tkinter para Windows 11 orientada a la gestión visual de controladores gráficos (Intel UHD y otros adaptadores Display), con soporte de perfiles de equipo en formato `.txt` tipo INI.
+Aplicación de escritorio en Python/Tkinter para Windows 11 enfocada en resolver el caso real de compatibilidad Intel + Meta Quest 3.
 
-## Capacidades actuales
-- Lectura del estado del sistema con:
-  - `Get-CimInstance Win32_VideoController`
-  - `Get-PnpDevice -Class Display`
-  - `pnputil /enum-drivers /class Display`
-- Inventario de drivers Display del Driver Store.
-- Escaneo de carpetas externas con `.inf` compatibles.
-- Detección automática de carpeta Intel2115 (`iigd_dch.inf`) y marcado preferido.
-- Flujo de aplicación de controlador con validación, instalación (`pnputil`) y refresco del adaptador.
-- Sistema de perfiles de equipo:
-  - `cargar_perfil(ruta)`
-  - `guardar_perfil(ruta)`
-  - `crear_perfil_vacio()`
-  - `comparar_perfil_vs_sistema()`
-- Advertencia de compatibilidad para Realidad Mixta si el driver activo no es `31.0.101.2115`.
-- Persistencia de preferidos/rutas y log de auditoría exportable.
+## Qué incluye ahora
+- Arranque rápido de GUI + carga pesada en segundo plano (thread + queue + `after`).
+- Panel de log en tiempo real para usuario (mensajes con hora).
+- Log técnico persistente (`driverswitch_technical.log`) exportable desde la GUI.
+- Asistente textual “¿Qué hizo el software?” con recomendación del siguiente paso.
+- Botón **Diagnosticar mi equipo** orientado a Meta Quest 3.
+- Flujo guiado para detectar driver activo y comparar contra objetivo `31.0.101.2115`.
+- Inventario de Driver Store (`pnputil`) + carpetas INF externas + detección Intel2115 (`iigd_dch.inf`).
+- Sistema de perfiles `.txt` tipo INI (crear/cargar/guardar/comparar).
+- Aplicación de controlador con validación, `pnputil /add-driver /install` y refresco de adaptador.
 
 ## Estructura
-- `app.py`: punto de entrada.
-- `driverswitch_gui/ui.py`: GUI y flujo de usuario.
-- `driverswitch_gui/models.py`: modelos `DriverCandidate`, `ProfileData`, `ProfileComparison`.
-- `driverswitch_gui/services/system_info.py`: lectura de estado del hardware/controlador.
-- `driverswitch_gui/services/driver_inventory.py`: inventario Driver Store + INF externos + detección Intel2115.
-- `driverswitch_gui/services/driver_actions.py`: validación/aplicación/refresco/reinicio.
-- `driverswitch_gui/services/profile_service.py`: parser INI `.txt` de perfiles de equipo.
-- `driverswitch_gui/services/config_store.py`: persistencia de configuración.
-- `driverswitch_gui/services/audit_logger.py`: trazabilidad de acciones.
+- `app.py`: entrada.
+- `driverswitch_gui/ui.py`: GUI, tareas background y flujo guiado.
+- `driverswitch_gui/services/system_info.py`: lectura Win32/PnP con timeouts.
+- `driverswitch_gui/services/driver_inventory.py`: inventario y escaneo INF.
+- `driverswitch_gui/services/driver_actions.py`: validación y aplicación de driver.
+- `driverswitch_gui/services/profile_service.py`: parser de perfiles.
+- `driverswitch_gui/services/diagnostic_service.py`: diagnóstico centrado en Meta Quest 3.
+- `driverswitch_gui/services/audit_logger.py`: log técnico.
 
-## Ejecución
+## Ejecutar
 ```powershell
 python app.py
 ```
 
-> Recomendado: ejecutar como Administrador para instalar/controlar drivers.
-
-## Persistencia
-- `%APPDATA%\DriverSwitchGUI\config.json`
-- `%APPDATA%\DriverSwitchGUI\driverswitch.log`
-- `%APPDATA%\DriverSwitchGUI\perfil_base.txt` (perfil por defecto)
+> Recomendado: ejecutar como Administrador para aplicar controladores.

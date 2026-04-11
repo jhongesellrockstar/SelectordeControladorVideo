@@ -5,8 +5,12 @@ import os
 import platform
 import re
 import subprocess
+import time
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Callable
+
+
+LogFn = Callable[[str], None]
 
 
 @dataclass(slots=True)
@@ -21,18 +25,20 @@ class SystemState:
 
 
 class SystemInfoService:
-    def __init__(self) -> None:
+    def __init__(self, log: LogFn | None = None) -> None:
         self.is_windows = platform.system().lower() == "windows"
+        self.log = log or (lambda _: None)
 
     def get_system_state(self) -> SystemState:
+        self.log("Iniciando detección del sistema...")
         if not self.is_windows:
             return SystemState(
                 computer_name=platform.node() or "Equipo desconocido",
                 active_adapter="No disponible fuera de Windows",
-                driver_version="N/D",
-                driver_date="N/D",
-                inf_name="N/D",
-                provider="N/D",
+                driver_version="No disponible",
+                driver_date="No disponible",
+                inf_name="No disponible",
+                provider="No disponible",
                 pnp_device_id="",
             )
 
@@ -59,7 +65,7 @@ class SystemInfoService:
         active_video = next((d for d in video_list if str((d or {}).get("Status", "")).upper() == "OK"), video_list[0] if video_list else {})
         active_pnp = next((d for d in pnp_list if str((d or {}).get("Status", "")).upper() == "OK"), pnp_list[0] if pnp_list else {})
 
-        adapter_name = (active_video or {}).get("Name") or (active_pnp or {}).get("FriendlyName") or "Desconocido"
+        adapter_name = (active_video or {}).get("Name") or (active_pnp or {}).get("FriendlyName") or "No detectado"
         pnp_device_id = (active_video or {}).get("PNPDeviceID") or (active_pnp or {}).get("InstanceId") or ""
 
         active_driver = next(
@@ -72,15 +78,19 @@ class SystemInfoService:
             driver_list[0] if driver_list else {},
         )
 
-        return SystemState(
+        state = SystemState(
             computer_name=os.environ.get("COMPUTERNAME", platform.node() or "Equipo"),
             active_adapter=adapter_name,
-            driver_version=(active_driver or {}).get("DriverVersion") or (active_video or {}).get("DriverVersion", "Desconocido"),
+            driver_version=(active_driver or {}).get("DriverVersion") or (active_video or {}).get("DriverVersion", "No detectado"),
             driver_date=self._normalize_date((active_driver or {}).get("DriverDate") or (active_video or {}).get("DriverDate", "")),
-            inf_name=(active_driver or {}).get("InfName") or (active_video or {}).get("InfFilename", "Desconocido"),
-            provider=(active_driver or {}).get("Manufacturer") or (active_video or {}).get("AdapterCompatibility", "Desconocido"),
+            inf_name=(active_driver or {}).get("InfName") or (active_video or {}).get("InfFilename", "No detectado"),
+            provider=(active_driver or {}).get("Manufacturer") or (active_video or {}).get("AdapterCompatibility", "No detectado"),
             pnp_device_id=pnp_device_id,
         )
+        self.log(f"GPU principal detectada: {state.active_adapter}")
+        self.log(f"Driver activo detectado: {state.driver_version}")
+        self.log(f"INF activo detectado: {state.inf_name}")
+        return state
 
     @staticmethod
     def _to_list(payload: Any) -> list[dict[str, Any]]:
@@ -93,7 +103,7 @@ class SystemInfoService:
     @staticmethod
     def _normalize_date(raw: str) -> str:
         if not raw:
-            return "Desconocida"
+            return "No detectado"
         text = str(raw)
         if text.startswith("/Date("):
             match = re.search(r"/Date\((\d+)", text)
@@ -104,20 +114,32 @@ class SystemInfoService:
                 return dt.strftime("%Y-%m-%d")
         return text.split("T")[0]
 
-    @staticmethod
-    def _run_powershell_json(command: str) -> Any:
-        proc = subprocess.run(
-            ["powershell", "-NoProfile", "-Command", command],
-            capture_output=True,
-            text=True,
-            check=False,
-            encoding="utf-8",
-            errors="replace",
-        )
+    def _run_powershell_json(self, command: str) -> Any:
+        start = time.perf_counter()
+        self.log(f"Ejecutando comando PowerShell: {command[:80]}...")
+        try:
+            proc = subprocess.run(
+                ["powershell", "-NoProfile", "-Command", command],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=25,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except subprocess.TimeoutExpired:
+            self.log("Error: comando PowerShell agotó el tiempo de espera (25s).")
+            return []
+
+        elapsed = (time.perf_counter() - start) * 1000
+        self.log(f"Comando finalizado en {elapsed:.0f} ms (código {proc.returncode}).")
         output = proc.stdout.strip()
-        if proc.returncode != 0 or not output:
+        if proc.returncode != 0:
+            self.log(f"Advertencia PowerShell stderr: {proc.stderr.strip()[:240]}")
+        if not output:
             return []
         try:
             return json.loads(output)
         except json.JSONDecodeError:
+            self.log("Advertencia: no se pudo parsear salida JSON de PowerShell.")
             return []

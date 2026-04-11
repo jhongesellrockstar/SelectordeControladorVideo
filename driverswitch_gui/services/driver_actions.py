@@ -3,14 +3,16 @@ from __future__ import annotations
 import platform
 import subprocess
 from pathlib import Path
+from typing import Callable
 
 from driverswitch_gui.models import DriverCandidate
 from driverswitch_gui.services.system_info import SystemState
 
 
 class DriverActionService:
-    def __init__(self) -> None:
+    def __init__(self, log: Callable[[str], None] | None = None) -> None:
         self.is_windows = platform.system().lower() == "windows"
+        self.log = log or (lambda _: None)
 
     def validate_candidate(self, candidate: DriverCandidate, state: SystemState) -> tuple[bool, str]:
         if not candidate:
@@ -19,8 +21,8 @@ class DriverActionService:
             return False, "El elemento seleccionado no expone un INF válido."
         if candidate.source_type == "external" and not candidate.source_path:
             return False, "La selección externa no tiene ruta de INF."
-        if "display" not in state.active_adapter.lower() and "intel" not in candidate.provider.lower():
-            return True, "Compatibilidad no concluyente: se permitirá intentar instalación."
+        if "meta virtual monitor" in state.active_adapter.lower():
+            return True, "Se detecta monitor virtual; se recomienda forzar Intel2115 y reiniciar."
         return True, "Compatibilidad básica validada."
 
     def apply_driver(self, candidate: DriverCandidate) -> tuple[bool, str]:
@@ -29,23 +31,29 @@ class DriverActionService:
 
         inf_path = self._resolve_inf_path(candidate)
         if not inf_path:
-            return (
-                False,
-                "No se pudo resolver el INF automáticamente. Usa 'Abrir carpeta' y aplica desde el Administrador de dispositivos.",
-            )
+            return False, "No se pudo resolver el INF automáticamente. Usa 'Abrir carpeta' y aplica desde Administrador de dispositivos."
 
-        proc = subprocess.run(
-            ["pnputil", "/add-driver", str(inf_path), "/install"],
-            capture_output=True,
-            text=True,
-            check=False,
-            encoding="utf-8",
-            errors="replace",
-        )
+        cmd = ["pnputil", "/add-driver", str(inf_path), "/install"]
+        self.log(f"Aplicando controlador con comando: {' '.join(cmd)}")
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=45,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except subprocess.TimeoutExpired:
+            return False, "Tiempo de espera agotado al aplicar controlador."
+
         if proc.returncode == 0:
+            self.log(f"Resultado pnputil: {proc.stdout.strip()[:350]}")
             return True, proc.stdout.strip() or "Controlador aplicado correctamente."
 
         output = (proc.stdout + "\n" + proc.stderr).strip()
+        self.log(f"Error pnputil: {output[:400]}")
         return False, output or "No fue posible aplicar el controlador. Ejecuta la app como administrador."
 
     def refresh_adapter(self, pnp_device_id: str) -> tuple[bool, str]:
@@ -54,14 +62,21 @@ class DriverActionService:
         if not pnp_device_id:
             return False, "No se detectó identificador PNP del adaptador activo."
 
-        proc = subprocess.run(
-            ["pnputil", "/restart-device", pnp_device_id],
-            capture_output=True,
-            text=True,
-            check=False,
-            encoding="utf-8",
-            errors="replace",
-        )
+        cmd = ["pnputil", "/restart-device", pnp_device_id]
+        self.log(f"Refrescando adaptador: {' '.join(cmd)}")
+        try:
+            proc = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=20,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except subprocess.TimeoutExpired:
+            return False, "Tiempo de espera agotado al refrescar el adaptador."
+
         if proc.returncode == 0:
             return True, proc.stdout.strip() or "Adaptador reiniciado."
         return False, (proc.stdout + "\n" + proc.stderr).strip()
@@ -89,14 +104,18 @@ class DriverActionService:
             return inf if inf.exists() else None
 
         if candidate.published_name:
-            proc = subprocess.run(
-                ["pnputil", "/enum-drivers", "/class", "Display", "/files"],
-                capture_output=True,
-                text=True,
-                check=False,
-                encoding="utf-8",
-                errors="replace",
-            )
+            try:
+                proc = subprocess.run(
+                    ["pnputil", "/enum-drivers", "/class", "Display", "/files"],
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                    timeout=25,
+                    encoding="utf-8",
+                    errors="replace",
+                )
+            except subprocess.TimeoutExpired:
+                return None
             if proc.returncode != 0:
                 return None
             blocks = proc.stdout.split("\n\n")

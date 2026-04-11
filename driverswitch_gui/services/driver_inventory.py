@@ -4,27 +4,37 @@ import platform
 import re
 import subprocess
 from pathlib import Path
+from typing import Callable
 
 from driverswitch_gui.models import DriverCandidate
 
 
 class DriverInventoryService:
-    def __init__(self) -> None:
+    def __init__(self, log: Callable[[str], None] | None = None) -> None:
         self.is_windows = platform.system().lower() == "windows"
+        self.log = log or (lambda _: None)
 
     def list_driver_store(self, active_inf: str = "") -> list[DriverCandidate]:
         if not self.is_windows:
             return []
 
-        proc = subprocess.run(
-            ["pnputil", "/enum-drivers", "/class", "Display"],
-            capture_output=True,
-            text=True,
-            check=False,
-            encoding="utf-8",
-            errors="replace",
-        )
+        self.log("Leyendo Driver Store (pnputil /enum-drivers /class Display)...")
+        try:
+            proc = subprocess.run(
+                ["pnputil", "/enum-drivers", "/class", "Display"],
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=25,
+                encoding="utf-8",
+                errors="replace",
+            )
+        except subprocess.TimeoutExpired:
+            self.log("Error: pnputil tardó demasiado al enumerar drivers.")
+            return []
+
         if proc.returncode != 0:
+            self.log(f"Error al enumerar drivers: {proc.stderr.strip()[:200]}")
             return []
 
         drivers: list[DriverCandidate] = []
@@ -39,13 +49,13 @@ class DriverInventoryService:
                 continue
             date_part, version_part = self._split_version_line(version_line)
             inf_name = original or published
-            status = "Activo" if inf_name.lower() == active_inf.lower() else "Disponible"
+            status = "Activo (sistema)" if inf_name.lower() == active_inf.lower() else "Disponible (store)"
             drivers.append(
                 DriverCandidate(
                     source_type="driver_store",
-                    provider=provider or "Desconocido",
-                    version=version_part or "Desconocida",
-                    driver_date=date_part or "Desconocida",
+                    provider=provider or "No detectado",
+                    version=version_part or "No detectado",
+                    driver_date=date_part or "No disponible",
                     inf_name=inf_name,
                     published_name=published,
                     signer=signer,
@@ -53,12 +63,13 @@ class DriverInventoryService:
                     compatible=True,
                 )
             )
+        self.log(f"Drivers detectados en store: {len(drivers)}")
         return drivers
 
     def scan_external_folder(self, folder: Path) -> list[DriverCandidate]:
         if not folder.exists() or not folder.is_dir():
             return []
-
+        self.log(f"Buscando INF externos en: {folder}")
         candidates: list[DriverCandidate] = []
         for inf_path in folder.rglob("*.inf"):
             try:
@@ -67,9 +78,9 @@ class DriverInventoryService:
                 continue
             if not self._is_display_inf(content):
                 continue
-            version = self._field(content, r"DriverVer\s*=\s*[^,]+,\s*([^\r\n]+)") or "Desconocida"
-            date = self._field(content, r"DriverVer\s*=\s*([^,\r\n]+)") or "Desconocida"
-            provider = self._field(content, r"Provider\s*=\s*%?([^%\r\n]+)%?") or "Proveedor INF"
+            version = self._field(content, r"DriverVer\s*=\s*[^,]+,\s*([^\r\n]+)") or "No detectado"
+            date = self._field(content, r"DriverVer\s*=\s*([^,\r\n]+)") or "No disponible"
+            provider = self._field(content, r"Provider\s*=\s*%?([^%\r\n]+)%?") or "No detectado"
             candidates.append(
                 DriverCandidate(
                     source_type="external",
@@ -82,23 +93,27 @@ class DriverInventoryService:
                     compatible=True,
                 )
             )
+        self.log(f"INF de pantalla encontrados en carpeta externa: {len(candidates)}")
         return candidates
 
     def autodetect_intel2115(self, roots: list[Path]) -> DriverCandidate | None:
+        self.log("Buscando carpeta Intel2115 / iigd_dch.inf...")
         for root in roots:
             if not root.exists() or not root.is_dir():
                 continue
             for path in root.rglob("iigd_dch.inf"):
+                self.log(f"Carpeta Intel2115 encontrada en: {path}")
                 return DriverCandidate(
                     source_type="external",
                     provider="Intel",
                     version="31.0.101.2115",
-                    driver_date="Desconocida",
+                    driver_date="No disponible",
                     inf_name=path.name,
                     source_path=str(path),
                     status="Intel2115 detectado",
                     compatible=True,
                 )
+        self.log("No se encontró iigd_dch.inf en rutas de búsqueda rápidas.")
         return None
 
     @staticmethod
