@@ -1,0 +1,146 @@
+PROYECTO: GESTOR GRÁFICO DE CONTROLADORES DE VIDEO CON INTERFAZ GUI
+
+1. PROPÓSITO GENERAL
+Este proyecto tiene como propósito desarrollar una aplicación de escritorio con interfaz gráfica amigable que permita identificar, visualizar, seleccionar y aplicar versiones de controladores gráficos instalados en un equipo Windows, reduciendo la dependencia de procedimientos manuales ejecutados desde PowerShell, CMD o el Administrador de dispositivos. El enfoque principal es facilitar la gestión del controlador gráfico activo, especialmente en escenarios donde Windows conserva o restaura automáticamente una versión OEM antigua que genera incompatibilidades con software moderno, como aplicaciones de realidad mixta, virtualización de pantallas o entornos de escritorio remoto inmersivo.
+
+2. NECESIDAD DEL PROYECTO
+En muchos equipos portátiles y de escritorio, el sistema operativo mantiene más de una versión de controlador gráfico dentro del Driver Store de Windows. Sin embargo, el usuario común no dispone de una herramienta clara, centralizada y comprensible para:
+- conocer qué controlador gráfico está activo en ese momento;
+- diferenciar entre la versión instalada, la versión activa y otras versiones disponibles en el sistema;
+- seleccionar manualmente con cuál versión desea trabajar;
+- aplicar el cambio de forma guiada;
+- reiniciar o refrescar el adaptador gráfico cuando sea necesario;
+- evitar que el flujo de trabajo dependa de comandos técnicos, rutas de archivos INF o intervención repetitiva.
+
+Por ello, el proyecto busca encapsular estas tareas en una interfaz gráfica simple, clara y segura.
+
+3. VISIÓN DEL PRODUCTO
+La aplicación será una herramienta de escritorio para Windows, orientada inicialmente a controladores gráficos Intel, NVIDIA y otros controladores de pantalla detectados en el sistema, con la capacidad de mostrar el estado actual del hardware gráfico y permitir al usuario elegir entre versiones de controladores disponibles o agregar nuevas rutas de instalación desde archivos exportados previamente.
+
+La filosofía del proyecto debe mantenerse estable: no se trata de una herramienta genérica de mantenimiento del sistema, sino de un gestor especializado en selección y activación de controladores gráficos mediante una experiencia visual sencilla, controlada y reproducible.
+
+4. OBJETIVO PRINCIPAL DEL SOFTWARE
+Construir un software de escritorio con GUI que permita al usuario:
+- visualizar el adaptador gráfico activo del sistema;
+- visualizar la versión actual del controlador en uso;
+- listar otras versiones detectadas en el Driver Store o en carpetas locales exportadas;
+- elegir con qué versión desea trabajar;
+- aplicar el cambio del controlador de forma asistida;
+- refrescar el dispositivo gráfico;
+- guardar una configuración preferida;
+- solicitar reinicio cuando el cambio lo requiera;
+- reducir al mínimo la intervención manual en consola.
+
+5. ALCANCE FUNCIONAL INICIAL
+La primera versión del proyecto debe incluir, como mínimo, las siguientes capacidades:
+
+5.1. Detección del estado actual del sistema
+- Mostrar el nombre del equipo.
+- Mostrar los adaptadores de video detectados.
+- Mostrar cuál adaptador se encuentra activo.
+- Mostrar la versión del controlador actualmente activa.
+- Mostrar la fecha del controlador.
+- Mostrar el INF asociado al controlador activo.
+- Mostrar el fabricante del controlador.
+- Mostrar si el controlador activo coincide con una versión preferida por el usuario.
+
+5.2. Inventario de controladores disponibles
+- Leer y listar los controladores gráficos presentes en el Driver Store de Windows.
+- Mostrar versiones disponibles por fabricante.
+- Mostrar si cada controlador está instalado, superado, mejor clasificado o disponible.
+- Permitir agregar una carpeta externa que contenga archivos INF exportados.
+- Validar si esa carpeta contiene un controlador gráfico compatible.
+
+5.3. Selección del controlador deseado
+- Permitir al usuario seleccionar una versión específica desde una lista.
+- Permitir marcar una versión como preferida.
+- Mostrar advertencias claras si el controlador seleccionado no es el recomendado por Windows.
+- Mostrar confirmaciones antes de aplicar cambios irreversibles.
+
+5.4. Aplicación de cambios
+- Ejecutar el cambio del controlador gráfico usando los mecanismos disponibles del sistema.
+- Intentar automatizar el proceso de agregado e instalación del controlador.
+- Refrescar el adaptador gráfico luego de la instalación.
+- Si el cambio no puede completarse automáticamente, guiar al usuario mediante instrucciones visuales claras.
+- Registrar el resultado de la operación.
+
+5.5. Persistencia y recuperación
+- Guardar configuraciones del usuario.
+- Permitir almacenar rutas de controladores exportados.
+- Permitir ejecutar un modo de recuperación rápida.
+- Facilitar la reconstrucción del entorno después de una restauración del sistema.
+
+6. ENFOQUE DE USABILIDAD
+La interfaz debe priorizar facilidad de uso por encima de la complejidad técnica. El usuario no debe necesitar comprender conceptos como INF, ranking de controladores, Driver Store o PnPUtil para operar la herramienta en tareas normales. La aplicación debe traducir esos elementos técnicos a términos prácticos como:
+- controlador actual;
+- versión disponible;
+- versión recomendada por el usuario;
+- aplicar cambio;
+- refrescar adaptador;
+- reiniciar equipo;
+- ruta del controlador guardado.
+
+La aplicación debe mantener una estética clara, moderna y orientada a productividad técnica.
+
+7. DECISIÓN DE DISEÑO
+El desarrollo puede implementarse con Python, utilizando tkinter o PyQt5/PySide6. Para una interfaz más robusta, escalable y profesional, se considera preferible una solución basada en PyQt5 o PySide6, aunque tkinter puede emplearse para un primer prototipo funcional. La lógica del sistema debe separarse claramente entre:
+- capa de interfaz;
+- capa de detección de hardware y controladores;
+- capa de ejecución de acciones administrativas;
+- capa de configuración y persistencia;
+- capa de registro y auditoría.
+
+8. COMPORTAMIENTO ESPERADO DE LA GUI
+La GUI debe mostrar por defecto, al abrirse:
+- el estado actual de la computadora;
+- el nombre del adaptador gráfico principal;
+- la versión del controlador activo;
+- la lista de versiones detectadas;
+- una indicación visual del controlador actualmente en uso;
+- una indicación visual de la versión preferida o recomendada por el usuario.
+
+La GUI debe permitir luego:
+- seleccionar otra versión;
+- aplicar el cambio;
+- guardar la selección preferida;
+- refrescar el estado;
+- abrir la carpeta del controlador;
+- exportar registros;
+- reiniciar el equipo si el proceso lo requiere.
+
+9. RESTRICCIONES Y PRINCIPIOS DEL PROYECTO
+Para evitar que el proyecto se distorsione con el tiempo, los commits y nuevas ideas deben respetar estos principios:
+- El eje del proyecto es la gestión visual de controladores gráficos, no un optimizador general de Windows.
+- Toda nueva funcionalidad debe aportar directamente a detectar, seleccionar, aplicar o conservar una versión de controlador gráfico.
+- No deben añadirse módulos ajenos al objetivo principal si no contribuyen al flujo de gestión del controlador.
+- La aplicación debe seguir siendo comprensible para usuarios no expertos.
+- El proyecto debe priorizar trazabilidad, claridad operativa y reproducibilidad del cambio de controlador.
+
+10. CASO DE USO MOTIVADOR
+Un caso de uso central del proyecto es el siguiente: un usuario dispone de un equipo donde Windows mantiene activo un controlador gráfico OEM antiguo, mientras una versión más nueva compatible con aplicaciones modernas ya existe en el sistema o fue exportada manualmente. El usuario necesita cambiar al controlador nuevo para habilitar software de realidad mixta o funciones avanzadas de visualización, pero no desea repetir procesos manuales con PowerShell, PnPUtil o “Usar disco...”. La aplicación debe convertir ese procedimiento técnico en una secuencia gráfica simple, segura y repetible.
+
+11. RESULTADO ESPERADO
+El resultado esperado es una aplicación de escritorio que reduzca drásticamente el tiempo, la dificultad y el error humano asociados al cambio de controlador gráfico en Windows, permitiendo al usuario controlar el estado real de su sistema desde una GUI sencilla y orientada a decisiones concretas.
+
+12. CRITERIO DE ÉXITO DEL PROYECTO
+Se considerará que el proyecto cumple su propósito cuando un usuario pueda, desde la interfaz gráfica:
+- identificar el controlador gráfico actual;
+- visualizar otras versiones disponibles;
+- seleccionar la versión deseada;
+- aplicar el cambio con el menor número posible de pasos manuales;
+- verificar el resultado final;
+- conservar una configuración reutilizable para el futuro.
+
+13. NOMBRE DE TRABAJO DEL PROYECTO
+Nombre provisional sugerido:
+“DriverSwitch GUI”
+Otras opciones:
+- GPU Driver Manager
+- Graphic Driver Selector
+- DriverPilot Graphics
+- GUI Driver Control for Windows
+
+14. DECLARACIÓN DE ENFOQUE
+Este documento debe considerarse como referencia de intención del proyecto. Su propósito es preservar la visión original del software y evitar que el desarrollo pierda foco. Toda evolución del repositorio debe evaluarse contra esta pregunta:
+“¿Esta nueva contribución mejora la detección, selección, aplicación o persistencia del controlador gráfico desde una interfaz simple para el usuario?”
+Si la respuesta es no, entonces dicha contribución debe reconsiderarse o separarse del núcleo principal del proyecto.
