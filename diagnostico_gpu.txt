@@ -1,0 +1,1802 @@
+DIAGNÓSTICO DEL SISTEMA - GPU / DRIVERS
+Fecha: 2026-04-12 00:15:25.708341
+Usuario: ACER
+Python: 3.11.15 | packaged by Anaconda, Inc. | (main, Mar 11 2026, 17:12:15) [MSC v.1942 64 bit (AMD64)]
+
+================================================================================
+Sistema operativo
+================================================================================
+Nombre de host:                            DESKTOP-55F347R
+Nombre del sistema operativo:              Microsoft Windows 11 Pro
+Versi¢n del sistema operativo:             10.0.26200 N/D Compilaci¢n 26200
+Fabricante del sistema operativo:          Microsoft Corporation
+Configuraci¢n del sistema operativo:       Estaci¢n de trabajo independiente
+Tipo de compilaci¢n del sistema operativo: Multiprocessor Free
+Propietario registrado:                    ACER
+Organizaci¢n registrada:                   
+Id. del producto:                          00330-80000-00000-AA755
+Fecha de instalaci¢n original:             5/04/2026, 13:03:09
+Tiempo de arranque del sistema:            11/04/2026, 23:40:56
+Fabricante del sistema:                    Acer
+Modelo del sistema:                        Aspire A315-57G
+Tipo de sistema:                           x64-based PC
+Procesadores:                              1 Procesadores instalados.
+                                           [01]: Intel64 Family 6 Model 126 Stepping 5 GenuineIntel ~991 Mhz
+Versi¢n del BIOS:                          Insyde Corp. V1.06, 15/04/2020
+Directorio de Windows:                     C:\WINDOWS
+Directorio de sistema:                     C:\WINDOWS\system32
+Dispositivo de arranque:                   \Device\HarddiskVolume2
+Configuraci¢n regional del sistema:        es-mx;Espa¤ol (M‚xico)
+Idioma de entrada:                         es;Espa¤ol (tradicional)
+Zona horaria:                              (UTC-05:00) Bogot , Lima, Quito, Rio Branco
+Memoria f¡sica total:                      11,897 MB
+Memoria f¡sica disponible:                 3,072 MB
+Memoria virtual: tama¤o m ximo:            14,329 MB
+Memoria virtual: disponible:               4,866 MB
+Memoria virtual: en uso:                   9,463 MB
+Ubicaciones de archivos de p gina:         C:\pagefile.sys
+Dominio:                                   WORKGROUP
+Servidor de inicio de sesi¢n:              \\DESKTOP-55F347R
+Revisiones:                                5 revisi¢n(es) instaladas.
+                                           [01]: KB5066128
+                                           [02]: KB5054156
+                                           [03]: KB5086672
+                                           [04]: KB5083532
+                                           [05]: KB5079387
+Tarjetas de red:                           3 Tarjetas de interfaz de red instaladas.
+                                           [01]: Qualcomm Atheros QCA9377 Wireless Network Adapter
+                                                 Nombre de conexi¢n: Wi-Fi
+                                                 DHCP habilitado:    S¡
+                                                 Servidor DHCP:      192.168.18.1
+                                                 Direcciones IP
+                                                 [01]: 192.168.18.51
+                                                 [02]: fe80::e126:ac98:e4c4:c6e7
+                                           [02]: Realtek PCIe GbE Family Controller
+                                                 Nombre de conexi¢n: Ethernet
+                                                 Estado:             Medios desconectados
+                                           [03]: Bluetooth Device (Personal Area Network)
+                                                 Nombre de conexi¢n: Conexi¢n de red Bluetooth
+                                                 Estado:             Medios desconectados
+Seguridad basada en virtualizaci¢n:        Estado:ÿNo habilitado
+                                           App Control for Business policy: Forzado
+                                           App Control for Business user mode policy: Desactivado
+                                           Caracter¡sticas de seguridad habilitadas:
+Requisitos Hyper-V:                        Extensiones de modo de monitor de VM: S¡
+                                           Se habilit¢ la virtualizaci¢n en el firmware: S¡
+                                           Traducci¢n de direcciones de segundo nivel: S¡
+                                           La prevenci¢n de ejecuci¢n de datos est  disponible: S¡
+
+================================================================================
+GPU detectadas (WMIC)
+================================================================================
+DriverVersion   Name                   PNPDeviceID                                                    
+
+14.30.21.903    Meta Virtual Monitor   ROOT\DISPLAY\0000                                              
+
+26.20.100.7372  Intel(R) UHD Graphics  PCI\VEN_8086&DEV_8A56&SUBSYS_14291025&REV_07\3&11583659&0&10   
+
+32.0.15.8228    NVIDIA GeForce MX330   PCI\VEN_10DE&DEV_1D16&SUBSYS_14291025&REV_A1\4&94EBF7A&0&00E4
+
+================================================================================
+Dispositivos de pantalla (PnP)
+================================================================================
+FriendlyName          InstanceId                                                    Status 
+------------          ----------                                                    ------ 
+Meta Virtual Monitor  ROOT\DISPLAY\0000                                             OK     
+Intel(R) UHD Graphics PCI\VEN_8086&DEV_8A56&SUBSYS_14291025&REV_07\3&11583659&0&10  OK     
+MrIdd Device          SWD\MRVIRTUALDISPLAYS\MRIDD                                   Unknown
+NVIDIA GeForce MX330  PCI\VEN_10DE&DEV_1D16&SUBSYS_14291025&REV_A1\4&94EBF7A&0&00E4 OK
+
+================================================================================
+Drivers firmados (Display)
+================================================================================
+DeviceName            DriverVersion  DriverProviderName InfName  
+----------            -------------  ------------------ -------  
+NVIDIA GeForce MX330  32.0.15.8228   NVIDIA             oem25.inf
+Intel(R) UHD Graphics 26.20.100.7372 Intel Corporation  oem68.inf
+Meta Virtual Monitor  14.30.21.903   Meta Inc.          oem28.inf
+
+================================================================================
+Driver Store (pnputil)
+================================================================================
+Utilidad PnP de Microsoft
+
+Nombre publicado:     oem57.inf
+Nombre original:      acerairplanemodecontroller.inf
+Nombre del proveedor:      Acer Incorporated
+Nombre de clase:         HIDClass
+GUID de clase:         {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Versión del controlador:     06/02/2024 1.0.0.12
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem27.inf
+Nombre original:      acerairplanemodecontroller.inf
+Nombre del proveedor:      Acer Incorporated
+Nombre de clase:         HIDClass
+GUID de clase:         {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Versión del controlador:     05/31/2022 1.0.0.10
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem4.inf
+Nombre original:      etdi2c.inf
+Nombre del proveedor:      ELAN
+Nombre de clase:         Mouse
+GUID de clase:         {4d36e96f-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/18/2019 13.6.16.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem61.inf
+Nombre original:      hdbusext.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {69cb4edd-bafe-4f9a-9135-c1f284d6860d}
+Versión del controlador:     11/16/2022 31.0.101.2115
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem72.inf
+Nombre original:      hdbusext.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {69cb4edd-bafe-4f9a-9135-c1f284d6860d}
+Versión del controlador:     06/12/2019 26.20.100.6952
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem26.inf
+Nombre original:      hdbusext.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {69cb4edd-bafe-4f9a-9135-c1f284d6860d}
+Versión del controlador:     10/25/2019 26.20.100.7372
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem16.inf
+Nombre original:      hdx_acerext_rtk.inf
+Nombre del proveedor:      Realtek Semiconductor Corp.
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {c3a63edd-2d27-4b66-b155-5e94b43d926a}
+Versión del controlador:     05/21/2020 6.0.8957.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem13.inf
+Nombre original:      heci.inf
+Nombre del proveedor:      Intel
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     03/04/2019 1910.13.0.1060
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem44.inf
+Nombre original:      ialpss2_gpio2_icl.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     04/15/2019 30.100.1916.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem14.inf
+Nombre original:      ialpss2_i2c_icl.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     04/15/2019 30.100.1916.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem37.inf
+Nombre original:      iastorac.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SCSIAdapter
+GUID de clase:         {4d36e97b-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     02/06/2023 18.37.7.1013
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem47.inf
+Nombre original:      icelakepch-lpsystem.inf
+Nombre del proveedor:      INTEL
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     07/18/1968 10.1.12.2
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem12.inf
+Nombre original:      iigd_ext.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {245f6788-caad-4b03-baec-54fbe5db3ca0}
+Versión del controlador:     01/10/2022 30.0.101.1298
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem56.inf
+Nombre original:      iigd_ext.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {245f6788-caad-4b03-baec-54fbe5db3ca0}
+Versión del controlador:     08/31/2022 27.20.100.9079
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem48.inf
+Nombre original:      intcaudiobus.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     12/06/2019 10.24.0.3316
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem6.inf
+Nombre original:      intcoed.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     12/06/2019 10.24.0.3316
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem36.inf
+Nombre original:      oculus_vigembus.inf
+Nombre del proveedor:      Facebook, Inc.
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     08/02/2017 1.5.8.0
+Nombre del firmante:        Facebook, Inc.
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem17.inf
+Nombre original:      oemextension.inf
+Nombre del proveedor:      Intel
+Nombre de clase:         Extension
+GUID de clase:         {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Id. de extensión:       {babe2782-eb1b-46a7-871a-f043d3200542}
+Versión del controlador:     04/01/2019 1914.13.0.1063
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem7.inf
+Nombre original:      riftsensor.inf
+Nombre del proveedor:      Oculus
+Nombre de clase:         HIDClass
+GUID de clase:         {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Versión del controlador:     02/22/2015 1.1.0.0
+Nombre del firmante:        Oculus VR, LLC
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem49.inf
+Nombre original:      riftsusb.inf
+Nombre del proveedor:      Oculus VR, LLC
+Nombre de clase:         USB
+GUID de clase:         {36fc9e60-c465-11cf-8056-444553540000}
+Versión del controlador:     03/27/2019 1.0.0.8
+Nombre del firmante:        Oculus VR, LLC
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem5.inf
+Nombre original:      unifhid.inf
+Nombre del proveedor:      Logitech
+Nombre de clase:         HIDClass
+GUID de clase:         {745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Versión del controlador:     08/24/2021 1.10.80.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Legacy
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem9.inf
+Nombre original:      vigembus.inf
+Nombre del proveedor:      Bigscreen
+Nombre de clase:         System
+GUID de clase:         {4d36e97d-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     12/14/2020 1.17.333.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem2.inf
+Nombre original:      android_winusb.inf
+Nombre del proveedor:      Meta Platforms, Inc.
+Nombre de clase:         RealityLabsUsbDeviceClass
+GUID de clase:         {3f966bd9-fa04-4ec5-991c-d326973b5128}
+Versión del controlador:     05/15/2025 1.4.0.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem51.inf
+Nombre original:      atheros_bth.inf
+Nombre del proveedor:      Qualcomm Atheros Communications
+Nombre de clase:         Bluetooth
+GUID de clase:         {e0cbf06c-cd8b-4647-bb8a-263b43f0f974}
+Versión del controlador:     08/09/2019 10.0.0.916
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem58.inf
+Nombre original:      bertreader.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         BERTREADER
+GUID de clase:         {bc930840-406a-4de0-a156-26a1e492bc9c}
+Versión del controlador:     07/03/2025 21.26.57.880
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem32.inf
+Nombre original:      brohl12a.inf
+Nombre del proveedor:      Brother
+Nombre de clase:         Printer
+GUID de clase:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     08/28/2015 1.1.0.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem71.inf
+Nombre original:      cui_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     06/12/2019 26.20.100.6952
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem41.inf
+Nombre original:      cui_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     11/16/2022 31.0.101.2115
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem50.inf
+Nombre original:      cui_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     08/13/2024 31.0.101.2130
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem21.inf
+Nombre original:      cui_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     10/25/2019 26.20.100.7372
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem30.inf
+Nombre original:      dal.inf
+Nombre del proveedor:      Intel
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     04/04/2019 1914.13.0.1065
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem8.inf
+Nombre original:      dbx.inf
+Nombre del proveedor:      Dropbox Inc.
+Nombre de clase:         HSM
+GUID de clase:         {d546500a-2aeb-45f6-9482-f4b1799c3177}
+Versión del controlador:     09/14/2023 1.0.19.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem3.inf
+Nombre original:      hdxsstacernb.inf
+Nombre del proveedor:      Realtek Semiconductor Corp.
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     05/21/2020 6.0.8957.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem23.inf
+Nombre original:      iclsclient.inf
+Nombre del proveedor:      Intel
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     06/07/2019 1.56.87.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem59.inf
+Nombre original:      igcc_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     11/16/2022 31.0.101.2115
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem43.inf
+Nombre original:      igcc_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     10/25/2019 26.20.100.7372
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem31.inf
+Nombre original:      igcc_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     08/13/2024 31.0.101.2130
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem68.inf
+Nombre original:      iigd_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     10/25/2019 26.20.100.7372
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem70.inf
+Nombre original:      iigd_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     06/12/2019 26.20.100.6952
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem39.inf
+Nombre original:      iigd_dch.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/16/2022 31.0.101.2115
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem35.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     05/17/2019 10.26.0.8
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem74.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     05/17/2019 10.27.0.4
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem64.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/21/2021 10.26.0.12
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem63.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/21/2021 11.2.0.10
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem65.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/21/2021 10.27.0.12
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem62.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/21/2021 11.1.0.20
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem66.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     09/24/2019 11.1.0.12
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem18.inf
+Nombre original:      intcdaud.inf
+Nombre del proveedor:      Intel(R) Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     09/16/2019 10.27.0.6
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem15.inf
+Nombre original:      lms.inf
+Nombre del proveedor:      Intel
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     02/21/2024 2316.5.1.12
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem11.inf
+Nombre original:      mridd.inf
+Nombre del proveedor:      Microsoft
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión de clase:      2.0
+Versión del controlador:     02/06/2026 126.2069.206.0
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem67.inf
+Nombre original:      mrvad.inf
+Nombre del proveedor:      Microsoft
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     01/12/2026 126.1119.110.1
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem73.inf
+Nombre original:      msdk.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     06/12/2019 26.20.100.6952
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem60.inf
+Nombre original:      mshdadac.inf
+Nombre del proveedor:      Intel Corporation
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     11/16/2022 31.0.101.2115
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem24.inf
+Nombre original:      netathr10x.inf
+Nombre del proveedor:      Qualcomm Atheros Communications Inc.
+Nombre de clase:         Net
+GUID de clase:         {4d36e972-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     08/10/2019 12.0.0.916
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem33.inf
+Nombre original:      netrtwlanufb.inf
+Nombre del proveedor:      Realtek Semiconductor Corp.
+Nombre de clase:         Net
+GUID de clase:         {4d36e972-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     08/31/2023 1.27.831.2023
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem25.inf
+Nombre original:      nvaci.inf
+Nombre del proveedor:      NVIDIA
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     01/20/2026 32.0.15.8228
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem29.inf
+Nombre original:      nvaci.inf
+Nombre del proveedor:      NVIDIA
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     09/26/2024 32.0.15.6590
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem46.inf
+Nombre original:      nvvad.inf
+Nombre del proveedor:      NVIDIA
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     02/28/2024 4.65.0.3
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem40.inf
+Nombre original:      oculus119b.inf
+Nombre del proveedor:      Oculus VR, LLC
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     03/14/2016 10.0.1.54
+Nombre del firmante:        C-MEDIA ELECTRONICS INC.
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem20.inf
+Nombre original:      oculusud.inf
+Nombre del proveedor:      C-MEDIA Inc.
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     04/25/2019 10.0.1.10
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem19.inf
+Nombre original:      oculusvad.inf
+Nombre del proveedor:      Oculus
+Nombre de clase:         MEDIA
+GUID de clase:         {4d36e96c-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     03/26/2025 1.19.20.471
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem1.inf
+Nombre original:      ocusbvid.inf
+Nombre del proveedor:      Oculus VR
+Nombre de clase:         OculusVRDevs
+GUID de clase:         {a2db2d36-9ca9-4dd8-9e46-3121a16063d2}
+Versión del controlador:     08/26/2016 1.0.20.0
+Nombre del firmante:        Oculus VR, LLC
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem54.inf
+Nombre original:      prnms001.inf
+Nombre del proveedor:      Microsoft
+Nombre de clase:         Printer
+GUID de clase:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Versión de clase:      4.0
+Versión del controlador:     06/21/2006 10.0.26100.1
+Nombre del firmante:        Microsoft Windows
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem42.inf
+Nombre original:      prnms006.inf
+Nombre del proveedor:      Microsoft
+Nombre de clase:         Printer
+GUID de clase:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Versión de clase:      4.0
+Versión del controlador:     11/29/2016 16.0.7629.4000
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Declarative
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem53.inf
+Nombre original:      prnms009.inf
+Nombre del proveedor:      Microsoft
+Nombre de clase:         Printer
+GUID de clase:         {4d36e979-e325-11ce-bfc1-08002be10318}
+Versión de clase:      4.0
+Versión del controlador:     06/21/2006 10.0.26100.4484
+Nombre del firmante:        Microsoft Windows
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem52.inf
+Nombre original:      realtekapo.inf
+Nombre del proveedor:      Realtek
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     05/21/2020 11.0.6000.780
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem45.inf
+Nombre original:      realtekhsa.inf
+Nombre del proveedor:      Realtek
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     05/14/2020 11.0.6000.219
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem10.inf
+Nombre original:      realtekservice.inf
+Nombre del proveedor:      Realtek
+Nombre de clase:         SoftwareComponent
+GUID de clase:         {5c4c3332-344d-483c-8739-259e934c9cc8}
+Versión del controlador:     05/21/2020 1.0.0.260
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem38.inf
+Nombre original:      riftdisplay.inf
+Nombre del proveedor:      Oculus VR, LLC
+Nombre de clase:         Monitor
+GUID de clase:         {4d36e96e-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     09/17/2015 1.0.0.0
+Nombre del firmante:        Oculus VR, LLC
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem34.inf
+Nombre original:      riftssensor.inf
+Nombre del proveedor:      Oculus VR, LLC
+Nombre de clase:         Image
+GUID de clase:         {6bdd1fc6-810f-11d0-bec7-08002be2092f}
+Versión del controlador:     04/30/2019 1.0.0.1
+Nombre del firmante:        Oculus VR, LLC
+Atributos:         Legacy
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem22.inf
+Nombre original:      rt640x64.inf
+Nombre del proveedor:      Realtek
+Nombre de clase:         Net
+GUID de clase:         {4d36e972-e325-11ce-bfc1-08002be10318}
+Versión del controlador:     08/15/2024 10.73.815.2024
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem28.inf
+Nombre original:      virtualscreendriver.inf
+Nombre del proveedor:      Meta Inc.
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión de clase:      2.0
+Versión del controlador:     03/18/2026 14.30.21.903
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem0.inf
+Nombre original:      virtualscreendriver.inf
+Nombre del proveedor:      Meta Inc.
+Nombre de clase:         Display
+GUID de clase:         {4d36e968-e325-11ce-bfc1-08002be10318}
+Versión de clase:      2.0
+Versión del controlador:     11/06/2025 5.3.57.114
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+                    Attested
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem55.inf
+Nombre original:      voiceclarityep_audio_component.inf
+Nombre del proveedor:      Microsoft Corporation
+Nombre de clase:         AudioProcessingObject
+GUID de clase:         {5989fce8-9cd0-467d-8a6a-5419e31529d4}
+Versión del controlador:     11/12/2025 10.0.26100.6700
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+Nombre publicado:     oem69.inf
+Nombre original:      voiceclarityep_audio_component.inf
+Nombre del proveedor:      Microsoft Corporation
+Nombre de clase:         AudioProcessingObject
+GUID de clase:         {5989fce8-9cd0-467d-8a6a-5419e31529d4}
+Versión del controlador:     03/31/2026 10.0.26100.6710
+Nombre del firmante:        Microsoft Windows Hardware Compatibility Publisher
+Atributos:         Universal
+Versión de WHCP:       Desconocido
+
+================================================================================
+Eventos recientes relacionados a gráficos
+================================================================================
+TimeCreated         Message                                                                                                                     
+-----------         -------                                                                                                                     
+11/04/2026 23:40:59 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+11/04/2026 22:21:44 Instalaci¢n correcta: Windows instal¢ correctamente la siguiente actualizaci¢n: Intel Corporation - Display - 26.20.100.7372
+11/04/2026 22:19:08 Instalaci¢n iniciada: Windows comenz¢ a instalar la actualizaci¢n siguiente: Intel Corporation - Display - 26.20.100.7372   
+11/04/2026 19:44:10 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+11/04/2026 18:40:50 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+11/04/2026 16:39:58 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+11/04/2026 08:53:27 Instalaci¢n correcta: Windows instal¢ correctamente la siguiente actualizaci¢n: Intel Corporation - Display - 26.20.100.7372
+11/04/2026 08:51:49 Instalaci¢n iniciada: Windows comenz¢ a instalar la actualizaci¢n siguiente: Intel Corporation - Display - 26.20.100.7372   
+11/04/2026 08:35:49 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+10/04/2026 21:57:43 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+10/04/2026 14:01:04 Instalaci¢n correcta: Windows instal¢ correctamente la siguiente actualizaci¢n: Intel Corporation - Display - 26.20.100.7372
+10/04/2026 13:59:14 Instalaci¢n iniciada: Windows comenz¢ a instalar la actualizaci¢n siguiente: Intel Corporation - Display - 26.20.100.7372   
+10/04/2026 12:20:07 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+10/04/2026 08:04:51 No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 23:20:20  No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 23:09:19  No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 22:57:08  No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 22:36:22  No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 18:33:31  No se pudo cargar el \Driver\WUDFRd del controlador....                                                                     
+9/04/2026 18:15:55  No se pudo cargar el \Driver\WUDFRd del controlador....
+
+================================================================================
+Dispositivos relacionados a Meta
+================================================================================
+Status     Class           FriendlyName                                                                     InstanceId     
+------     -----           ------------                                                                     ----------     
+OK         Display         Meta Virtual Monitor                                                             ROOT\DISPLAY...
+Unknown    Monitor         Generic Monitor (Meta FHD)                                                       DISPLAY\OCL0...
+
+================================================================================
+Variables de entorno relevantes
+================================================================================
+{'HOMEPATH': '\\Users\\ACER', 'PATH': 'C:\\Users\\ACER\\anaconda3\\envs\\TW;C:\\Users\\ACER\\anaconda3\\envs\\TW\\Library\\mingw-w64\\bin;C:\\Users\\ACER\\anaconda3\\envs\\TW\\Library\\usr\\bin;C:\\Users\\ACER\\anaconda3\\envs\\TW\\Library\\bin;C:\\Users\\ACER\\anaconda3\\envs\\TW\\Scripts;C:\\Users\\ACER\\anaconda3\\envs\\TW\\bin;C:\\Users\\ACER\\anaconda3\\condabin;C:\\Program Files\\Meta Horizon\\Support\\oculus-runtime;C:\\Program Files\\Microsoft MPI\\Bin;C:\\Windows\\system32;C:\\Windows;C:\\Windows\\System32\\Wbem;C:\\Windows\\System32\\WindowsPowerShell\\v1.0;C:\\Windows\\System32\\OpenSSH;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\NvDLISR;C:\\Program Files\\dotnet;C:\\Program Files (x86)\\Windows Kits\\10\\Windows Performance Toolkit;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0;C:\\WINDOWS\\System32\\OpenSSH;C:\\Program Files\\Git\\cmd;C:\\Users\\ACER\\.local\\bin;C:\\Users\\ACER\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\ACER\\.dotnet\\tools;C:\\Users\\ACER\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Users\\ACER\\AppData\\Local\\GitHubDesktop\\bin', 'PATHEXT': '.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC', 'PSMODULEPATH': 'C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules'}
+
+================================================================================
+Contenido de carpeta Drivers Intel (System32)
+================================================================================
+El volumen de la unidad C es Windows
+ El n£mero de serie del volumen es: 9E77-7F96
+
+ Directorio de C:\Windows\System32\DriverStore\FileRepository
+
+11/04/2026  22:20    <DIR>          .
+11/04/2026  22:21    <DIR>          ..
+05/04/2026  12:14    <DIR>          1394.inf_amd64_ff5c4e8141fc4520
+01/04/2024  02:24    <DIR>          3ware.inf_amd64_408ceed6ec8ab6cd
+05/04/2026  12:14    <DIR>          61883.inf_amd64_9b37c5172d1526af
+06/04/2026  14:20    <DIR>          acerairplanemodecontroller.inf_amd64_36869d4d52526b5b
+05/04/2026  22:53               492 acerairplanemodecontroller.inf_amd64_36869d4d52526b5b.ini
+06/04/2026  14:20    <DIR>          acerairplanemodecontroller.inf_amd64_4ef63a8883333358
+05/04/2026  11:52               492 acerairplanemodecontroller.inf_amd64_4ef63a8883333358.ini
+05/04/2026  12:14    <DIR>          acpi.inf_amd64_0e85cc129968ed32
+05/04/2026  12:14    <DIR>          acpiaudiocompositor.inf_amd64_047f553a6f70b169
+05/04/2026  12:14    <DIR>          acpidev.inf_amd64_10eb45625423fa3a
+06/04/2026  14:20    <DIR>          acpipagr.inf_amd64_d1093347a27ff89c
+05/04/2026  12:14    <DIR>          acpipmi.inf_amd64_3ced06eb61dcc792
+05/04/2026  12:14    <DIR>          acpitime.inf_amd64_077ae87a0383a0f1
+06/04/2026  23:10    <DIR>          acxhdaudiop.inf_amd64_3c79378db7e63312
+01/04/2024  02:24    <DIR>          adp80xx.inf_amd64_efb36fdc260e8bc8
+01/04/2024  02:24    <DIR>          amdgpio2.inf_amd64_808fe94735c4c6b3
+01/04/2024  02:24    <DIR>          amdi2c.inf_amd64_d7ae71f8eb52c084
+01/04/2024  02:24    <DIR>          amdsata.inf_amd64_ea60132f1a9a7a62
+01/04/2024  02:24    <DIR>          amdsbs.inf_amd64_e2a1e49127fb17ef
+05/04/2026  12:14    <DIR>          amdwps.inf_amd64_b0724c1cada43447
+07/04/2026  18:32    <DIR>          android_winusb.inf_amd64_ca6b8f45881846e1
+05/04/2026  11:50               326 android_winusb.inf_amd64_ca6b8f45881846e1.ini
+01/04/2024  02:24    <DIR>          applessd.inf_amd64_5bfb8a70c16859cf
+05/04/2026  12:14    <DIR>          apxunit.inf_amd64_0ae5970ab88fb40b
+01/04/2024  02:24    <DIR>          arcsas.inf_amd64_b3d75f82c617ac6a
+06/04/2026  14:20    <DIR>          atheros_bth.inf_amd64_721e8df3cdca0adb
+05/04/2026  11:54             2,082 atheros_bth.inf_amd64_721e8df3cdca0adb.ini
+01/04/2024  15:26    <DIR>          athw8x.inf_amd64_600627b27b9c7b10
+01/04/2024  02:24    <DIR>          audioendpoint.inf_amd64_271c4d03bad18da8
+05/04/2026  12:14    <DIR>          avc.inf_amd64_12ca23d60da30d59
+01/04/2024  02:24    <DIR>          b57nd60a.inf_amd64_86493878b5fef607
+05/04/2026  12:14    <DIR>          basicdisplay.inf_amd64_2753efdbb0d9a226
+06/04/2026  23:10    <DIR>          basicrender.inf_amd64_223b29e9cbd5a3a3
+05/04/2026  12:14    <DIR>          battery.inf_amd64_fbe8c13d690eadfd
+01/04/2024  02:24    <DIR>          bcmdhd64.inf_amd64_0c3c6ca9708e5a9a
+01/04/2024  02:24    <DIR>          bcmfn2.inf_amd64_a3fc271971a957c6
+01/04/2024  15:26    <DIR>          bcmwdidhdpcie.inf_amd64_b244d6a9a7f90517
+01/04/2024  02:24    <DIR>          bda.inf_amd64_91c4255194db75e8
+06/04/2026  14:21    <DIR>          bertreader.inf_amd64_127147c3b0003be2
+06/04/2026  14:21               428 bertreader.inf_amd64_127147c3b0003be2.ini
+06/04/2026  23:10    <DIR>          brltty.inf_amd64_4ee29051a2c00941
+05/04/2026  13:02    <DIR>          brohl12a.inf_amd64_e2afb7a791d12257
+05/04/2026  11:52            11,480 brohl12a.inf_amd64_e2afb7a791d12257.ini
+05/04/2026  12:14    <DIR>          btampm.inf_amd64_1b9fc752735fb48b
+07/04/2026  16:36    <DIR>          bth.inf_amd64_b0c8908bbe8cb0e5
+01/04/2024  02:25    <DIR>          bthlcpen.inf_amd64_e548001c25a89c83
+05/04/2026  12:14    <DIR>          bthleenum.inf_amd64_a7b7eef909c576dd
+05/04/2026  12:15    <DIR>          bthmtpenum.inf_amd64_5e071f6a76ac0929
+01/04/2024  02:25    <DIR>          bthoob.inf_amd64_2cc28a227e674d9b
+05/04/2026  12:14    <DIR>          bthpan.inf_amd64_2816d8ea889268a8
+05/04/2026  12:14    <DIR>          bthprint.inf_amd64_d8231f1053cf9ac7
+05/04/2026  12:14    <DIR>          bthspp.inf_amd64_fe8876bc251f1d15
+05/04/2026  12:14    <DIR>          buttonconverter.inf_amd64_aee7d50a9f1e8307
+05/04/2026  12:14    <DIR>          cdrom.inf_amd64_dc7b0d8271e8847c
+05/04/2026  12:14    <DIR>          chargearbitration.inf_amd64_fa1954b42573697a
+01/04/2024  02:24    <DIR>          cht4nulx64.inf_amd64_c8526fef8160095c
+01/04/2024  02:24    <DIR>          cht4sx64.inf_amd64_92ab40685a8dd200
+01/04/2024  02:24    <DIR>          cht4vx64.inf_amd64_e8b3e0e0210f4723
+05/04/2026  12:14    <DIR>          circlass.inf_amd64_de6e8e319511ae7b
+06/04/2026  14:20    <DIR>          cmbatt.inf_amd64_3b94e0e4fd7a71e9
+01/04/2024  02:24    <DIR>          compdev.inf_amd64_bea70980d0aa2315
+05/04/2026  12:14    <DIR>          compositebus.inf_amd64_8cf6fa9d3afdfa25
+06/04/2026  23:10    <DIR>          cpu.inf_amd64_f8bef60d8ca2efdb
+11/04/2026  18:14    <DIR>          cui_dch.inf_amd64_0e95edab338ad669
+11/04/2026  18:14             2,787 cui_dch.inf_amd64_0e95edab338ad669.ini
+06/04/2026  15:42    <DIR>          cui_dch.inf_amd64_98728bfffafc23c2
+06/04/2026  15:42             2,782 cui_dch.inf_amd64_98728bfffafc23c2.ini
+05/04/2026  11:54    <DIR>          cui_dch.inf_amd64_cbb03399d84fb105
+05/04/2026  11:54             2,783 cui_dch.inf_amd64_cbb03399d84fb105.ini
+05/04/2026  11:51    <DIR>          cui_dch.inf_amd64_e7523682cc7528cc
+05/04/2026  11:51             2,783 cui_dch.inf_amd64_e7523682cc7528cc.ini
+01/04/2024  02:24    <DIR>          c_1394.inf_amd64_3cb5aba306a3d0a1
+01/04/2024  02:24    <DIR>          c_61883.inf_amd64_3eb2399c390ce743
+01/04/2024  02:24    <DIR>          c_apo.inf_amd64_d48706dd601f0d1b
+01/04/2024  02:24    <DIR>          c_avc.inf_amd64_f057245c4025a763
+01/04/2024  02:24    <DIR>          c_barcodescanner.inf_amd64_18dc3d4a9999c783
+01/04/2024  02:24    <DIR>          c_battery.inf_amd64_b88bf8ebc9f381a3
+01/04/2024  02:24    <DIR>          c_biometric.inf_amd64_4fab899ad65b577c
+01/04/2024  02:24    <DIR>          c_bluetooth.inf_amd64_157207f58462dbea
+01/04/2024  02:24    <DIR>          c_camera.inf_amd64_ad76da7d95aa94cc
+01/04/2024  02:24    <DIR>          c_cashdrawer.inf_amd64_c8b7ac9e76d5c859
+01/04/2024  02:24    <DIR>          c_cdrom.inf_amd64_22888a546722b75f
+01/04/2024  02:24    <DIR>          c_computeaccelerator.inf_amd64_c2cb75282d75d902
+01/04/2024  02:24    <DIR>          c_computer.inf_amd64_ec088459d8ed23ca
+01/04/2024  02:24    <DIR>          c_diskdrive.inf_amd64_3414ba396b538cc7
+01/04/2024  02:24    <DIR>          c_display.inf_amd64_39696ccdf1e382c7
+01/04/2024  02:24    <DIR>          c_dot4.inf_amd64_a72d3db51bff3476
+01/04/2024  02:24    <DIR>          c_dot4print.inf_amd64_d5de80e2affecb80
+01/04/2024  02:24    <DIR>          c_extension.inf_amd64_fa0e28b2dea65b3f
+01/04/2024  02:24    <DIR>          c_fdc.inf_amd64_7077484d214bff82
+05/04/2026  12:14    <DIR>          c_firmware.inf_amd64_d9c1439e00be3d36
+01/04/2024  02:24    <DIR>          c_floppydisk.inf_amd64_3ed1b76e28ab7596
+01/04/2024  02:24    <DIR>          c_fsactivitymonitor.inf_amd64_eebf92c061db2380
+01/04/2024  02:24    <DIR>          c_fsantivirus.inf_amd64_65bfe3a514f0d782
+01/04/2024  02:24    <DIR>          c_fscfsmetadataserver.inf_amd64_11f322de78691a73
+01/04/2024  02:24    <DIR>          c_fscompression.inf_amd64_5cf46cb233d22d5a
+01/04/2024  02:24    <DIR>          c_fscontentscreener.inf_amd64_5ffef2bb74e9dace
+01/04/2024  02:24    <DIR>          c_fscontinuousbackup.inf_amd64_9ff70c1e6a947a7d
+01/04/2024  02:24    <DIR>          c_fscopyprotection.inf_amd64_ae0e1e905db5e206
+01/04/2024  02:24    <DIR>          c_fsencryption.inf_amd64_d6baf91c726ab7d2
+01/04/2024  02:24    <DIR>          c_fshsm.inf_amd64_7a9976a3076977da
+01/04/2024  02:24    <DIR>          c_fsinfrastructure.inf_amd64_c037dbdb49a97ed8
+01/04/2024  02:24    <DIR>          c_fsopenfilebackup.inf_amd64_a388da4afb806eb9
+01/04/2024  02:24    <DIR>          c_fsphysicalquotamgmt.inf_amd64_bb70ae85b75e1c2f
+01/04/2024  02:24    <DIR>          c_fsquotamgmt.inf_amd64_f128b2e0c4bd0201
+01/04/2024  02:24    <DIR>          c_fsreplication.inf_amd64_1cfff521adc147ee
+01/04/2024  02:24    <DIR>          c_fssecurityenhancer.inf_amd64_da6cf78682ad042b
+01/04/2024  02:24    <DIR>          c_fssystem.inf_amd64_bb5f9b492fa899f8
+01/04/2024  02:24    <DIR>          c_fssystemrecovery.inf_amd64_dc2c9a72f28a85f8
+01/04/2024  02:24    <DIR>          c_fsundelete.inf_amd64_86592262c7f29060
+01/04/2024  02:24    <DIR>          c_fsvirtualization.inf_amd64_69c1f41d5f7e7546
+01/04/2024  02:24    <DIR>          c_generic.inf_amd64_caff4163abb47aa2
+01/04/2024  02:24    <DIR>          c_hdc.inf_amd64_c0ebc61d9c23e774
+01/04/2024  02:24    <DIR>          c_hidclass.inf_amd64_8506cc4bfbf676d6
+01/04/2024  02:24    <DIR>          c_i3c.inf_amd64_555f274b6954ee58
+01/04/2024  02:24    <DIR>          c_image.inf_amd64_43f2590eca3055df
+01/04/2024  02:24    <DIR>          c_infrared.inf_amd64_2e7bb8b4a527afc3
+01/04/2024  02:24    <DIR>          c_keyboard.inf_amd64_f84ddf664152466c
+01/04/2024  02:24    <DIR>          c_legacydriver.inf_amd64_e26143a04b855bfa
+01/04/2024  02:24    <DIR>          c_linedisplay.inf_amd64_79e552cdd8a45eba
+01/04/2024  02:24    <DIR>          c_magneticstripereader.inf_amd64_88f511c5400ee4f8
+01/04/2024  02:24    <DIR>          c_mcx.inf_amd64_be66e309d2b03cba
+01/04/2024  02:24    <DIR>          c_media.inf_amd64_8f1d359554727147
+01/04/2024  02:24    <DIR>          c_mediumchanger.inf_amd64_fb5395d55ef4fe7f
+01/04/2024  02:24    <DIR>          c_memory.inf_amd64_215153ac26d1985e
+01/04/2024  02:24    <DIR>          c_modem.inf_amd64_5e6e2d5876058d67
+01/04/2024  02:24    <DIR>          c_monitor.inf_amd64_ff8b2f8923271c1b
+01/04/2024  02:24    <DIR>          c_mouse.inf_amd64_e429aa2f6a0898b1
+01/04/2024  02:24    <DIR>          c_mtd.inf_amd64_a18552d99d2b9668
+01/04/2024  02:24    <DIR>          c_multifunction.inf_amd64_6d05f76e6965146d
+01/04/2024  02:24    <DIR>          c_multiportserial.inf_amd64_9b3b58c4cdf341dc
+01/04/2024  02:24    <DIR>          c_net.inf_amd64_64490bb3b4dcbb9a
+01/04/2024  02:24    <DIR>          c_netclient.inf_amd64_380cc08d076e92a2
+01/04/2024  02:24    <DIR>          c_netdriver.inf_amd64_bf93f45bb756b871
+01/04/2024  02:24    <DIR>          c_netservice.inf_amd64_cbac0f4324473ecc
+01/04/2024  02:24    <DIR>          c_nettrans.inf_amd64_47740bd5db28c0a9
+05/04/2026  12:14    <DIR>          c_nvmedisk.inf_amd64_17bbe5cb4f83d8d9
+01/04/2024  02:24    <DIR>          c_pcmcia.inf_amd64_94a68204a2135886
+01/04/2024  02:24    <DIR>          c_pnpprinters.inf_amd64_3e58684378072897
+01/04/2024  02:24    <DIR>          c_ports.inf_amd64_9a05b4c0b5625663
+01/04/2024  02:24    <DIR>          c_primitive.inf_amd64_c58da7a5366176c6
+05/04/2026  13:02    <DIR>          c_printer.inf_amd64_80050fa7890ccd6f
+01/04/2024  02:24    <DIR>          c_processor.inf_amd64_f6917b1d349b2dc6
+01/04/2024  02:24    <DIR>          c_proximity.inf_amd64_06a18c5519c3827f
+01/04/2024  02:24    <DIR>          c_ramdisk.inf_amd64_4b093ed50ad95509
+01/04/2024  02:24    <DIR>          c_receiptprinter.inf_amd64_6bded54c58ec02c6
+01/04/2024  02:24    <DIR>          c_sbp2.inf_amd64_edb0b01d7ab17b15
+01/04/2024  02:24    <DIR>          c_scmdisk.inf_amd64_daed1638403fafc1
+01/04/2024  02:24    <DIR>          c_scmvolume.inf_amd64_b05a2c4c44f4f50d
+01/04/2024  02:24    <DIR>          c_scsiadapter.inf_amd64_79babc9746855d3c
+01/04/2024  02:24    <DIR>          c_sdhost.inf_amd64_89698e6bc3de5b5c
+01/04/2024  02:24    <DIR>          c_securitydevices.inf_amd64_b319a2931b094cb2
+01/04/2024  02:24    <DIR>          c_sensor.inf_amd64_7a4a2176bc350df8
+01/04/2024  02:24    <DIR>          c_smartcard.inf_amd64_612395048bca3860
+01/04/2024  02:24    <DIR>          c_smartcardfilter.inf_amd64_77064613ef85417a
+01/04/2024  02:24    <DIR>          c_smartcardreader.inf_amd64_25230a55f710fcc2
+01/04/2024  02:24    <DIR>          c_smrdisk.inf_amd64_4dc28a8926193666
+01/04/2024  02:24    <DIR>          c_smrvolume.inf_amd64_7f684f360b851e06
+01/04/2024  02:24    <DIR>          c_sslaccel.inf_amd64_3f96dbbe8f40193d
+06/04/2026  14:20    <DIR>          c_swcomponent.inf_amd64_1536c854ab7bdc83
+06/04/2026  14:20    <DIR>          c_swdevice.inf_amd64_845d51425d14f98b
+01/04/2024  02:24    <DIR>          c_system.inf_amd64_0ac3852df6b4de9c
+01/04/2024  02:24    <DIR>          c_tapedrive.inf_amd64_b55b234818395e8a
+06/04/2026  23:10    <DIR>          c_thermal.inf_amd64_b38a77a51a7f05bf
+01/04/2024  02:24    <DIR>          c_ucm.inf_amd64_45725396f8ca26d3
+01/04/2024  02:24    <DIR>          c_unknown.inf_amd64_71b2648e90a44e9a
+01/04/2024  02:24    <DIR>          c_usb.inf_amd64_a96b7e7764e3cb58
+01/04/2024  02:24    <DIR>          c_usbdevice.inf_amd64_034f3f6b76f06ce9
+01/04/2024  02:24    <DIR>          c_usbfn.inf_amd64_f656d12263d20a07
+01/04/2024  02:24    <DIR>          c_volsnap.inf_amd64_b9f65c72f2ecc42b
+01/04/2024  02:24    <DIR>          c_volume.inf_amd64_f4d248b4e5dcd885
+01/04/2024  02:24    <DIR>          c_wceusbs.inf_amd64_6da1c632e5c400aa
+01/04/2024  15:27    <DIR>          c_wpd.inf_amd64_b436ebf3321c7587
+05/04/2026  11:52    <DIR>          dal.inf_amd64_31a8dbbf39dcdc3b
+05/04/2026  11:52               993 dal.inf_amd64_31a8dbbf39dcdc3b.ini
+05/04/2026  11:50    <DIR>          dbx.inf_amd64_2758e227d1ac3410
+05/04/2026  11:50               752 dbx.inf_amd64_2758e227d1ac3410.ini
+05/04/2026  12:14    <DIR>          dc1-controller.inf_amd64_a99e7a9d3a329cae
+05/04/2026  12:15    <DIR>          dc21x4vm.inf_amd64_9512f2b97d63f7fa
+05/04/2026  12:15    <DIR>          devmap.inf_amd64_1993197f4612e967
+01/04/2024  02:24    <DIR>          digitalmediadevice.inf_amd64_bac9e39c4bfcd2be
+06/04/2026  14:20    <DIR>          disk.inf_amd64_43f40a98bca24156
+06/04/2026  14:20    <DIR>          display.inf_amd64_34a28de3c87d810f
+05/04/2026  12:14    <DIR>          displaymux.inf_amd64_da65a70f0c3ce0f3
+01/04/2024  02:24    <DIR>          displayoverride.inf_amd64_ad2569d6b92e9e9a
+01/04/2024  02:24    <DIR>          e2xw10x64.inf_amd64_b78633a7607613a0
+01/04/2024  02:24    <DIR>          eaphost.inf_amd64_229c48e6536dde4f
+05/04/2026  12:14    <DIR>          ehstorpwddrv.inf_amd64_1d9d14f627d4fd36
+06/04/2026  23:10    <DIR>          ehstortcgdrv.inf_amd64_433cffa901931c7c
+05/04/2026  12:14    <DIR>          errdev.inf_amd64_ebda96d34a96923d
+01/04/2024  02:25    <DIR>          escl.inf_amd64_5723652ce062a21a
+06/04/2026  14:20    <DIR>          etdi2c.inf_amd64_ee1bb8e95c6cf3a5
+05/04/2026  11:50               414 etdi2c.inf_amd64_ee1bb8e95c6cf3a5.ini
+05/04/2026  12:14    <DIR>          eyegazeioctl.inf_amd64_005993862d0feb7c
+05/04/2026  12:14    <DIR>          fdc.inf_amd64_718e7d1a486ec0d5
+01/04/2024  02:25    <DIR>          fidohid.inf_amd64_b47b466c05b3220a
+05/04/2026  12:14    <DIR>          flpydisk.inf_amd64_2ef63a5c563113ee
+06/04/2026  23:10    <DIR>          fusionv2.inf_amd64_2f5ca95f888c9541
+01/04/2024  02:24    <DIR>          gameport.inf_amd64_d07f8cf2ad877fe4
+05/04/2026  12:14    <DIR>          genericusbfn.inf_amd64_71c810ddc0116541
+05/04/2026  12:14    <DIR>          genpass.inf_amd64_0c82d80c9252c9bd
+01/04/2024  02:24    <DIR>          hal.inf_amd64_3fa9568af6298aa8
+05/04/2026  12:14    <DIR>          halextintclpiodma.inf_amd64_37497710e4afd416
+05/04/2026  12:14    <DIR>          halextintcpsedma.inf_amd64_47f843375a6f5fca
+05/04/2026  12:14    <DIR>          halextpl080.inf_amd64_4b008563885e27fa
+07/04/2026  16:36    <DIR>          hdaudbus.inf_amd64_b6ab0e067332d74c
+06/04/2026  23:10    <DIR>          hdaudio.inf_amd64_0b48d04daf7b955c
+01/04/2024  02:24    <DIR>          hdaudss.inf_amd64_f8100fbe0cfb6532
+06/04/2026  15:42    <DIR>          hdbusext.inf_amd64_339e41947d5a80c0
+06/04/2026  15:42               306 hdbusext.inf_amd64_339e41947d5a80c0.ini
+11/04/2026  18:14    <DIR>          hdbusext.inf_amd64_7e63463db8b3112d
+11/04/2026  18:14               306 hdbusext.inf_amd64_7e63463db8b3112d.ini
+05/04/2026  11:52    <DIR>          hdbusext.inf_amd64_832b99338af5f3eb
+05/04/2026  11:52               306 hdbusext.inf_amd64_832b99338af5f3eb.ini
+06/04/2026  14:20    <DIR>          hdxsstacernb.inf_amd64_f4d5ee4a0e8f1b94
+05/04/2026  11:50               547 hdxsstacernb.inf_amd64_f4d5ee4a0e8f1b94.ini
+06/04/2026  14:20    <DIR>          hdx_acerext_rtk.inf_amd64_08af963262a57955
+05/04/2026  11:50               323 hdx_acerext_rtk.inf_amd64_08af963262a57955.ini
+05/04/2026  12:14    <DIR>          heat.inf_amd64_792f78c9f6eb6768
+06/04/2026  14:20    <DIR>          heci.inf_amd64_db60facf878d7699
+05/04/2026  11:50               420 heci.inf_amd64_db60facf878d7699.ini
+06/04/2026  23:10    <DIR>          helloface.inf_amd64_f3d421942ff1d10e
+05/04/2026  12:14    <DIR>          hidbatt.inf_amd64_ca2b18ec948af6ab
+05/04/2026  12:14    <DIR>          hidbth.inf_amd64_92b93535101938a6
+06/04/2026  23:10    <DIR>          hidbthle.inf_amd64_f101db95943b21bb
+06/04/2026  23:10    <DIR>          hidcfu.inf_amd64_60506ffb4f865aeb
+05/04/2026  12:14    <DIR>          hiddigi.inf_amd64_a4b2eba0d2a070a9
+07/04/2026  16:36    <DIR>          hidi2c.inf_amd64_318158c3134949ab
+06/04/2026  23:10    <DIR>          hidi3c.inf_amd64_5aafa5ba2d88c8e7
+05/04/2026  12:14    <DIR>          hidinterrupt.inf_amd64_80851f9022e0f15d
+05/04/2026  12:14    <DIR>          hidir.inf_amd64_7dd89de2304d9a6b
+01/04/2024  02:24    <DIR>          hidirkbd.inf_amd64_cfde51d619eba638
+05/04/2026  12:14    <DIR>          hidlamparray.inf_amd64_3c59bcaa9a274ee0
+05/04/2026  12:14    <DIR>          hidscanner.inf_amd64_b6a86f965f966da9
+06/04/2026  14:20    <DIR>          hidserv.inf_amd64_3111b4bfb553788d
+06/04/2026  23:10    <DIR>          hidspi_km.inf_amd64_d154c2c4ad70c7d5
+06/04/2026  23:10    <DIR>          hidtelephonydriver.inf_amd64_4d87f0bd77d9889a
+06/04/2026  23:10    <DIR>          hidvhf.inf_amd64_97f422ffbe2be716
+01/04/2024  02:24    <DIR>          hpsamd.inf_amd64_0784fd3ef0d7ec93
+05/04/2026  12:14    <DIR>          hsp.inf_amd64_4d8b12803e378928
+05/04/2026  12:15    <DIR>          hvservice.inf_amd64_872b9b47cfed5459
+06/04/2026  23:10    <DIR>          i3chost.inf_amd64_dddfc6dc1e7b8e75
+01/04/2024  02:24    <DIR>          iagpio.inf_amd64_07b64df61e783bfe
+01/04/2024  02:24    <DIR>          iai2c.inf_amd64_a77c815b2999404d
+01/04/2024  02:24    <DIR>          ialpss2i_gpio2_bxt_p.inf_amd64_8be317e01b44bf5a
+01/04/2024  02:24    <DIR>          ialpss2i_gpio2_cnl.inf_amd64_a60833fda31e9831
+01/04/2024  02:24    <DIR>          ialpss2i_gpio2_glk.inf_amd64_dad1e0a2b185e32b
+01/04/2024  02:24    <DIR>          ialpss2i_gpio2_skl.inf_amd64_b68199ad84607c21
+01/04/2024  02:24    <DIR>          ialpss2i_i2c_bxt_p.inf_amd64_190858fd8e931883
+01/04/2024  02:24    <DIR>          ialpss2i_i2c_cnl.inf_amd64_f668309b543472eb
+01/04/2024  02:24    <DIR>          ialpss2i_i2c_glk.inf_amd64_7b6c08738ca8a856
+01/04/2024  02:24    <DIR>          ialpss2i_i2c_skl.inf_amd64_9d9dbb01837eba23
+06/04/2026  14:20    <DIR>          ialpss2_gpio2_icl.inf_amd64_5dfe4459ccf69034
+05/04/2026  11:54               454 ialpss2_gpio2_icl.inf_amd64_5dfe4459ccf69034.ini
+06/04/2026  14:20    <DIR>          ialpss2_i2c_icl.inf_amd64_04e193b8806eca82
+05/04/2026  11:50               446 ialpss2_i2c_icl.inf_amd64_04e193b8806eca82.ini
+01/04/2024  02:24    <DIR>          ialpssi_gpio.inf_amd64_62ffa3c95446bcfc
+01/04/2024  02:24    <DIR>          ialpssi_i2c.inf_amd64_8e00e1aed7fbdf70
+06/04/2026  14:20    <DIR>          iastorac.inf_amd64_9886205c0ea7285f
+05/04/2026  11:53             1,388 iastorac.inf_amd64_9886205c0ea7285f.ini
+06/04/2026  14:20    <DIR>          iastorav.inf_amd64_87f761c07c99d5e7
+01/04/2024  02:24    <DIR>          iastorv.inf_amd64_9c09bd1df352f065
+06/04/2026  14:20    <DIR>          icelakepch-lpsystem.inf_amd64_6571fea8dac56998
+05/04/2026  11:54               334 icelakepch-lpsystem.inf_amd64_6571fea8dac56998.ini
+06/04/2026  14:20    <DIR>          iclsclient.inf_amd64_1244e13de260a91d
+05/04/2026  11:51             3,077 iclsclient.inf_amd64_1244e13de260a91d.ini
+05/04/2026  12:14    <DIR>          idtsec.inf_amd64_dba39b6247b83554
+06/04/2026  15:42    <DIR>          igcc_dch.inf_amd64_22dff82e7da0099b
+06/04/2026  15:42             1,655 igcc_dch.inf_amd64_22dff82e7da0099b.ini
+05/04/2026  11:54    <DIR>          igcc_dch.inf_amd64_8b314c4877d060d4
+05/04/2026  11:54               305 igcc_dch.inf_amd64_8b314c4877d060d4.ini
+05/04/2026  11:52    <DIR>          igcc_dch.inf_amd64_8d952ce997b81e9f
+05/04/2026  11:52             1,683 igcc_dch.inf_amd64_8d952ce997b81e9f.ini
+11/04/2026  23:41    <DIR>          iigd_dch.inf_amd64_1551b10df637e1f1
+11/04/2026  22:21            19,600 iigd_dch.inf_amd64_1551b10df637e1f1.ini
+11/04/2026  18:14    <DIR>          iigd_dch.inf_amd64_4ea98cfb783cb085
+11/04/2026  18:14            15,261 iigd_dch.inf_amd64_4ea98cfb783cb085.ini
+06/04/2026  15:45    <DIR>          iigd_dch.inf_amd64_b53c057d22ce6f37
+06/04/2026  15:42            17,038 iigd_dch.inf_amd64_b53c057d22ce6f37.ini
+06/04/2026  15:40    <DIR>          iigd_dch.inf_amd64_eb1c0bb4c867d89a
+05/04/2026  13:04    <DIR>          iigd_ext.inf_amd64_5fe682667f8dc6fc
+05/04/2026  11:50               305 iigd_ext.inf_amd64_5fe682667f8dc6fc.ini
+05/04/2026  22:53    <DIR>          iigd_ext.inf_amd64_cd9366c20dde1e93
+05/04/2026  22:53               305 iigd_ext.inf_amd64_cd9366c20dde1e93.ini
+01/04/2024  02:24    <DIR>          image.inf_amd64_217ae928b897ef6a
+07/04/2026  16:36    <DIR>          input.inf_amd64_b70b241e639b0256
+06/04/2026  14:20    <DIR>          intcaudiobus.inf_amd64_448c7d2e5e934dfc
+05/04/2026  11:54               438 intcaudiobus.inf_amd64_448c7d2e5e934dfc.ini
+05/04/2026  11:53    <DIR>          intcdaud.inf_amd64_0d54ec4feb82b9c1
+05/04/2026  11:53               424 intcdaud.inf_amd64_0d54ec4feb82b9c1.ini
+11/04/2026  18:14    <DIR>          intcdaud.inf_amd64_1cd2ec6e5cd924a2
+11/04/2026  18:14               424 intcdaud.inf_amd64_1cd2ec6e5cd924a2.ini
+06/04/2026  15:43    <DIR>          intcdaud.inf_amd64_461786e87388a070
+06/04/2026  15:43               424 intcdaud.inf_amd64_461786e87388a070.ini
+06/04/2026  15:43    <DIR>          intcdaud.inf_amd64_5d859c98b498348f
+06/04/2026  15:43               424 intcdaud.inf_amd64_5d859c98b498348f.ini
+06/04/2026  15:43    <DIR>          intcdaud.inf_amd64_718877413f6508de
+06/04/2026  15:43               424 intcdaud.inf_amd64_718877413f6508de.ini
+06/04/2026  15:45    <DIR>          intcdaud.inf_amd64_a170e240b85cd032
+06/04/2026  15:43               424 intcdaud.inf_amd64_a170e240b85cd032.ini
+07/04/2026  17:52    <DIR>          intcdaud.inf_amd64_a4536c3a7e55c2c4
+07/04/2026  17:52               540 intcdaud.inf_amd64_a4536c3a7e55c2c4.ini
+05/04/2026  11:51    <DIR>          intcdaud.inf_amd64_af5afa2a89e9d034
+05/04/2026  11:51               424 intcdaud.inf_amd64_af5afa2a89e9d034.ini
+06/04/2026  14:20    <DIR>          intcoed.inf_amd64_ff28ec604c64d76a
+05/04/2026  11:50            64,863 intcoed.inf_amd64_ff28ec604c64d76a.ini
+07/04/2026  16:36    <DIR>          intelpep.inf_amd64_341f33825567c821
+05/04/2026  12:14    <DIR>          intelpmax.inf_amd64_c95a6ea270b0d061
+05/04/2026  12:14    <DIR>          intelpmt.inf_amd64_cbf83f9ef8911603
+05/04/2026  12:14    <DIR>          ipmidrv.inf_amd64_7c99a53856b70234
+01/04/2024  02:24    <DIR>          ipoib6x.inf_amd64_c009b0cd3e63f884
+05/04/2026  12:14    <DIR>          iscsi.inf_amd64_66c93ad4d7b32b42
+01/04/2024  02:24    <DIR>          itsas35i.inf_amd64_1507dcf6cc128a97
+06/04/2026  23:10    <DIR>          kdnic.inf_amd64_ff35286b261d6ca6
+05/04/2026  12:14    <DIR>          kdnic_legacy.inf_amd64_052adde7f2101c60
+06/04/2026  14:20    <DIR>          keyboard.inf_amd64_c56788078819b951
+05/04/2026  12:14    <DIR>          ks.inf_amd64_3d416c2f26333f02
+05/04/2026  12:14    <DIR>          kscaptur.inf_amd64_071d2c1848b68ec8
+01/04/2024  02:24    <DIR>          ksfilter.inf_amd64_8ec1a07580a80b18
+01/04/2024  02:24    <DIR>          lltdio.inf_amd64_81fb802404f71ca6
+05/04/2026  11:50    <DIR>          lms.inf_amd64_a55aa2cd52a3429d
+05/04/2026  11:50            10,659 lms.inf_amd64_a55aa2cd52a3429d.ini
+01/04/2024  02:24    <DIR>          lsi_sas.inf_amd64_74bb5e3e01cfd526
+01/04/2024  02:24    <DIR>          lsi_sas2i.inf_amd64_b4e933c4540ad3cc
+01/04/2024  02:24    <DIR>          lsi_sas3i.inf_amd64_0c124c748b6ae4e6
+06/04/2026  14:20    <DIR>          machine.inf_amd64_d807fc8146278f4c
+06/04/2026  23:10    <DIR>          mausbhost.inf_amd64_cbcddee83f2899cb
+01/04/2024  02:24    <DIR>          mbtr8897w81x64.inf_amd64_0d8225e7d2696ece
+06/04/2026  23:10    <DIR>          mchgr.inf_amd64_1b7e7876c11942eb
+01/04/2024  02:24    <DIR>          mdm3com.inf_amd64_60545ab840205b89
+01/04/2024  02:24    <DIR>          mdm5674a.inf_amd64_129d226656b382a3
+01/04/2024  02:24    <DIR>          mdmadc.inf_amd64_817cc926c1f73b22
+05/04/2026  12:14    <DIR>          mdmagm64.inf_amd64_596c8fd6d9bb0499
+05/04/2026  12:14    <DIR>          mdmags64.inf_amd64_1415985e2751dc24
+01/04/2024  02:24    <DIR>          mdmairte.inf_amd64_2f3fd088bcf459d6
+01/04/2024  02:24    <DIR>          mdmaiwa.inf_amd64_c2de8a66523ff6fc
+01/04/2024  02:24    <DIR>          mdmaiwa3.inf_amd64_45b1ba4f9b082120
+01/04/2024  02:24    <DIR>          mdmaiwa4.inf_amd64_bd19e4a61b3a12f5
+01/04/2024  02:24    <DIR>          mdmaiwa5.inf_amd64_0a1744a08be659c5
+01/04/2024  02:24    <DIR>          mdmaiwat.inf_amd64_416be65375d77c95
+01/04/2024  02:24    <DIR>          mdmar1.inf_amd64_d83e37847829f079
+01/04/2024  02:24    <DIR>          mdmarch.inf_amd64_e073a734998ae9fa
+01/04/2024  02:24    <DIR>          mdmarn.inf_amd64_1a5f77e2da0f214e
+01/04/2024  02:24    <DIR>          mdmati.inf_amd64_7c78e7e557741593
+01/04/2024  02:24    <DIR>          mdmatm2k.inf_amd64_84b3aaac73750c81
+01/04/2024  02:24    <DIR>          mdmaus.inf_amd64_7f69be2ff9192715
+01/04/2024  02:24    <DIR>          mdmboca.inf_amd64_ea5e3edacd2452ef
+01/04/2024  02:24    <DIR>          mdmbsb.inf_amd64_54d54919878081e6
+05/04/2026  12:14    <DIR>          mdmbtmdm.inf_amd64_99fff4395db3666c
+01/04/2024  02:24    <DIR>          mdmbug3.inf_amd64_f48338a502caa53d
+01/04/2024  02:24    <DIR>          mdmbw561.inf_amd64_8a08574d6aeb366f
+01/04/2024  02:24    <DIR>          mdmc26a.inf_amd64_0301ba78bef149f3
+01/04/2024  02:24    <DIR>          mdmcdp.inf_amd64_37f7d8be243e41ea
+01/04/2024  02:24    <DIR>          mdmcm28.inf_amd64_b1a17d74d674b1bd
+01/04/2024  02:24    <DIR>          mdmcodex.inf_amd64_bb7888621e6174aa
+01/04/2024  02:24    <DIR>          mdmcom1.inf_amd64_b5ad2f4d45074592
+01/04/2024  02:24    <DIR>          mdmcommu.inf_amd64_a3a9d2553a0d2660
+01/04/2024  02:24    <DIR>          mdmcomp.inf_amd64_05e4018ad534bf64
+01/04/2024  02:24    <DIR>          mdmcpq.inf_amd64_c0d18bae9611d9ba
+01/04/2024  02:24    <DIR>          mdmcpq2.inf_amd64_47c5d54d37862160
+01/04/2024  02:24    <DIR>          mdmcpv.inf_amd64_764ecbcf7daefe4d
+01/04/2024  02:24    <DIR>          mdmcrtix.inf_amd64_09ae7d6dfe8202c7
+01/04/2024  02:24    <DIR>          mdmcxhv6.inf_amd64_f1a7a2fbd6554d60
+01/04/2024  02:24    <DIR>          mdmcxpv6.inf_amd64_46a3b42507e9d29e
+01/04/2024  02:24    <DIR>          mdmdcm5.inf_amd64_ca7bcc60b39fb4a6
+01/04/2024  02:24    <DIR>          mdmdcm6.inf_amd64_d1f4817a0bf577f4
+01/04/2024  02:24    <DIR>          mdmdf56f.inf_amd64_c4449b24334fe342
+01/04/2024  02:24    <DIR>          mdmdgitn.inf_amd64_29c4bda59d59db69
+01/04/2024  02:24    <DIR>          mdmdp2.inf_amd64_cbc03ba404ddd31e
+01/04/2024  02:24    <DIR>          mdmdsi.inf_amd64_d1cefbdfe4c47805
+01/04/2024  02:24    <DIR>          mdmdyna.inf_amd64_9ebe4c99d3b5bbcc
+01/04/2024  02:24    <DIR>          mdmeiger.inf_amd64_4ba3925fa8f25b9b
+01/04/2024  02:24    <DIR>          mdmelsa.inf_amd64_57bef17817c15bc9
+01/04/2024  02:24    <DIR>          mdmeric.inf_amd64_470243d798045409
+01/04/2024  02:24    <DIR>          mdmeric2.inf_amd64_c0b8887d31bfd4bd
+01/04/2024  02:24    <DIR>          mdmetech.inf_amd64_010868c016a50e24
+01/04/2024  02:24    <DIR>          mdmfj2.inf_amd64_bc799f4c1471e3ba
+01/04/2024  02:24    <DIR>          mdmgatew.inf_amd64_a4a1b493f46d2c9f
+01/04/2024  02:24    <DIR>          mdmgcs.inf_amd64_ca238fc8b0e3add4
+01/04/2024  02:24    <DIR>          mdmgen.inf_amd64_3d89b391ca3b6be9
+01/04/2024  02:24    <DIR>          mdmgl001.inf_amd64_4660aef7e5c35a22
+01/04/2024  02:24    <DIR>          mdmgl002.inf_amd64_d6c345ca4a8910de
+01/04/2024  02:24    <DIR>          mdmgl003.inf_amd64_9194bdb7e4dd7d94
+01/04/2024  02:24    <DIR>          mdmgl004.inf_amd64_def84c8b47a8a850
+01/04/2024  02:24    <DIR>          mdmgl005.inf_amd64_3f8368850904e587
+01/04/2024  02:24    <DIR>          mdmgl006.inf_amd64_d9e9af20e791a999
+01/04/2024  02:24    <DIR>          mdmgl007.inf_amd64_87e92aecb49db906
+01/04/2024  02:24    <DIR>          mdmgl008.inf_amd64_c6cfca410964a27f
+01/04/2024  02:24    <DIR>          mdmgl009.inf_amd64_a155d3fdb0d00289
+01/04/2024  02:24    <DIR>          mdmgl010.inf_amd64_3a2927be069230aa
+01/04/2024  02:24    <DIR>          mdmgsm.inf_amd64_fd32132b97188596
+01/04/2024  02:24    <DIR>          mdmhaeu.inf_amd64_869cf3ae1e1b0424
+01/04/2024  02:24    <DIR>          mdmhandy.inf_amd64_583b80689fadea49
+01/04/2024  02:24    <DIR>          mdmhay2.inf_amd64_0ecb99ca4f1a2e92
+01/04/2024  02:24    <DIR>          mdmhayes.inf_amd64_0b13676ea2013ddf
+01/04/2024  02:24    <DIR>          mdminfot.inf_amd64_1cdd9539c62720be
+01/04/2024  02:24    <DIR>          mdmiodat.inf_amd64_fb447a854b12a8c6
+05/04/2026  12:14    <DIR>          mdmirmdm.inf_amd64_278f8aea3f666c3b
+01/04/2024  02:24    <DIR>          mdmisdn.inf_amd64_a447fa490d597a1f
+01/04/2024  02:24    <DIR>          mdmjf56e.inf_amd64_8d3f422350641d6b
+01/04/2024  02:24    <DIR>          mdmke.inf_amd64_5ea8266653f1d657
+01/04/2024  02:24    <DIR>          mdmkortx.inf_amd64_39a0627e106b9d40
+01/04/2024  02:24    <DIR>          mdmlasat.inf_amd64_dc6f37438b741136
+01/04/2024  02:24    <DIR>          mdmlasno.inf_amd64_07987d6ed3b78a11
+01/04/2024  02:24    <DIR>          mdmlucnt.inf_amd64_1a3e7fdb65a2d6c7
+01/04/2024  02:24    <DIR>          mdmmc288.inf_amd64_e474c67ccd36f199
+01/04/2024  02:24    <DIR>          mdmmcd.inf_amd64_697485fe66c5447e
+01/04/2024  02:24    <DIR>          mdmmcom.inf_amd64_17811d0841979d6b
+01/04/2024  02:24    <DIR>          mdmmct.inf_amd64_35bef4dc3a0ed4a3
+01/04/2024  02:24    <DIR>          mdmmega.inf_amd64_19a8518c31f0bcbe
+01/04/2024  02:24    <DIR>          mdmmetri.inf_amd64_1618847a52fdb480
+01/04/2024  02:24    <DIR>          mdmmhrtz.inf_amd64_308403cec9c96f4f
+01/04/2024  02:24    <DIR>          mdmmhzel.inf_amd64_0f85c107f79168be
+01/04/2024  02:24    <DIR>          mdmminij.inf_amd64_ce6f6941399aa9bb
+01/04/2024  02:24    <DIR>          mdmmod.inf_amd64_77b9af9b5dc9a81f
+05/04/2026  12:14    <DIR>          mdmmot64.inf_amd64_9bff7f90de78bfd6
+01/04/2024  02:24    <DIR>          mdmmoto1.inf_amd64_21fe7c2a9915e8ba
+01/04/2024  02:24    <DIR>          mdmmotou.inf_amd64_c9149c10c92a99ee
+01/04/2024  02:24    <DIR>          mdmmts.inf_amd64_22faadd47636c50a
+01/04/2024  02:24    <DIR>          mdmneuhs.inf_amd64_f1b3193158ca0b53
+01/04/2024  02:24    <DIR>          mdmnis1u.inf_amd64_0a1eb7db3fdba085
+01/04/2024  02:24    <DIR>          mdmnis2u.inf_amd64_b245ae4531734eff
+01/04/2024  02:24    <DIR>          mdmnis3t.inf_amd64_a50c61a133de0101
+01/04/2024  02:24    <DIR>          mdmnis5t.inf_amd64_8c419c25ecb6a6f5
+05/04/2026  12:14    <DIR>          mdmnokia.inf_amd64_54b805b39dede457
+01/04/2024  02:24    <DIR>          mdmnova.inf_amd64_13c3cf5197d9a9df
+01/04/2024  02:24    <DIR>          mdmntt1.inf_amd64_0c8ddc2e322f22d8
+01/04/2024  02:24    <DIR>          mdmnttd2.inf_amd64_5c6fa4212118caa4
+01/04/2024  02:24    <DIR>          mdmnttd6.inf_amd64_eec911e25d1ae891
+01/04/2024  02:24    <DIR>          mdmnttme.inf_amd64_536262670a091bfa
+01/04/2024  02:24    <DIR>          mdmnttp.inf_amd64_387fa100a5619901
+01/04/2024  02:24    <DIR>          mdmnttp2.inf_amd64_f2172b3092e18956
+01/04/2024  02:24    <DIR>          mdmnttte.inf_amd64_363a3ce6c2df0e55
+01/04/2024  02:24    <DIR>          mdmolic.inf_amd64_c513a3fa0ddf7d0c
+01/04/2024  02:24    <DIR>          mdmomrn3.inf_amd64_c88f6db44a821b04
+01/04/2024  02:24    <DIR>          mdmoptn.inf_amd64_de74a0bd672717c8
+01/04/2024  02:24    <DIR>          mdmosi.inf_amd64_22c1ec286ba6bd6f
+01/04/2024  02:24    <DIR>          mdmpace.inf_amd64_c4a479746aae2d0a
+01/04/2024  02:24    <DIR>          mdmpenr.inf_amd64_66812053e61099d7
+01/04/2024  02:24    <DIR>          mdmpin.inf_amd64_44ea84391d784116
+01/04/2024  02:24    <DIR>          mdmpn1.inf_amd64_04e2b3e1519bf3ab
+01/04/2024  02:24    <DIR>          mdmpp.inf_amd64_07789eefb8bab402
+01/04/2024  02:24    <DIR>          mdmpsion.inf_amd64_8eb48a1ed60db5aa
+01/04/2024  02:24    <DIR>          mdmracal.inf_amd64_e310cd60d16b81de
+01/04/2024  02:24    <DIR>          mdmrock.inf_amd64_c1901f90912b31b8
+01/04/2024  02:24    <DIR>          mdmrock3.inf_amd64_bf1fd1df52487c62
+01/04/2024  02:24    <DIR>          mdmrock4.inf_amd64_a25fdc6632f306dc
+01/04/2024  02:24    <DIR>          mdmrock5.inf_amd64_ea4a55d19df202a0
+01/04/2024  02:24    <DIR>          mdmsier.inf_amd64_00b55826cfcef443
+01/04/2024  02:24    <DIR>          mdmsii64.inf_amd64_b5fcd818aa96625a
+01/04/2024  02:24    <DIR>          mdmsmart.inf_amd64_a29d03393c5b8df4
+01/04/2024  02:24    <DIR>          mdmsonyu.inf_amd64_14a7284fa9a0166b
+01/04/2024  02:24    <DIR>          mdmsun1.inf_amd64_81279c511b958f30
+01/04/2024  02:24    <DIR>          mdmsun2.inf_amd64_44fb39233cf1cbca
+01/04/2024  02:24    <DIR>          mdmsupr3.inf_amd64_a2a9e6046ba92331
+01/04/2024  02:24    <DIR>          mdmsupra.inf_amd64_7361a9a63f76d949
+01/04/2024  02:24    <DIR>          mdmsuprv.inf_amd64_8fff9a7265103f8f
+01/04/2024  02:25    <DIR>          mdmtdk.inf_amd64_c4a6e97f1f4ff742
+01/04/2024  02:25    <DIR>          mdmtdkj2.inf_amd64_2c5ee59bab206918
+01/04/2024  02:25    <DIR>          mdmtdkj3.inf_amd64_9c2e30c9f1849c9b
+01/04/2024  02:25    <DIR>          mdmtdkj4.inf_amd64_e1eb2cb3737e5d38
+01/04/2024  02:25    <DIR>          mdmtdkj5.inf_amd64_35150ab75d7edb76
+01/04/2024  02:25    <DIR>          mdmtdkj6.inf_amd64_a09041d938ffffb9
+01/04/2024  02:25    <DIR>          mdmtdkj7.inf_amd64_9c36f8c3c6c5a831
+01/04/2024  02:25    <DIR>          mdmtexas.inf_amd64_d37df6bbb6bc07c9
+01/04/2024  02:25    <DIR>          mdmti.inf_amd64_6274c56b34f2ee29
+01/04/2024  02:25    <DIR>          mdmtkr.inf_amd64_aee545a1fab2ba8e
+01/04/2024  02:25    <DIR>          mdmtron.inf_amd64_31548bab34db6ae6
+01/04/2024  02:25    <DIR>          mdmusrf.inf_amd64_63b3cae9db8a64b7
+01/04/2024  02:25    <DIR>          mdmusrg.inf_amd64_a1de83a93d8c95a2
+01/04/2024  02:25    <DIR>          mdmusrgl.inf_amd64_7fb9a67b41123de6
+01/04/2024  02:25    <DIR>          mdmusrk1.inf_amd64_0bb5ab2732177fad
+01/04/2024  02:25    <DIR>          mdmusrsp.inf_amd64_528e2fd5acf43561
+01/04/2024  02:25    <DIR>          mdmvdot.inf_amd64_0a2f787e87eed470
+01/04/2024  02:25    <DIR>          mdmvv.inf_amd64_2c04e7d79b1797c8
+01/04/2024  02:25    <DIR>          mdmwhql0.inf_amd64_61a6722ee00b3f61
+01/04/2024  02:25    <DIR>          mdmx5560.inf_amd64_06c26c35bd84478b
+01/04/2024  02:25    <DIR>          mdmzoom.inf_amd64_fdd83c13a0d6c797
+01/04/2024  02:25    <DIR>          mdmzyp.inf_amd64_1f02d249a25581ed
+01/04/2024  02:25    <DIR>          mdmzyxel.inf_amd64_84a66f54ba76bfbe
+01/04/2024  02:25    <DIR>          mdmzyxlg.inf_amd64_abdea4fc1a7172cd
+01/04/2024  02:24    <DIR>          megasas2i.inf_amd64_f58b8f0b8ba78d73
+01/04/2024  02:24    <DIR>          megasas35i.inf_amd64_3c9ecc1d5a3cfded
+01/04/2024  02:24    <DIR>          megasr.inf_amd64_72258921635be994
+05/04/2026  12:14    <DIR>          memory.inf_amd64_048760c21817c0ea
+05/04/2026  12:14    <DIR>          mf.inf_amd64_2364c9c773bfc1fc
+05/04/2026  12:14    <DIR>          mgtdyn.inf_amd64_4e87353a15ab7a8b
+06/04/2026  23:10    <DIR>          microsoft_bluetooth_a2dp.inf_amd64_d7afa3a538ee32fb
+01/04/2024  02:24    <DIR>          microsoft_bluetooth_a2dp_snk.inf_amd64_c95872b215fe5882
+01/04/2024  02:24    <DIR>          microsoft_bluetooth_a2dp_src.inf_amd64_33248f3a37f10619
+05/04/2026  12:14    <DIR>          microsoft_bluetooth_avrcptransport.inf_amd64_978a9c15cf5cec90
+06/04/2026  23:10    <DIR>          microsoft_bluetooth_hfp.inf_amd64_b86a375222ade6f5
+01/04/2024  02:24    <DIR>          microsoft_bluetooth_hfp_ag.inf_amd64_77874e97ae66c669
+01/04/2024  02:24    <DIR>          microsoft_bluetooth_hfp_hf.inf_amd64_bbca77dfe405846f
+06/04/2026  23:10    <DIR>          miradisp.inf_amd64_c54ffbc2265de37b
+01/04/2024  02:24    <DIR>          mlx4_bus.inf_amd64_853f25e6dfcab144
+05/04/2026  12:14    <DIR>          modemcsa.inf_amd64_e6b657ec0fd7d3e7
+05/04/2026  12:14    <DIR>          monitor.inf_amd64_f34c845bb3958726
+01/04/2024  02:24    <DIR>          mpi3drvi.inf_amd64_1ba85cce0a3d163d
+06/04/2026  23:10    <DIR>          mptfcore.inf_amd64_36f03c1c6ea08c6a
+06/04/2026  23:10    <DIR>          mptfcustomizeiosignalclient.inf_amd64_be183ade1d3f2796
+06/04/2026  23:10    <DIR>          mptfpowerlimitclient.inf_amd64_2860d8390690c92d
+06/04/2026  23:10    <DIR>          mptfpowersourceclient.inf_amd64_3da918b61bc5009d
+06/04/2026  23:10    <DIR>          mptfpowertrackercore.inf_amd64_ecabbaf11a770a93
+06/04/2026  23:10    <DIR>          mptfthermalpolicy.inf_amd64_abb99854f460e75b
+09/04/2026  18:34    <DIR>          mridd.inf_amd64_2433c3697dc257c7
+09/04/2026  18:34               536 mridd.inf_amd64_2433c3697dc257c7.ini
+07/04/2026  18:59    <DIR>          mrvad.inf_amd64_408f7c56e17613ac
+07/04/2026  18:59               408 mrvad.inf_amd64_408f7c56e17613ac.ini
+01/04/2024  15:26    <DIR>          mrvlpcie8897.inf_amd64_668551398886eaf3
+05/04/2026  12:14    <DIR>          msclmd.inf_amd64_7211c6fb05d58fb4
+06/04/2026  23:10    <DIR>          mscustomizedio.inf_amd64_2285dedb8637beea
+11/04/2026  18:14    <DIR>          msdk.inf_amd64_f91fd7e743f81141
+11/04/2026  18:14             3,837 msdk.inf_amd64_f91fd7e743f81141.ini
+01/04/2024  02:24    <DIR>          msdri.inf_amd64_fdc036dc83da2115
+05/04/2026  12:14    <DIR>          msdv.inf_amd64_cf7b20ca1befa796
+05/04/2026  12:14    <DIR>          msgpiowin32.inf_amd64_f4bd28ea8a841723
+06/04/2026  15:42    <DIR>          mshdadac.inf_amd64_fd842aa3ea1618a4
+06/04/2026  15:42               305 mshdadac.inf_amd64_fd842aa3ea1618a4.ini
+05/04/2026  12:14    <DIR>          mshdc.inf_amd64_b11de9c1e488b72b
+01/04/2024  02:25    <DIR>          mshidkmdf.inf_amd64_d81022103cfaa8be
+01/04/2024  02:25    <DIR>          mshidumdf.inf_amd64_4a63d139d17797d9
+06/04/2026  14:20    <DIR>          msmouse.inf_amd64_097bbd709f0c4972
+05/04/2026  12:14    <DIR>          msports.inf_amd64_bebdc4f4e2cf2459
+01/04/2024  02:24    <DIR>          mssmbios.inf_amd64_3b543e16c86a5331
+05/04/2026  12:14    <DIR>          mstape.inf_amd64_5c2894d12b03fbad
+06/04/2026  23:10    <DIR>          mstemperaturesensor.inf_amd64_dfd7cf33644f3f28
+01/04/2024  02:24    <DIR>          msux64w10.inf_amd64_f329abee714f5000
+06/04/2026  14:20    <DIR>          mtconfig.inf_amd64_ce80d8d11155184b
+01/04/2024  02:24    <DIR>          mvumis.inf_amd64_f0f4d0c799bb854a
+06/04/2026  23:10    <DIR>          narrfltr.inf_amd64_f891744f49ac1068
+01/04/2024  02:24    <DIR>          ndiscap.inf_amd64_22107a56317eae6e
+01/04/2024  02:24    <DIR>          ndisimplatform.inf_amd64_9cdd0469b25e5eb6
+01/04/2024  02:24    <DIR>          ndisimplatformmp.inf_amd64_8f9eb8ff490e6c70
+01/04/2024  02:24    <DIR>          ndisuio.inf_amd64_b2456fcb7940051c
+01/04/2024  02:24    <DIR>          ndisvirtualbus.inf_amd64_2ad1f83542a04b6f
+01/04/2024  15:26    <DIR>          net1ic64.inf_amd64_93678a2d694d4579
+01/04/2024  02:24    <DIR>          net1yx64.inf_amd64_3e5c319fac7067a7
+01/04/2024  15:26    <DIR>          net2ic68.inf_amd64_7af2e2aa52ab9b71
+01/04/2024  02:24    <DIR>          net44amd.inf_amd64_6af2734d06d3e49f
+01/04/2024  02:24    <DIR>          net7400-x64-n650.inf_amd64_213b9c153c9b4d01
+01/04/2024  02:24    <DIR>          net7500-x64-n650f.inf_amd64_7a936ac081dc1b16
+01/04/2024  02:24    <DIR>          net7800-x64-n650f.inf_amd64_bfc44179ca196669
+05/04/2026  11:57    <DIR>          net8185.inf_amd64_73f80bb398515a03
+01/04/2024  02:24    <DIR>          net8187bv64.inf_amd64_4295cf068229eafc
+05/04/2026  11:57    <DIR>          net8187se64.inf_amd64_a25c5622ec3aeb75
+01/04/2024  15:26    <DIR>          net8192se64.inf_amd64_3d81196084e3f594
+05/04/2026  11:57    <DIR>          net819xp.inf_amd64_ff7a5dd4f9b1ceba
+01/04/2024  02:24    <DIR>          net9500-x64-n650f.inf_amd64_566fa98f770451d2
+06/04/2026  14:20    <DIR>          netathr10x.inf_amd64_65abccbefa03ff6d
+05/04/2026  11:51            14,425 netathr10x.inf_amd64_65abccbefa03ff6d.ini
+06/04/2026  14:20    <DIR>          netathr10x.inf_amd64_e4b0b7be4ba10fc1
+01/04/2024  15:26    <DIR>          netathrx.inf_amd64_ba496c81c003f721
+01/04/2024  02:24    <DIR>          netavpna.inf_amd64_27530893ea84631e
+01/04/2024  02:24    <DIR>          netax88179_178a.inf_amd64_be76888d30e8464a
+01/04/2024  02:24    <DIR>          netax88772.inf_amd64_8cf5f634aa308898
+01/04/2024  15:26    <DIR>          netbc63a.inf_amd64_adc1c27c4a8b0d4f
+01/04/2024  15:26    <DIR>          netbc64.inf_amd64_4c416384b17ee84f
+01/04/2024  02:24    <DIR>          netbrdg.inf_amd64_1094dc5a16e3f79d
+01/04/2024  02:24    <DIR>          netbvbda.inf_amd64_56ee89d4fc21125e
+01/04/2024  02:24    <DIR>          netbxnd0a.inf_amd64_9744de6fd6c11c4f
+01/04/2024  02:24    <DIR>          netbxnda.inf_amd64_5cfb6a07d9d75a4a
+06/04/2026  23:10    <DIR>          netcxrd.inf_amd64_fe8daf318563b837
+01/04/2024  02:24    <DIR>          nete1e3e.inf_amd64_71ee3a27d9580084
+01/04/2024  02:24    <DIR>          nete1g3e.inf_amd64_1bcc7029f170b19a
+01/04/2024  02:24    <DIR>          netefe3e.inf_amd64_c4fbd94d20e3c73c
+01/04/2024  02:24    <DIR>          netelx.inf_amd64_b821dc8c43094e14
+01/04/2024  02:24    <DIR>          netevbd0a.inf_amd64_512a9cc3d08dc137
+01/04/2024  02:24    <DIR>          netevbda.inf_amd64_91e7b11f1ed1cdab
+01/04/2024  02:24    <DIR>          netg664.inf_amd64_f4299f18c1844724
+01/04/2024  02:24    <DIR>          netimm.inf_amd64_8b2087393aaef952
+01/04/2024  02:24    <DIR>          netip6.inf_amd64_d4e65cefa39141c1
+01/04/2024  02:24    <DIR>          netirda.inf_amd64_be43c3c0282f17c0
+01/04/2024  02:24    <DIR>          netjme.inf_amd64_7d2f6f04d092b277
+01/04/2024  02:24    <DIR>          netk57a.inf_amd64_a4804fffb8ffc2e6
+01/04/2024  02:24    <DIR>          netl160a.inf_amd64_24496b197c188680
+01/04/2024  02:24    <DIR>          netl1c63x64.inf_amd64_20b3691d6e7445a9
+01/04/2024  02:24    <DIR>          netl1e64.inf_amd64_616d8a2e59fc462f
+01/04/2024  02:24    <DIR>          netl260a.inf_amd64_39ee03ea6ee818e4
+01/04/2024  02:24    <DIR>          netlldp.inf_amd64_a15144f6701114f5
+01/04/2024  02:24    <DIR>          netloop.inf_amd64_768107cfce81988e
+01/04/2024  02:24    <DIR>          netmlx4eth63.inf_amd64_59e293fc00a669f4
+01/04/2024  02:24    <DIR>          netmlx5.inf_amd64_daa0dfc87505ee8d
+01/04/2024  02:24    <DIR>          netmscli.inf_amd64_f5b2f96bffddd77f
+01/04/2024  02:24    <DIR>          netmyk64.inf_amd64_2f029cbaae1f9a8c
+01/04/2024  02:25    <DIR>          netnb.inf_amd64_331e9c5c335ac9bd
+01/04/2024  02:24    <DIR>          netnvm64.inf_amd64_3dc2e896fdc07ff7
+01/04/2024  02:24    <DIR>          netnvma.inf_amd64_f3a84765144777ee
+01/04/2024  02:24    <DIR>          netnwifi.inf_amd64_c47b31a3a5a0b28c
+06/04/2026  23:10    <DIR>          netpacer.inf_amd64_d1164ea50f381889
+01/04/2024  02:24    <DIR>          netpgm.inf_amd64_e6056dd104739d94
+01/04/2024  02:24    <DIR>          netr28ux.inf_amd64_2613a90929adebda
+01/04/2024  15:26    <DIR>          netr28x.inf_amd64_bd4998128e365665
+01/04/2024  02:24    <DIR>          netr7364.inf_amd64_3d06f050b5db1b2c
+01/04/2024  02:24    <DIR>          netrasa.inf_amd64_417ad0eea84e3a58
+01/04/2024  02:24    <DIR>          netrass.inf_amd64_859bcbd9052a3d45
+01/04/2024  02:24    <DIR>          netrast.inf_amd64_f955916b393df102
+05/04/2026  12:14    <DIR>          netrndis.inf_amd64_e27e81ed3e7fd7fa
+01/04/2024  02:24    <DIR>          netrtl64.inf_amd64_e646b306d9138846
+01/04/2024  15:26    <DIR>          netrtwlane.inf_amd64_9f581aa49737d7bf
+01/04/2024  15:26    <DIR>          netrtwlane01.inf_amd64_e88ba65a7546f702
+01/04/2024  15:26    <DIR>          netrtwlane_13.inf_amd64_34c21e0a7f9c97b4
+01/04/2024  02:24    <DIR>          netrtwlans.inf_amd64_e0770fc2820687e2
+01/04/2024  02:24    <DIR>          netrtwlanu.inf_amd64_2814b0012fc3a833
+05/04/2026  11:52    <DIR>          netrtwlanufb.inf_amd64_61fb51de5225e251
+05/04/2026  11:52             1,266 netrtwlanufb.inf_amd64_61fb51de5225e251.ini
+01/04/2024  02:24    <DIR>          netserv.inf_amd64_75188f35842f64ce
+01/04/2024  02:24    <DIR>          netsstpa.inf_amd64_a982732ea027811e
+01/04/2024  02:24    <DIR>          nett4x64.inf_amd64_345dd70a1546350e
+01/04/2024  02:24    <DIR>          nettcpip.inf_amd64_486917bd656ea4cc
+01/04/2024  02:24    <DIR>          netv1x64.inf_amd64_b0aef9976b305f93
+01/04/2024  02:24    <DIR>          netvchannel.inf_amd64_4282c59d3148caa2
+01/04/2024  02:24    <DIR>          netvf63a.inf_amd64_6d0895d8fed6bb96
+01/04/2024  02:24    <DIR>          netvg63a.inf_amd64_dd38edc9e96390ae
+05/04/2026  12:14    <DIR>          netvwifibus.inf_amd64_ab4e111fe8221178
+01/04/2024  02:24    <DIR>          netvwififlt.inf_amd64_9b261cc833ca42f2
+05/04/2026  12:14    <DIR>          netvwifimp.inf_amd64_dca919233ea9fbe7
+01/04/2024  02:24    <DIR>          netvwwanmp.inf_amd64_21a7e1c8368216a0
+01/04/2024  15:26    <DIR>          netwbw02.inf_amd64_d0afc216e2ec6863
+01/04/2024  15:26    <DIR>          netwew00.inf_amd64_cc8804127f78dd92
+01/04/2024  15:26    <DIR>          netwew01.inf_amd64_a78e41f934de228a
+01/04/2024  15:26    <DIR>          netwlv64.inf_amd64_786cb697586229e5
+05/04/2026  12:14    <DIR>          netwmbclass.inf_amd64_7e33f06b13d0c370
+01/04/2024  15:26    <DIR>          netwns64.inf_amd64_d630255fa92e6727
+05/04/2026  12:15    <DIR>          networkprivacypolicy.inf_amd64_42abed8762795b20
+01/04/2024  15:26    <DIR>          netwsw00.inf_amd64_8bd5558c3d9b718a
+01/04/2024  15:26    <DIR>          netwtw02.inf_amd64_669639d5a41714fa
+01/04/2024  15:26    <DIR>          netwtw04.inf_amd64_28271e5be9a9f6f4
+01/04/2024  15:26    <DIR>          netwtw06.inf_amd64_c5f16d20642e3070
+01/04/2024  15:26    <DIR>          netwtw08.inf_amd64_448906930b28afd9
+01/04/2024  15:26    <DIR>          netwtw10.inf_amd64_400af1170541b7b0
+01/04/2024  02:24    <DIR>          netxex64.inf_amd64_01587744078125a1
+05/04/2026  12:15    <DIR>          npsvctrig.inf_amd64_d94cf1b3e0fa7b40
+07/04/2026  16:36    <DIR>          ntprint.inf_amd64_378895f03949fef8
+07/04/2026  16:36    <DIR>          ntprint.inf_x86_378895f03949fef8
+06/04/2026  23:10    <DIR>          ntprint4.inf_amd64_cb3f3321d2b32a8e
+01/04/2024  02:24    <DIR>          nulhpopr.inf_amd64_fed00720b3c6891a
+01/04/2024  02:24    <DIR>          nulhprs8.inf_amd64_ac77ba7093e07c5a
+05/04/2026  13:00    <DIR>          nvaci.inf_amd64_24127cdb83a324ea
+05/04/2026  11:52            24,269 nvaci.inf_amd64_24127cdb83a324ea.ini
+06/04/2026  14:20    <DIR>          nvaci.inf_amd64_caedca11358bfdf2
+05/04/2026  11:52            24,000 nvaci.inf_amd64_caedca11358bfdf2.ini
+05/04/2026  12:14    <DIR>          nvdimm.inf_amd64_acc6ca47f92b4065
+06/04/2026  23:10    <DIR>          nvmedisk.inf_amd64_53fec61a1493d6bc
+01/04/2024  02:24    <DIR>          nvraid.inf_amd64_144351277838b429
+06/04/2026  14:20    <DIR>          nvvad.inf_amd64_35079c3b2e98dd66
+05/04/2026  11:54               411 nvvad.inf_amd64_35079c3b2e98dd66.ini
+05/04/2026  11:53    <DIR>          oculus119b.inf_amd64_8ebf10315eedf749
+05/04/2026  11:53               434 oculus119b.inf_amd64_8ebf10315eedf749.ini
+05/04/2026  11:51    <DIR>          oculusud.inf_amd64_f0761a2ffdf542fc
+05/04/2026  11:51               427 oculusud.inf_amd64_f0761a2ffdf542fc.ini
+05/04/2026  11:51    <DIR>          oculusvad.inf_amd64_78cefa97a6863109
+05/04/2026  11:51               544 oculusvad.inf_amd64_78cefa97a6863109.ini
+05/04/2026  11:53    <DIR>          oculus_vigembus.inf_amd64_0fc887be65ce6549
+05/04/2026  11:53               575 oculus_vigembus.inf_amd64_0fc887be65ce6549.ini
+05/04/2026  11:50    <DIR>          ocusbvid.inf_amd64_401adf6c09b1f80f
+05/04/2026  11:50               539 ocusbvid.inf_amd64_401adf6c09b1f80f.ini
+06/04/2026  14:20    <DIR>          oemextension.inf_amd64_2c69ec6fc16f1274
+05/04/2026  11:51               318 oemextension.inf_amd64_2c69ec6fc16f1274.ini
+05/04/2026  12:14    <DIR>          oposdrv.inf_amd64_9527cb73e37b6b7a
+07/04/2026  16:36    <DIR>          pci.inf_amd64_76ce486c90913bc9
+05/04/2026  12:14    <DIR>          pcmcia.inf_amd64_a73a3c20650d72a2
+01/04/2024  02:24    <DIR>          percsas2i.inf_amd64_a7f5d94e6751c911
+01/04/2024  02:24    <DIR>          percsas3i.inf_amd64_c17a63dada1eaa02
+06/04/2026  23:10    <DIR>          pluton-heci.inf_amd64_640b17f99fa088ee
+05/04/2026  12:14    <DIR>          plutonhsp2.inf_amd64_380e24eba15adc2d
+05/04/2026  12:14    <DIR>          pmem.inf_amd64_78f5c0066b9f4830
+01/04/2024  02:24    <DIR>          pnpxinternetgatewaydevices.inf_amd64_b2605c47adc8c2ae
+01/04/2024  02:24    <DIR>          printqueue.inf_amd64_044b5f13f940e7c8
+05/04/2026  12:14    <DIR>          prm.inf_amd64_7c38475757a1f016
+06/04/2026  23:10    <DIR>          prnge001.inf_amd64_15f96b8414d35c92
+05/04/2026  13:03    <DIR>          prnms001.inf_amd64_73ec0d81f47035ef
+05/04/2026  13:03               768 prnms001.inf_amd64_73ec0d81f47035ef.ini
+07/04/2026  16:36    <DIR>          prnms002.inf_amd64_26724d5d778871a8
+07/04/2026  16:36    <DIR>          prnms003.inf_amd64_3d9e8b89bb2ad01d
+07/04/2026  16:36    <DIR>          prnms003.inf_x86_ff2ed1919d36408a
+06/04/2026  23:10    <DIR>          prnms004.inf_amd64_79a82b09cd4db590
+06/04/2026  23:10    <DIR>          prnms005.inf_amd64_fdf38aa375390ed8
+05/04/2026  13:02    <DIR>          prnms006.inf_amd64_c3bdcb6fc975b614
+05/04/2026  11:54               938 prnms006.inf_amd64_c3bdcb6fc975b614.ini
+06/04/2026  23:10    <DIR>          prnms007.inf_amd64_0cc073a2cc24ae10
+06/04/2026  23:10    <DIR>          prnms008.inf_amd64_7c605e7a82be9bb2
+05/04/2026  13:03    <DIR>          prnms009.inf_amd64_8cdc889b3f73e3da
+05/04/2026  13:03               901 prnms009.inf_amd64_8cdc889b3f73e3da.ini
+06/04/2026  23:10    <DIR>          prnms010.inf_amd64_d2bec43eff02061b
+06/04/2026  23:10    <DIR>          prnms011.inf_amd64_56ceee8b6adcfaf2
+07/04/2026  16:36    <DIR>          prnms012.inf_amd64_2701447e26c4d460
+01/04/2024  02:24    <DIR>          prnms013.inf_amd64_9d6da892bbf75f0b
+07/04/2026  16:36    <DIR>          prnms014.inf_amd64_204e89a9a9dedef2
+07/04/2026  16:36    <DIR>          prnms015.inf_amd64_4b846a201fbb758a
+01/04/2024  02:24    <DIR>          pvscsii.inf_amd64_9aaa769bfa6923b1
+01/04/2024  02:24    <DIR>          qcwlan64.inf_amd64_71c84e1405061462
+01/04/2024  02:24    <DIR>          qd3x64.inf_amd64_fd7b06296b7ac679
+05/04/2026  12:14    <DIR>          ramdisk.inf_amd64_c0f90cf57a312d81
+01/04/2024  02:24    <DIR>          rawsilo.inf_amd64_780049a07d284cc9
+05/04/2026  12:14    <DIR>          rdcameradriver.inf_amd64_df72e192b3399523
+01/04/2024  15:27    <DIR>          rdlsbuscbs.inf_amd64_6fa7db697cd1e719
+05/04/2026  12:15    <DIR>          rdpbus.inf_amd64_dd604fcd7b972c5d
+06/04/2026  23:10    <DIR>          rdpidd.inf_amd64_619c416ad97352e5
+05/04/2026  11:54    <DIR>          realtekapo.inf_amd64_8944bd3b45565798
+05/04/2026  11:54               431 realtekapo.inf_amd64_8944bd3b45565798.ini
+05/04/2026  11:54    <DIR>          realtekhsa.inf_amd64_9beedf9f16f20825
+05/04/2026  11:54               312 realtekhsa.inf_amd64_9beedf9f16f20825.ini
+05/04/2026  11:50    <DIR>          realtekservice.inf_amd64_e287d5ddce575cf5
+05/04/2026  11:50               914 realtekservice.inf_amd64_e287d5ddce575cf5.ini
+06/04/2026  23:10    <DIR>          remoteposdrv.inf_amd64_cc61a0f8154bed59
+05/04/2026  12:14    <DIR>          rhproxy.inf_amd64_39bda386d284cf74
+05/04/2026  11:53    <DIR>          riftdisplay.inf_amd64_bf1a8d0051740dc0
+05/04/2026  11:53               313 riftdisplay.inf_amd64_bf1a8d0051740dc0.ini
+05/04/2026  11:50    <DIR>          riftsensor.inf_amd64_e3211a841e2dbf6f
+05/04/2026  11:50               311 riftsensor.inf_amd64_e3211a841e2dbf6f.ini
+05/04/2026  11:52    <DIR>          riftssensor.inf_amd64_fc5a5e75fcd40072
+05/04/2026  11:52               314 riftssensor.inf_amd64_fc5a5e75fcd40072.ini
+05/04/2026  11:54    <DIR>          riftsusb.inf_amd64_6f12f427c4b2bc0e
+05/04/2026  11:54               305 riftsusb.inf_amd64_6f12f427c4b2bc0e.ini
+01/04/2024  02:24    <DIR>          rndiscmp.inf_amd64_e3cf74e485b2778b
+05/04/2026  12:15    <DIR>          routepolicy.inf_amd64_7407640e62d63d31
+01/04/2024  02:24    <DIR>          rspndr.inf_amd64_40d7d509bffdbfdf
+06/04/2026  14:20    <DIR>          rt640x64.inf_amd64_cbf4e23981c3c8a3
+06/04/2026  14:20    <DIR>          rt640x64.inf_amd64_fc99d946a45802fa
+05/04/2026  11:51               427 rt640x64.inf_amd64_fc99d946a45802fa.ini
+06/04/2026  14:20    <DIR>          rtcx21x64.inf_amd64_feec7a9662e785f0
+01/04/2024  02:24    <DIR>          rtucx21x64.inf_amd64_286645bc82b2f9fb
+01/04/2024  02:24    <DIR>          rtux64w10.inf_amd64_382d70e2c349183c
+01/04/2024  02:24    <DIR>          rtvdevx64.inf_amd64_7b972df4e09f9463
+01/04/2024  02:24    <DIR>          rtwlanu_oldic.inf_amd64_de1bf895eba0afa5
+05/04/2026  12:14    <DIR>          sbp2.inf_amd64_9f0bb5693e11d50c
+05/04/2026  12:14    <DIR>          scmbus.inf_amd64_6c9eb87563b56c27
+01/04/2024  02:24    <DIR>          scmvolume.inf_amd64_db3612f62ff0e3fb
+05/04/2026  12:14    <DIR>          scrawpdo.inf_amd64_2e728cafacc3bf7a
+01/04/2024  02:24    <DIR>          scsidev.inf_amd64_978963b85aa0a97f
+01/04/2024  02:24    <DIR>          scunknown.inf_amd64_22173e8289c57162
+06/04/2026  23:10    <DIR>          sdbus.inf_amd64_f2f2d6db21bea7fb
+06/04/2026  23:10    <DIR>          sdcaaggregator.inf_amd64_c2fcb39dd25baa1b
+06/04/2026  23:10    <DIR>          sdcaclass.inf_amd64_57f1afc88d4696fb
+06/04/2026  23:10    <DIR>          sdcahid.inf_amd64_a4e3cf15548ccfe2
+06/04/2026  23:10    <DIR>          sdcamfd.inf_amd64_0f142177b658b67c
+06/04/2026  23:10    <DIR>          sdstor.inf_amd64_ab3cae9f5609a36c
+05/04/2026  12:14    <DIR>          sensorsalsdriver.inf_amd64_15a4a04e6bc31c93
+06/04/2026  23:10    <DIR>          sensorshidclassdriver.inf_amd64_a33943f18017e551
+05/04/2026  12:14    <DIR>          sensorsservicedriver.inf_amd64_a6945e28490a7937
+01/04/2024  02:24    <DIR>          sisraid2.inf_amd64_845e008c32615283
+01/04/2024  02:24    <DIR>          sisraid4.inf_amd64_65ab84e9830f6f4b
+01/04/2024  02:24    <DIR>          smartsamd.inf_amd64_f2add3e587392200
+01/04/2024  02:24    <DIR>          smrdisk.inf_amd64_ebed2ee0c33383a3
+01/04/2024  02:24    <DIR>          smrvolume.inf_amd64_8c85b3fbdbd8006a
+06/04/2026  23:10    <DIR>          spaceport.inf_amd64_1fd15da934d061d3
+01/04/2024  02:24    <DIR>          stexstor.inf_amd64_fefc1160d15aa667
+05/04/2026  12:14    <DIR>          sti.inf_amd64_a6dc64e436f22951
+06/04/2026  23:10    <DIR>          storfwupdate.inf_amd64_6b2028be6112b28d
+06/04/2026  23:10    <DIR>          stornvme.inf_amd64_f2fa95b4ef7ddb2a
+06/04/2026  23:10    <DIR>          storufs.inf_amd64_3374282b5e629011
+05/04/2026  12:14    <DIR>          swenum.inf_amd64_8b9dd76f362e3ec6
+05/04/2026  12:14    <DIR>          tape.inf_amd64_a60cf2e87b3dc529
+05/04/2026  12:14    <DIR>          tdibth.inf_amd64_358dbbd2f0cbb663
+01/04/2024  02:25    <DIR>          termbus.inf_amd64_7ccf415b3c0cf753
+05/04/2026  12:15    <DIR>          termkbd.inf_amd64_b0e97bc9e5ad246d
+01/04/2024  02:25    <DIR>          termmou.inf_amd64_3cbd8f6cdce1b442
+07/04/2026  16:36    <DIR>          tpm.inf_amd64_f14716fc258699fb
+06/04/2026  23:10    <DIR>          tpmvsc.inf_amd64_032676e875731e0b
+01/04/2024  02:24    <DIR>          transfercable.inf_amd64_e3675f28da34904b
+05/04/2026  12:14    <DIR>          tsgenericusbdriver.inf_amd64_7a59a17bada458bf
+05/04/2026  13:02    <DIR>          tsprint.inf_amd64_d2b2706946552c0e
+05/04/2026  12:14    <DIR>          tsusbhub.inf_amd64_49e700773487e1b0
+05/04/2026  12:14    <DIR>          tsusbhubfilter.inf_amd64_74c499b3710ab898
+01/04/2024  02:24    <DIR>          ts_generic.inf_amd64_64a4e201486d7b37
+01/04/2024  02:24    <DIR>          ts_wpdmtp.inf_amd64_e2db43d52f6cd898
+06/04/2026  14:20    <DIR>          uaspstor.inf_amd64_200e88cce1cf5c70
+05/04/2026  12:14    <DIR>          ucmucsiacpiclient.inf_amd64_3c1d20fff649e17b
+06/04/2026  23:10    <DIR>          uefi.inf_amd64_609b02c2a09b3b3f
+05/04/2026  12:14    <DIR>          ufxchipidea.inf_amd64_6e8bb2ed82835828
+05/04/2026  12:14    <DIR>          ufxsynopsys.inf_amd64_ba64ea0facde259d
+06/04/2026  23:10    <DIR>          uicciso.inf_amd64_47ce72f144db13d1
+05/04/2026  12:15    <DIR>          uiomap.inf_amd64_f5d5465d1731583d
+05/04/2026  12:14    <DIR>          umbus.inf_amd64_914dd46b4b013b1b
+05/04/2026  12:14    <DIR>          umpass.inf_amd64_06e016c9ffecbf73
+05/04/2026  21:32    <DIR>          unifhid.inf_amd64_ba680b8596be64e8
+05/04/2026  11:50               903 unifhid.inf_amd64_ba680b8596be64e8.ini
+01/04/2024  02:24    <DIR>          unknown.inf_amd64_6a08f3a924229885
+05/04/2026  12:14    <DIR>          urschipidea.inf_amd64_37fb14618bce547b
+05/04/2026  12:14    <DIR>          urssynopsys.inf_amd64_ef0be23d0f063014
+06/04/2026  23:10    <DIR>          usb-platformdetection.inf_amd64_e243534e8864d658
+07/04/2026  16:36    <DIR>          usb.inf_amd64_ca05aed6371fe9f7
+06/04/2026  23:10    <DIR>          usb4devicerouter.inf_amd64_cd4d81f2bc6d8fe2
+06/04/2026  23:10    <DIR>          usb4hostrouter.inf_amd64_1159012f806838ab
+06/04/2026  23:10    <DIR>          usb4p2pnetadapter.inf_amd64_c60a52041c5bff96
+05/04/2026  12:14    <DIR>          usbaudio2.inf_amd64_2390f0bffa9b0cab
+05/04/2026  12:14    <DIR>          usbcciddriver.inf_amd64_447cce2996b83537
+05/04/2026  12:14    <DIR>          usbcir.inf_amd64_3054eccb1266b565
+07/04/2026  16:36    <DIR>          usbhub3.inf_amd64_df35544dedc4d060
+09/04/2026  18:12    <DIR>          usbmidi2.inf_amd64_82e13d4a502724ff
+05/04/2026  12:14    <DIR>          usbncm.inf_amd64_989230fcb4a5468f
+06/04/2026  23:10    <DIR>          usbncmum.inf_amd64_1af5ef410e762d9d
+05/04/2026  12:14    <DIR>          usbnet.inf_amd64_7b3336604b96ec5a
+06/04/2026  23:10    <DIR>          usbport.inf_amd64_a389d39035017aba
+06/04/2026  23:10    <DIR>          usbprint.inf_amd64_c268da34f84948b5
+05/04/2026  12:14    <DIR>          usbser.inf_amd64_ccc7868b0099c80f
+06/04/2026  14:20    <DIR>          usbstor.inf_amd64_d7d1fd63027477ba
+07/04/2026  16:36    <DIR>          usbvideo.inf_amd64_955192f13d3652c9
+07/04/2026  16:36    <DIR>          usbxhci.inf_amd64_b5e124c4de3660a8
+05/04/2026  12:15    <DIR>          vca.inf_amd64_378a242020869f36
+05/04/2026  12:14    <DIR>          vdrvroot.inf_amd64_f1a4bd2901856b58
+06/04/2026  23:10    <DIR>          vhdmp.inf_amd64_28c7938f84b2c09b
+05/04/2026  11:50    <DIR>          vigembus.inf_amd64_ed59b8700de98fb3
+05/04/2026  11:50               421 vigembus.inf_amd64_ed59b8700de98fb3.ini
+05/04/2026  12:14    <DIR>          virtdisk.inf_amd64_7a52a8e4164e3881
+05/04/2026  13:04    <DIR>          virtualscreendriver.inf_amd64_3262edfe24a64b5b
+05/04/2026  11:52               465 virtualscreendriver.inf_amd64_3262edfe24a64b5b.ini
+05/04/2026  11:50    <DIR>          virtualscreendriver.inf_amd64_3eb5a164dd07eb4b
+05/04/2026  11:50               465 virtualscreendriver.inf_amd64_3eb5a164dd07eb4b.ini
+01/04/2024  15:26    <DIR>          vmxnet3.inf_amd64_de19380e1b34c369
+05/04/2026  12:14    <DIR>          vocaeffectpack-extension.inf_amd64_7f46e74043bdbe67
+05/04/2026  13:05    <DIR>          voiceclarityep_audio_component.inf_amd64_76974bd7342f9cf5
+05/04/2026  13:05               501 voiceclarityep_audio_component.inf_amd64_76974bd7342f9cf5.ini
+11/04/2026  08:53    <DIR>          voiceclarityep_audio_component.inf_amd64_f475a157038e13d5
+11/04/2026  08:53               501 voiceclarityep_audio_component.inf_amd64_f475a157038e13d5.ini
+06/04/2026  23:10    <DIR>          volmgr.inf_amd64_031e72af648e0c92
+01/04/2024  02:24    <DIR>          volsnap.inf_amd64_da435361dee3ff66
+05/04/2026  12:14    <DIR>          volume.inf_amd64_6a657d6f29264781
+05/04/2026  12:15    <DIR>          vrd.inf_amd64_4dd0e6d66a75bb7e
+01/04/2024  02:24    <DIR>          vsmraid.inf_amd64_3d2bbc45931b8232
+01/04/2024  02:24    <DIR>          vstxraid.inf_amd64_300cb04282659e6d
+01/04/2024  02:24    <DIR>          v_mscdsc.inf_amd64_c7fe657164e675d9
+01/04/2024  02:24    <DIR>          wave.inf_amd64_86fd9d809e71dc30
+01/04/2024  02:24    <DIR>          wceisvista.inf_amd64_b98fec2fcf3c69e9
+06/04/2026  23:10    <DIR>          wdmaudio.inf_amd64_49a8630f3076e4fd
+01/04/2024  02:24    <DIR>          wdmaudioapo.inf_amd64_d2ce0e459b924e0d
+09/04/2026  18:12    <DIR>          wdma_usb.inf_amd64_3bc69731ddebdfcf
+05/04/2026  12:15    <DIR>          wdmvsc.inf_amd64_851dc5e02ce817cb
+06/04/2026  23:10    <DIR>          wfcvsc.inf_amd64_77bd764893cc2b83
+01/04/2024  02:24    <DIR>          wfpcapture.inf_amd64_084fae4985f9e985
+05/04/2026  12:15    <DIR>          wgencounter.inf_amd64_44273506b1c9872f
+05/04/2026  12:15    <DIR>          whvcrash.inf_amd64_e98b6a594c108819
+05/04/2026  12:15    <DIR>          whyperkbd.inf_amd64_5ff0b74d1e97f586
+05/04/2026  12:14    <DIR>          windowstrustedrtproxy.inf_amd64_925f75cde075b17e
+05/04/2026  12:14    <DIR>          wini3ctarget.inf_amd64_9bda3f893989b4a6
+05/04/2026  12:14    <DIR>          winusb.inf_amd64_e3d2ed0c43a36b9a
+01/04/2024  02:24    <DIR>          wmbclass_wmc_union.inf_amd64_286a6c5db51bf947
+06/04/2026  14:20    <DIR>          wmiacpi.inf_amd64_3245a73d70e16448
+06/04/2026  23:10    <DIR>          wnetvsc.inf_amd64_97be45ca59f75a0c
+01/04/2024  02:25    <DIR>          wnetvsc_vfpp.inf_amd64_e2df654f7fb2a09a
+05/04/2026  12:15    <DIR>          wpdcomp.inf_amd64_f03fa24a3970cb2d
+05/04/2026  22:12    <DIR>          wpdfs.inf_amd64_4c800bb8291de301
+06/04/2026  23:10    <DIR>          wpdmtp.inf_amd64_823669b1cc622329
+01/04/2024  15:27    <DIR>          wpdmtphw.inf_amd64_fcec9f8d5e0eb0d0
+05/04/2026  12:15    <DIR>          ws3cap.inf_amd64_ef8cc58e84167caa
+05/04/2026  12:14    <DIR>          wsdprint.inf_amd64_1f9e32519098c0b6
+06/04/2026  23:10    <DIR>          wsdscdrv.inf_amd64_ae00686bc8c4b8e3
+05/04/2026  12:15    <DIR>          wstorflt.inf_amd64_f5a4d48788a8a492
+06/04/2026  23:10    <DIR>          wstorvsc.inf_amd64_2846976a6f7173af
+01/04/2024  02:25    <DIR>          wudfrd.inf_amd64_8143ad5e7101c246
+05/04/2026  12:14    <DIR>          wudfusbcciddriver.inf_amd64_5186910aab36ca6b
+05/04/2026  12:15    <DIR>          wvid.inf_amd64_338ad8a93efc3f04
+06/04/2026  23:10    <DIR>          wvmbus.inf_amd64_2aa3315bce0d4275
+05/04/2026  12:15    <DIR>          wvmbushid.inf_amd64_9da5346263be16ba
+05/04/2026  12:15    <DIR>          wvmbusvideo.inf_amd64_c5d85eade837b122
+05/04/2026  12:15    <DIR>          wvmgid.inf_amd64_5a0b4ec93871a7f6
+01/04/2024  02:25    <DIR>          wvmic.inf_amd64_3e8fc781047dfae4
+01/04/2024  02:25    <DIR>          wvmic_ext.inf_amd64_26be239c5412fc5a
+01/04/2024  02:25    <DIR>          wvmic_guestinterface.inf_amd64_e044b1777600c372
+01/04/2024  02:25    <DIR>          wvmic_heartbeat.inf_amd64_94891c0e92302576
+01/04/2024  02:25    <DIR>          wvmic_kvpexchange.inf_amd64_2ae31885953fc893
+01/04/2024  02:25    <DIR>          wvmic_shutdown.inf_amd64_53e76d3ec8b1c62f
+01/04/2024  02:25    <DIR>          wvmic_timesync.inf_amd64_a1aaae70047b4c60
+01/04/2024  02:25    <DIR>          wvmic_vss.inf_amd64_aae11b51bd5a1c65
+05/04/2026  12:15    <DIR>          wvpci.inf_amd64_caca7a63b25899aa
+06/04/2026  23:10    <DIR>          xboxgip.inf_amd64_66361352c50d7388
+01/04/2024  02:24    <DIR>          xboxgipsynthetic.inf_amd64_c64c355119650251
+06/04/2026  23:10    <DIR>          xinputhid.inf_amd64_f88dfcccc4fb5e44
+06/04/2026  23:10    <DIR>          xusb22.inf_amd64_dadf2db3fc298e8a
+01/04/2024  02:24    <DIR>          ykinx64.inf_amd64_5f83c04f4adb7630
+              75 archivos        253,605 bytes
+             798 dirs  283,148,316,672 bytes libres
+
+================================================================================
+DirectX info
+================================================================================
+
