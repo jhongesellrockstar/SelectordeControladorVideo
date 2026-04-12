@@ -72,8 +72,7 @@ class DriverActionService:
             self._set_windows_driver_update_policy(disable=True)
 
         before_version = current_state.intel_driver_version
-        before_inf = current_state.intel_inf_name
-        self.log(f"Driver Intel antes de aplicar: {before_version} ({before_inf})")
+        self.log(f"Driver Intel antes de aplicar: {before_version} ({current_state.intel_inf_name})")
 
         add_ok, add_msg, oem_inf = self._add_driver_force(plan)
         if not add_ok:
@@ -90,7 +89,7 @@ class DriverActionService:
         if not update_ok:
             return ApplyResult(False, update_msg, before_version, before_version, False)
 
-        refresh_ok, refresh_msg = self.refresh_adapter(inst_id)
+        _, refresh_msg = self.refresh_adapter(inst_id)
         self.log(f"Resultado refresco: {refresh_msg}")
 
         post_state = self.system_reader.get_system_state()
@@ -106,8 +105,37 @@ class DriverActionService:
             )
             return ApplyResult(False, msg, before_version, after_version, True)
 
-        msg = f"Driver aplicado correctamente. Antes: {before_version} -> Después: {after_version}."
-        return ApplyResult(True, msg, before_version, after_version, False)
+        return ApplyResult(True, f"Driver aplicado correctamente. Antes: {before_version} -> Después: {after_version}.", before_version, after_version, False)
+
+    def uninstall_current_intel_driver(self, state: SystemState, remove_package: bool = True) -> tuple[bool, str]:
+        if not state.is_admin:
+            return False, "Acción avanzada bloqueada: se requiere modo administrador."
+        if not state.intel_inf_name or not state.intel_inf_name.lower().endswith(".inf"):
+            return False, "No se detectó INF Intel desinstalable."
+
+        inf_name = state.intel_inf_name
+        if not inf_name.lower().startswith("oem"):
+            return (
+                False,
+                "Modo asistido: el INF activo no es oemXX.inf. Desinstala manualmente desde Administrador de dispositivos > Intel UHD > Desinstalar dispositivo.",
+            )
+
+        cmd = ["pnputil", "/delete-driver", inf_name, "/uninstall", "/force"]
+        if remove_package:
+            cmd.append("/reboot")
+        self.log(f"Desinstalación avanzada Intel: {' '.join(cmd)}")
+        code, stdout, stderr, elapsed, timeout = self._run_process(cmd, 90)
+        self.log(f"Resultado desinstalación: código={code}, tiempo={elapsed:.1f}s")
+        detail = (stdout + "\n" + stderr).strip()
+        if timeout:
+            return False, f"Timeout al desinstalar controlador Intel.\n{detail[:1000]}"
+        if code != 0:
+            return False, detail or "No se pudo desinstalar el controlador Intel actual."
+
+        return True, (
+            "Controlador Intel actual desinstalado. Es normal ver parpadeo, baja resolución o Microsoft Basic Display Adapter temporalmente. "
+            "Reinicia y luego aplica Intel 31.0.101.2115."
+        )
 
     def _add_driver_force(self, plan: ApplyPlan, timeout_sec: int = 120) -> tuple[bool, str, str]:
         cmd = ["pnputil", "/add-driver", plan.inf_path, "/install", "/force"]
@@ -119,12 +147,12 @@ class DriverActionService:
         if code != 0:
             return False, (stdout + "\n" + stderr).strip() or "Falló /add-driver /install /force", ""
 
-        combined_output = (stdout + "\n" + stderr)
+        combined_output = stdout + "\n" + stderr
         oem_inf = self._extract_oem_inf(combined_output) or self._resolve_oem_from_inf(plan.inf_path)
         if not oem_inf:
             return False, "No se pudo determinar oemXX.inf después de agregar el driver.", ""
         self.log(f"OEM INF resultante: {oem_inf}")
-        return True, stdout.strip(), oem_inf
+        return True, stdout.strip() or "Driver agregado al store", oem_inf
 
     def _update_driver_device(self, oem_inf: str, instance_id: str, timeout_sec: int = 90) -> tuple[bool, str]:
         cmd = ["pnputil", "/update-driver", oem_inf, instance_id]
@@ -138,8 +166,6 @@ class DriverActionService:
         return True, stdout.strip() or "update-driver ejecutado"
 
     def refresh_adapter(self, pnp_device_id: str) -> tuple[bool, str]:
-        if not self.is_windows:
-            return False, "Solo disponible en Windows."
         cmd = ["pnputil", "/restart-device", pnp_device_id]
         code, stdout, stderr, _, timeout = self._run_process(cmd, 30)
         if timeout:
@@ -186,34 +212,25 @@ class DriverActionService:
         return ""
 
     @staticmethod
-    def _find_field(block: str, keys: list[str]) -> str:
-        for line in block.splitlines():
-            if ":" not in line:
-                continue
-            k, v = line.split(":", 1)
-            key = k.strip().lower()
-            if any(target in key for target in keys):
-                return v.strip()
-        return ""
-
-    @staticmethod
     def _extract_oem_inf(text: str) -> str:
         match = re.search(r"(oem\d+\.inf)", text, re.IGNORECASE)
         return match.group(1) if match else ""
 
     def _resolve_oem_from_inf(self, inf_path: str) -> str:
         name = Path(inf_path).name.lower()
-        cmd = ["pnputil", "/enum-drivers", "/class", "Display"]
-        code, stdout, _, _, _ = self._run_process(cmd, 30)
+        code, stdout, _, _, _ = self._run_process(["pnputil", "/enum-drivers", "/class", "Display"], 30)
         if code != 0:
             return ""
         blocks = re.split(r"\r?\n\s*\r?\n", stdout)
         for block in blocks:
             if name not in block.lower():
                 continue
-            pub = self._find_field(block, ["published name", "nombre publicado"])
-            if pub.lower().endswith(".inf"):
-                return pub
+            for line in block.splitlines():
+                if ":" not in line:
+                    continue
+                k, v = line.split(":", 1)
+                if "published" in k.lower() or "publicado" in k.lower():
+                    return v.strip()
         return ""
 
     def _set_windows_driver_update_policy(self, disable: bool) -> None:

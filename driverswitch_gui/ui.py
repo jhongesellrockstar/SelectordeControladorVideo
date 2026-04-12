@@ -12,10 +12,11 @@ from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 
 from driverswitch_gui.models import DriverCandidate, ProfileComparison, ProfileData
+from driverswitch_gui.resources import get_resource_path
 from driverswitch_gui.services.audit_logger import build_logger, technical_log_path
 from driverswitch_gui.services.config_store import ConfigStore
 from driverswitch_gui.services.diagnostic_service import DiagnosticResult, DiagnosticService
-from driverswitch_gui.services.driver_actions import ApplyPlan, DriverActionService
+from driverswitch_gui.services.driver_actions import DriverActionService
 from driverswitch_gui.services.driver_inventory import DriverInventoryService
 from driverswitch_gui.services.profile_service import ProfileService
 from driverswitch_gui.services.system_info import SystemInfoService, SystemState
@@ -26,8 +27,8 @@ MIXED_REALITY_TARGET = "31.0.101.2115"
 class DriverSwitchApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
-        self.title("DriverSwitch GUI - Selector de controlador de video")
-        self.geometry("1450x860")
+        self.title("DriverSwitch GUI - Intel Driver Manager")
+        self.geometry("1480x900")
 
         self.log_queue: queue.Queue[tuple[str, str]] = queue.Queue()
         self.logger = build_logger()
@@ -47,12 +48,30 @@ class DriverSwitchApp(tk.Tk):
         self.profile_service = ProfileService()
         self.diagnostic_service = DiagnosticService()
 
+        self._load_app_icons()
         self._build_ui()
         self.after(100, self._drain_log_queue)
         self.after(120, self.startup_load)
 
+    def _load_app_icons(self) -> None:
+        ico = get_resource_path("image1.ico")
+        png = get_resource_path("image1.png")
+        if ico.exists():
+            try:
+                self.iconbitmap(default=str(ico))
+                self.log_human(f"Icono .ico cargado: {ico}")
+            except Exception as exc:
+                self.log_error(f"No se pudo cargar iconbitmap: {exc}")
+        if png.exists():
+            try:
+                self._icon_photo = tk.PhotoImage(file=str(png))
+                self.iconphoto(True, self._icon_photo)
+                self.log_human(f"Icono .png cargado: {png}")
+            except Exception as exc:
+                self.log_error(f"No se pudo cargar iconphoto: {exc}")
+
     def _build_ui(self) -> None:
-        top = ttk.Frame(self)
+        top = ttk.LabelFrame(self, text="Estado del sistema")
         top.pack(fill="x", padx=10, pady=6)
         self.lbl_system = ttk.Label(top, text="Equipo: cargando...")
         self.lbl_system.grid(row=0, column=0, sticky="w", padx=4)
@@ -60,32 +79,30 @@ class DriverSwitchApp(tk.Tk):
         self.lbl_admin.grid(row=0, column=1, sticky="w", padx=4)
         self.lbl_virtual = ttk.Label(top, text="Adaptador virtual: cargando...")
         self.lbl_virtual.grid(row=0, column=2, sticky="w", padx=4)
-
         self.lbl_intel = ttk.Label(top, text="GPU Intel objetivo: cargando...")
         self.lbl_intel.grid(row=1, column=0, sticky="w", padx=4)
         self.lbl_intel_driver = ttk.Label(top, text="Driver Intel activo: cargando...")
         self.lbl_intel_driver.grid(row=1, column=1, sticky="w", padx=4)
         self.lbl_intel_inf = ttk.Label(top, text="INF Intel activo: cargando...")
         self.lbl_intel_inf.grid(row=1, column=2, sticky="w", padx=4)
-
         self.lbl_profile_state = ttk.Label(top, text="Estado vs perfil: pendiente")
         self.lbl_profile_state.grid(row=2, column=0, sticky="w", padx=4)
         self.lbl_mr = ttk.Label(top, text="Compatibilidad RM: pendiente")
         self.lbl_mr.grid(row=2, column=1, columnspan=2, sticky="w", padx=4)
 
         self.assistant_text = tk.StringVar(value="Resolver mi caso real: iniciando diagnóstico...")
-        ttk.Label(self, textvariable=self.assistant_text, background="#f3f7ff", anchor="w").pack(fill="x", padx=10, pady=(2, 8))
+        ttk.Label(self, textvariable=self.assistant_text, background="#eef7ff", anchor="w").pack(fill="x", padx=10, pady=(2, 8))
 
         center = ttk.Panedwindow(self, orient="vertical")
         center.pack(fill="both", expand=True, padx=10, pady=4)
-
         table_frame = ttk.Frame(center)
         center.add(table_frame, weight=3)
+
         cols = ("origen", "proveedor", "version", "fecha", "inf", "estado", "preferido")
         self.tree = ttk.Treeview(table_frame, columns=cols, show="headings", height=16)
         for key, title in {"origen": "Origen", "proveedor": "Proveedor", "version": "Versión", "fecha": "Fecha", "inf": "INF", "estado": "Estado", "preferido": "Preferido"}.items():
             self.tree.heading(key, text=title)
-            self.tree.column(key, width=170 if key != "estado" else 260, anchor="w")
+            self.tree.column(key, width=180 if key != "estado" else 280, anchor="w")
         scroll = ttk.Scrollbar(table_frame, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scroll.set)
         self.tree.pack(side="left", fill="both", expand=True)
@@ -99,24 +116,16 @@ class DriverSwitchApp(tk.Tk):
         self.log_widget.pack(fill="both", expand=True)
 
         help_frame = ttk.Frame(tabs)
-        tabs.add(help_frame, text="Resolver mi caso real")
+        tabs.add(help_frame, text="Primeros pasos")
         help_text = tk.Text(help_frame, wrap="word")
-        help_text.insert(
-            "1.0",
-            "Flujo mínimo recomendado:\n"
-            "1) Verifica que 'Admin: Sí'. Si no, pulsa 'Reabrir como administrador'.\n"
-            "2) Pulsa 'Diagnosticar mi equipo'.\n"
-            "3) Si no coincide con 31.0.101.2115, usa Intel2115\\iigd_dch.inf.\n"
-            "4) Pulsa 'Aplicar controlador Intel objetivo'.\n"
-            "5) Reinicia y vuelve a diagnosticar.\n"
-        )
+        help_text.insert("1.0", "1) Diagnosticar mi equipo.\n2) Si no está en 31.0.101.2115, aplicar Intel objetivo.\n3) Si falla por ranking OEM, usar Desinstalar (modo avanzado) con precaución.\n4) Reiniciar y volver a diagnosticar.")
         help_text.configure(state="disabled")
         help_text.pack(fill="both", expand=True)
 
         self.block_updates_var = tk.BooleanVar(value=False)
-        ttk.Checkbutton(self, text="Bloquear actualización automática de drivers (opcional)", variable=self.block_updates_var).pack(anchor="w", padx=12, pady=(0,4))
+        ttk.Checkbutton(self, text="Bloquear actualización automática de drivers (opcional)", variable=self.block_updates_var).pack(anchor="w", padx=12, pady=(0, 4))
 
-        actions = ttk.Frame(self)
+        actions = ttk.LabelFrame(self, text="Acciones")
         actions.pack(fill="x", padx=10, pady=5)
         buttons = [
             ("Resolver mi caso real", self.resolve_real_case),
@@ -124,6 +133,7 @@ class DriverSwitchApp(tk.Tk):
             ("Refrescar estado", self.refresh_all_async),
             ("Agregar carpeta INF", self.add_external_folder),
             ("Aplicar controlador Intel objetivo", self.apply_selected),
+            ("Desinstalar controlador actual (modo avanzado)", self.uninstall_current_driver),
             ("Reabrir como administrador", self.reopen_as_admin),
             ("Exportar log técnico", self.export_technical_log),
             ("Reiniciar equipo", self.reboot),
@@ -173,17 +183,18 @@ class DriverSwitchApp(tk.Tk):
         threading.Thread(target=runner, daemon=True).start()
 
     def startup_load(self) -> None:
-        self.log_human("Inicio de aplicación. Cargando perfil base y estado en segundo plano...")
+        self.log_human("Inicio de app; cargando perfil y estado...")
         self.profile = self._load_default_profile()
         self.refresh_all_async()
 
     def _load_default_profile(self) -> ProfileData:
         if self.profile_path.exists():
-            try:
-                self.log_human(f"Cargando perfil: {self.profile_path}")
-                return self.profile_service.cargar_perfil(self.profile_path)
-            except OSError as exc:
-                self.log_error(f"No se pudo cargar perfil: {exc}")
+            return self.profile_service.cargar_perfil(self.profile_path)
+        bundled = get_resource_path("resources/default_profile.txt")
+        if bundled.exists():
+            self.profile = self.profile_service.cargar_perfil(bundled)
+            self.profile_service.guardar_perfil(self.profile_path, self.profile)
+            return self.profile
         profile = self.profile_service.crear_perfil_vacio()
         self.profile_service.guardar_perfil(self.profile_path, profile)
         return profile
@@ -199,7 +210,6 @@ class DriverSwitchApp(tk.Tk):
         intel = self.inventory_service.autodetect_intel2115([Path(p) for p in self.user_config.normalized_paths()] + [Path.cwd(), Path.home()])
         if intel and all(c.source_path != intel.source_path for c in candidates):
             candidates.append(intel)
-
         comparison = self.profile_service.comparar_perfil_vs_sistema(self.profile, state)
         self.after(0, lambda: self._apply_refresh(state, candidates, intel, comparison))
 
@@ -212,11 +222,15 @@ class DriverSwitchApp(tk.Tk):
         self.lbl_intel_driver.config(text=f"Driver Intel activo: {state.intel_driver_version}")
         self.lbl_intel_inf.config(text=f"INF Intel activo: {state.intel_inf_name}")
         self.lbl_profile_state.config(text=f"Estado vs perfil: {'coincide' if comparison.matches else 'difiere'}")
-        rm_ok = state.intel_driver_version == MIXED_REALITY_TARGET
-        self.lbl_mr.config(text=("Compatibilidad RM: correcta" if rm_ok else f"Compatibilidad RM: se recomienda {MIXED_REALITY_TARGET}"), foreground="#116611" if rm_ok else "#a14b00")
+
+        if state.intel_driver_version == MIXED_REALITY_TARGET:
+            self.lbl_mr.config(text="Compatibilidad RM: CORRECTA (31.0.101.2115)", foreground="#116611")
+            self.assistant_text.set("Estado compatible. Prueba Meta Quest 3 / Windows App antes de hacer más cambios.")
+        else:
+            self.lbl_mr.config(text=f"Compatibilidad RM: se recomienda {MIXED_REALITY_TARGET}", foreground="#a14b00")
+            self.assistant_text.set("Sistema no compatible aún. Siguiente paso: aplicar Intel2115 o usar modo avanzado de desinstalación.")
+
         self._render_table()
-        self._update_assistant()
-        self.status_var.set("Estado actualizado")
 
     def _render_table(self) -> None:
         for row in self.tree.get_children():
@@ -226,17 +240,6 @@ class DriverSwitchApp(tk.Tk):
             preferred = "Sí" if preferred_path and c.source_path and Path(c.source_path) == Path(preferred_path) else "No"
             self.tree.insert("", "end", iid=str(idx), values=(c.source_type, c.provider, c.version, c.driver_date, c.inf_name, c.status, preferred))
 
-    def _update_assistant(self) -> None:
-        if not self.state.is_admin:
-            msg = "La app no está en administrador. Siguiente paso: pulsa 'Reabrir como administrador'."
-        elif self.state.intel_driver_version == MIXED_REALITY_TARGET:
-            msg = "Intel ya está en 31.0.101.2115. Siguiente paso: prueba conexión de Meta Quest 3 y rediagnostica."
-        elif self.intel_candidate:
-            msg = f"Se detectó Intel2115: {self.intel_candidate.source_path}. Siguiente paso: aplicar controlador Intel objetivo."
-        else:
-            msg = "No se detectó Intel2115. Siguiente paso: agregar carpeta INF correcta y reintentar."
-        self.assistant_text.set(f"Resolver mi caso real: {msg}")
-
     def _selected_candidate(self) -> DriverCandidate | None:
         sel = self.tree.selection()
         return self.candidates[int(sel[0])] if sel else self.intel_candidate
@@ -245,7 +248,7 @@ class DriverSwitchApp(tk.Tk):
         return self.profile.get("RUTAS", "intel2115", "")
 
     def add_external_folder(self) -> None:
-        folder = filedialog.askdirectory(title="Selecciona carpeta con INF")
+        folder = filedialog.askdirectory(title="Selecciona carpeta INF")
         if not folder:
             return
         paths = set(self.user_config.normalized_paths())
@@ -268,9 +271,7 @@ class DriverSwitchApp(tk.Tk):
 
         confirm = (
             f"Se aplicará {plan.inf_path} sobre {plan.target_device}.\n"
-            f"Origen: {'perfil preferido' if plan.using_preferred else 'selección/sistema'}\n"
-            f"Motivo: {plan.source_reason}\n\n"
-            "¿Desea continuar?"
+            f"Motivo: {plan.source_reason}\n\n¿Desea continuar?"
         )
         if not messagebox.askyesno("Confirmar aplicación", confirm):
             return
@@ -279,24 +280,41 @@ class DriverSwitchApp(tk.Tk):
             result = self.action_service.apply_and_verify(plan, self.state, block_updates=self.block_updates_var.get())
             self.log_human(f"Driver antes: {result.before_version} | después: {result.after_version}")
             if result.ok:
-                self.log_human("Driver aplicado correctamente.")
-                self.after(0, lambda: messagebox.showinfo("Resultado", result.message))
+                self.after(0, lambda: messagebox.showinfo("Éxito", result.message))
+            elif result.reverted:
+                self.after(0, lambda: messagebox.showwarning("Advertencia", result.message))
             else:
-                if result.reverted:
-                    self.log_error("Windows revirtió el driver automáticamente.")
-                self.log_error(result.message)
-                self.after(0, lambda: messagebox.showwarning("Fallo", result.message))
+                self.after(0, lambda: messagebox.showerror("Error", result.message))
             self.refresh_all_async()
 
-        self._run_bg("Aplicar controlador Intel objetivo", worker)
+        self._run_bg("Aplicar controlador Intel", worker)
+
+    def uninstall_current_driver(self) -> None:
+        if not self.state.is_admin:
+            messagebox.showwarning("Bloqueado", "Esta acción avanzada requiere ejecutar como administrador.")
+            return
+        warning = (
+            "ACCIÓN AVANZADA\n\n"
+            "Se desinstalará el controlador Intel actual del dispositivo objetivo.\n"
+            "Riesgos: parpadeo de pantalla, resolución baja o Microsoft Basic Display Adapter temporalmente.\n\n"
+            "¿Continuar con la desinstalación?"
+        )
+        if not messagebox.askyesno("Confirmación fuerte", warning):
+            return
+
+        def worker() -> None:
+            ok, detail = self.action_service.uninstall_current_intel_driver(self.state, remove_package=True)
+            if ok:
+                self.after(0, lambda: messagebox.showwarning("Acción completada", detail))
+            else:
+                self.after(0, lambda: messagebox.showerror("Desinstalación no completada", detail))
+            self.log_human(detail)
+            self.refresh_all_async()
+
+        self._run_bg("Desinstalar controlador Intel (avanzado)", worker)
 
     def resolve_real_case(self) -> None:
-        self.log_human("Modo 'Resolver mi caso real' ejecutado.")
         self.run_diagnostic()
-        if self.intel_candidate:
-            self.assistant_text.set(
-                f"Resolver mi caso real: listo para aplicar {self.intel_candidate.source_path} sobre {self.state.intel_adapter}."
-            )
 
     def run_diagnostic(self) -> None:
         def worker() -> None:
@@ -306,17 +324,14 @@ class DriverSwitchApp(tk.Tk):
             result: DiagnosticResult = self.diagnostic_service.run(state, comparison, intel)
             self.after(0, lambda: self._show_diagnostic(result))
 
-        self._run_bg("Diagnóstico para Meta Quest 3", worker)
+        self._run_bg("Diagnóstico", worker)
 
     def _show_diagnostic(self, result: DiagnosticResult) -> None:
-        self.log_human(result.summary)
-        self.log_human(f"Siguiente paso sugerido: {result.next_step}")
-        self.assistant_text.set(f"Resolver mi caso real: {result.summary} {result.next_step}")
+        self.assistant_text.set(f"Diagnóstico: {result.summary} {result.next_step}")
         messagebox.showinfo("Diagnóstico", result.summary + "\n\n" + "\n".join(result.checklist) + "\n\n" + result.next_step)
 
     def reopen_as_admin(self) -> None:
         if os.name != "nt":
-            messagebox.showwarning("Admin", "Solo disponible en Windows.")
             return
         try:
             import ctypes
@@ -324,8 +339,7 @@ class DriverSwitchApp(tk.Tk):
             params = f'"{Path(__file__).resolve().parents[1] / "app.py"}"'
             rc = ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
             if rc <= 32:
-                raise RuntimeError(f"ShellExecuteW retornó {rc}")
-            self.log_human("Se solicitó reapertura como administrador.")
+                raise RuntimeError(rc)
         except Exception as exc:
             messagebox.showerror("Admin", f"No se pudo reabrir como admin: {exc}")
 
@@ -333,17 +347,16 @@ class DriverSwitchApp(tk.Tk):
         output = filedialog.asksaveasfilename(title="Guardar log técnico", defaultextension=".txt", filetypes=[("Texto", "*.txt")])
         if not output:
             return
-        source = technical_log_path()
-        if not source.exists():
-            messagebox.showwarning("Log", "No hay log técnico disponible.")
+        src = technical_log_path()
+        if not src.exists():
+            messagebox.showwarning("Log", "No existe log técnico aún.")
             return
-        Path(output).write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
-        self.log_human(f"Log técnico exportado a: {output}")
+        Path(output).write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
 
     def reboot(self) -> None:
-        if messagebox.askyesno("Reiniciar", "¿Reiniciar en 5 segundos?"):
+        if messagebox.askyesno("Reiniciar", "¿Reiniciar equipo en 5 segundos?"):
             ok, detail = self.action_service.request_reboot()
-            (self.log_human if ok else self.log_error)(detail)
+            self.log_human(detail if ok else f"Error reinicio: {detail}")
 
     def load_profile(self) -> None:
         path = filedialog.askopenfilename(title="Cargar perfil", filetypes=[("Perfil txt", "*.txt")])
@@ -351,7 +364,6 @@ class DriverSwitchApp(tk.Tk):
             return
         self.profile = self.profile_service.cargar_perfil(Path(path))
         self.profile_path = Path(path)
-        self.log_human(f"Perfil cargado: {path}")
         self.refresh_all_async()
 
     def save_profile(self) -> None:
@@ -365,11 +377,9 @@ class DriverSwitchApp(tk.Tk):
         if not target:
             return
         self.profile_service.guardar_perfil(Path(target), self.profile)
-        self.log_human(f"Perfil guardado: {target}")
 
     def compare_profile(self) -> None:
         comp = self.profile_service.comparar_perfil_vs_sistema(self.profile, self.state)
-        self.log_human(f"Comparación sistema vs perfil: {'coincide' if comp.matches else 'no coincide'}")
         messagebox.showinfo("Comparación", "\n".join(comp.details))
 
 

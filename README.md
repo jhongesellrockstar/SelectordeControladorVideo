@@ -1,18 +1,56 @@
-# DriverSwitch GUI - Selector de controlador de video
+# DriverSwitch GUI - Intel Driver Manager
 
-Aplicación de escritorio en Python/Tkinter para Windows 11 centrada en resolver Intel + Meta Quest 3.
+Aplicación de escritorio (Python/Tkinter) para Windows 11 orientada a gestionar el driver Intel UHD y compatibilidad con Meta Quest 3.
 
-## Flujo real implementado
-- Agrega driver con: `pnputil /add-driver <INF> /install /force`.
-- Detecta `InstanceId` Intel (`pnputil /enum-devices /class Display`).
-- Actualiza dispositivo con: `pnputil /update-driver oemXX.inf <InstanceId>`.
-- Refresca adaptador Intel y verifica versión post-instalación.
-- Si la versión final no es `31.0.101.2115`, informa reversión automática de Windows.
+## Estado funcional
+- Diagnóstico Intel vs adaptador virtual.
+- Aplicación de driver objetivo Intel con `pnputil` y validación post-instalación.
+- Opción avanzada: desinstalar controlador Intel actual (controlada y con advertencias).
+- Logs humano (GUI) y técnico (archivo).
 
-## Funcionalidad clave
-- Detección separada: adaptador virtual vs GPU Intel física objetivo.
-- Validación previa estricta antes de aplicar INF.
-- Confirmación explícita (INF, destino, motivo).
-- Log humano en GUI + log técnico exportable.
-- Modo administrador detectado + botón "Reabrir como administrador".
-- Opción opcional para bloquear actualización automática de drivers.
+## Iconos y recursos
+Archivos esperados en la raíz del proyecto:
+- `image1.ico` (icono Windows/ejecutable)
+- `image1.png` (icono GUI)
+
+La app usa `get_resource_path()` para resolver rutas en modo fuente y en modo PyInstaller (`_MEIPASS`).
+
+## Build con PyInstaller
+### Opción recomendada (spec)
+```powershell
+pyinstaller packaging/driverswitch_gui.spec
+```
+
+Salida esperada:
+- `dist/DriverSwitchGUI/DriverSwitchGUI.exe`
+
+### Archivos incluidos como `datas`
+- `image1.ico`
+- `image1.png`
+- `resources/default_profile.txt`
+- `objetivo_proyecto_driver_gui.txt`
+- `README.md`
+
+## Instalador con Inno Setup
+Se incluye plantilla base:
+- `packaging/installer.iss`
+
+Flujo típico:
+1. Generar build con PyInstaller.
+2. Abrir `packaging/installer.iss` en Inno Setup.
+3. Ajustar versión/nombre/editor/rutas.
+4. Compilar instalador.
+
+## Distribución y firma digital (importante)
+PyInstaller e Inno Setup **no eliminan por sí solos** advertencias de seguridad de Windows/SmartScreen.
+Para reducir advertencias en distribución real normalmente se requiere:
+- certificado de **code signing** válido,
+- firma del `.exe` y del instalador,
+- reputación progresiva del binario firmado.
+
+## Flujo seguro recomendado
+1. Ejecutar como administrador.
+2. Diagnosticar estado Intel.
+3. Si no está en `31.0.101.2115`, aplicar INF Intel objetivo.
+4. Si Windows mantiene driver anterior por ranking OEM, usar desinstalación avanzada con precaución.
+5. Reiniciar y re-diagnosticar.
