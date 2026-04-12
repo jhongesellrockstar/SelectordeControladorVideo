@@ -79,7 +79,7 @@ class DriverActionService:
         if not add_ok:
             return ApplyResult(False, add_msg, before_version, before_version, False)
 
-        inst_id = self._find_intel_instance_id() or plan.target_pnp
+        inst_id = self._find_intel_instance_id()
         self.log(f"InstanceId usado para update-driver: {inst_id or 'No detectado'}")
         if not inst_id:
             return ApplyResult(False, "No se detectó InstanceId Intel para actualizar dispositivo.", before_version, before_version, False)
@@ -100,8 +100,7 @@ class DriverActionService:
         reverted = after_version != TARGET_VERSION
         if reverted:
             msg = (
-                "Windows mantiene el controlador anterior por prioridad de compatibilidad. "
-                "Esto puede deberse a políticas OEM o compatibilidad.\n"
+                "Windows mantiene el controlador anterior por política de compatibilidad OEM o ranking de drivers.\n"
                 f"Antes: {before_version}\nDespués: {after_version}\n"
                 f"Detalle actualización: {update_msg}\nRefresco: {refresh_msg}"
             )
