@@ -18,6 +18,13 @@ from driverswitch_gui.services.config_store import ConfigStore
 from driverswitch_gui.services.diagnostic_service import DiagnosticResult, DiagnosticService
 from driverswitch_gui.services.driver_actions import DriverActionService
 from driverswitch_gui.services.driver_inventory import DriverInventoryService
+from driverswitch_gui.services.driver_store import DriverStoreService
+from driverswitch_gui.services.diagnostics import DiagnosticsService
+from driverswitch_gui.services.reporting import ReportingService
+from driverswitch_gui.services.repair_quest3 import RepairQuest3Service
+from driverswitch_gui.services.system_restore import SystemRestoreService
+from ui.quest3_wizard import Quest3Wizard
+from ui.log_panel import LogPanel
 from driverswitch_gui.services.profile_service import ProfileService
 from driverswitch_gui.services.system_info import SystemInfoService, SystemState
 
@@ -47,6 +54,12 @@ class DriverSwitchApp(tk.Tk):
         self.action_service = DriverActionService(log=self.log_human)
         self.profile_service = ProfileService()
         self.diagnostic_service = DiagnosticService()
+        self.driver_store_service = DriverStoreService(self.inventory_service)
+        self.diagnostics_service = DiagnosticsService()
+        self.reporting_service = ReportingService(self.config_store.root / "reportes")
+        self.repair_service = RepairQuest3Service(log=self.log_human)
+        self.restore_service = SystemRestoreService(log=self.log_human)
+        self.command_history: list[str] = []
 
         self._load_app_icons()
         self._build_ui()
@@ -131,7 +144,7 @@ class DriverSwitchApp(tk.Tk):
         center.add(tabs, weight=2)
         log_frame = ttk.Frame(tabs)
         tabs.add(log_frame, text="Log en tiempo real")
-        self.log_widget = tk.Text(log_frame, state="disabled", bg="#10161f", fg="#d3f0ff", wrap="word")
+        self.log_widget = LogPanel(log_frame, state="disabled", bg="#10161f", fg="#d3f0ff", wrap="word")
         self.log_widget.pack(fill="both", expand=True)
 
         help_frame = ttk.Frame(tabs)
@@ -147,13 +160,17 @@ class DriverSwitchApp(tk.Tk):
         actions = ttk.LabelFrame(self, text="Acciones")
         actions.pack(fill="x", padx=10, pady=5)
         buttons = [
-            ("Resolver mi caso real", self.resolve_real_case),
-            ("Diagnosticar mi equipo", self.run_diagnostic),
+            ("Modo reparación Quest 3", self.open_quest3_wizard),
+            ("Solo diagnosticar", self.run_diagnostic),
             ("Refrescar estado", self.refresh_all_async),
             ("Agregar carpeta INF", self.add_external_folder),
-            ("Aplicar controlador Intel objetivo", self.apply_selected),
-            ("Desinstalar controlador actual (modo avanzado)", self.uninstall_current_driver),
+            ("Aplicar Intel objetivo", self.apply_selected),
+            ("Deshabilitar virtual displays", self.disable_virtual_displays),
+            ("Restaurar virtual displays", self.restore_virtual_displays),
+            ("Desinstalar Intel actual (avanzado)", self.uninstall_current_driver),
             ("Reabrir como administrador", self.reopen_as_admin),
+            ("Generar reporte", self.generate_report),
+            ("Abrir carpeta de reportes", self.open_reports_folder),
             ("Exportar log técnico", self.export_technical_log),
             ("Reiniciar equipo", self.reboot),
             ("Cargar perfil", self.load_profile),
@@ -168,6 +185,7 @@ class DriverSwitchApp(tk.Tk):
 
     def log_human(self, message: str) -> None:
         self.log_queue.put(("INFO", message))
+        self.command_history.append(message)
         self.logger.info(message)
 
     def log_error(self, message: str) -> None:
@@ -181,10 +199,7 @@ class DriverSwitchApp(tk.Tk):
             except queue.Empty:
                 break
             ts = datetime.now().strftime("%H:%M:%S")
-            self.log_widget.configure(state="normal")
-            self.log_widget.insert("end", f"[{ts}] {msg}\n")
-            self.log_widget.see("end")
-            self.log_widget.configure(state="disabled")
+            self.log_widget.append(f"[{ts}] {msg}")
             if level == "ERROR":
                 self.status_var.set(msg)
         self.after(120, self._drain_log_queue)
@@ -352,6 +367,46 @@ class DriverSwitchApp(tk.Tk):
 
         self._run_bg("Desinstalar controlador Intel (avanzado)", worker)
 
+    def open_quest3_wizard(self) -> None:
+        Quest3Wizard(self, self.run_diagnostic, self.run_safe_repair, self.run_advanced_repair, self.generate_report)
+
+    def run_safe_repair(self) -> None:
+        self.log_human("Ruta segura Quest3 iniciada.")
+        if not self.state.is_admin:
+            messagebox.showwarning("Admin requerido", "Ejecute como administrador para reparación segura.")
+            return
+        ok, msg = self.repair_service.disable_virtual_displays()
+        self.log_human(msg)
+        if self.intel_candidate:
+            self.apply_selected()
+        else:
+            messagebox.showwarning("INF no encontrado", "No se encontró Intel2115 en rutas permitidas. Use Agregar carpeta INF.")
+
+    def run_advanced_repair(self) -> None:
+        self.log_human("Ruta avanzada Quest3 iniciada.")
+        self.uninstall_current_driver()
+
+    def disable_virtual_displays(self) -> None:
+        ok, msg = self.repair_service.disable_virtual_displays()
+        (self.log_human if ok else self.log_error)(msg)
+
+    def restore_virtual_displays(self) -> None:
+        ok, msg = self.repair_service.restore_virtual_displays()
+        (self.log_human if ok else self.log_error)(msg)
+
+    def generate_report(self) -> None:
+        rows = [f"{c.provider} | {c.version} | {c.inf_name} | {c.status}" for c in self.candidates]
+        report = self.reporting_service.generate_quest3_report(self.state, rows, self.command_history, self.lbl_mr.cget("text"))
+        self.log_human(f"Reporte generado: {report}")
+        messagebox.showinfo("Reporte", f"Reporte guardado en:\n{report}")
+
+    def open_reports_folder(self) -> None:
+        folder = self.reporting_service.report_root
+        if os.name == "nt":
+            os.startfile(str(folder))
+        else:
+            subprocess.run(["xdg-open", str(folder)], check=False)
+
     def resolve_real_case(self) -> None:
         self.run_diagnostic()
 
@@ -361,13 +416,15 @@ class DriverSwitchApp(tk.Tk):
             comparison = self.profile_service.comparar_perfil_vs_sistema(self.profile, state)
             intel = self.inventory_service.autodetect_intel2115(self._allowed_inf_roots())
             result: DiagnosticResult = self.diagnostic_service.run(state, comparison, intel)
-            self.after(0, lambda: self._show_diagnostic(result))
+            verdict = self.diagnostics_service.evaluate(state, bool(intel), state.virtual_adapter != "No detectado")
+            self.after(0, lambda: self._show_diagnostic(result, verdict.verdict, verdict.recommendation, verdict.risk_oem))
 
         self._run_bg("Diagnóstico", worker)
 
-    def _show_diagnostic(self, result: DiagnosticResult) -> None:
-        self.assistant_text.set(f"Diagnóstico: {result.summary} {result.next_step}")
-        messagebox.showinfo("Diagnóstico", result.summary + "\n\n" + "\n".join(result.checklist) + "\n\n" + result.next_step)
+    def _show_diagnostic(self, result: DiagnosticResult, verdict: str, recommendation: str, risk_oem: bool) -> None:
+        oem_note = "\nAdvertencia OEM híbrido: este Acer usa gráficos híbridos; cambiar Intel puede afectar salida de pantalla." if risk_oem else ""
+        self.assistant_text.set(f"Diagnóstico [{verdict}]: {recommendation}")
+        messagebox.showinfo("Diagnóstico", result.summary + "\n\n" + "\n".join(result.checklist) + "\n\nVeredicto: " + verdict + "\nRecomendación: " + recommendation + oem_note)
 
     def reopen_as_admin(self) -> None:
         if os.name != "nt":

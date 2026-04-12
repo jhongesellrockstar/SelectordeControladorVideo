@@ -1,7 +1,11 @@
-#define MyAppName "DriverSwitch GUI - Intel Driver Manager"
+; Plantilla base Inno Setup para DriverSwitch GUI
+; Compilar este .iss desde la carpeta packaging para usar rutas relativas.
+
+#define MyAppName "DriverSwitch GUI"
 #define MyAppVersion "0.1.0"
-#define MyAppPublisher "Jhon Gesell Villanueva Portella"
-#define MyAppExeName "app.exe"
+#define MyAppPublisher "DriverSwitch Team"
+#define MyAppExeName "DriverSwitchGUI.exe"
+#define MyRootDir AddBackslash(SourcePath) + "..\\"
 
 [Setup]
 AppId={{D7B52B25-117A-4C1B-B2D0-DRIVERSWITCHGUI}}
@@ -13,7 +17,7 @@ DefaultGroupName={#MyAppName}
 AllowNoIcons=yes
 OutputDir=.
 OutputBaseFilename=DriverSwitchGUI-Setup
-SetupIconFile=..\image1.ico
+SetupIconFile={#MyRootDir}image1.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -22,7 +26,7 @@ WizardStyle=modern
 Name: "desktopicon"; Description: "Crear acceso directo en escritorio"; GroupDescription: "Accesos directos:"; Flags: unchecked
 
 [Files]
-Source: "..\dist\app\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
+Source: "{#MyRootDir}dist\DriverSwitchGUI\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\image1.ico"

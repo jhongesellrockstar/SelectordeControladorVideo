@@ -96,3 +96,24 @@ Rutas excluidas explícitamente:
 - symlinks/junctions/reparse points no confiables.
 
 Si no se encuentra `iigd_dch.inf` en rutas permitidas, la app pide usar **Agregar carpeta INF**.
+
+
+## Modo reparación Quest 3 (integrado)
+La app incluye un asistente interno con flujo guiado:
+1. **Solo diagnosticar**
+2. **Ruta segura** (deshabilitar virtual displays, aplicar Intel objetivo, reiniciar)
+3. **Ruta avanzada** (desinstalar Intel actual con confirmación fuerte)
+4. **Generar reporte** y **Abrir carpeta de reportes**
+
+Reportes:
+- Carpeta: `%APPDATA%\DriverSwitchGUI\reportes`
+- Nombre: `quest3_repair_report_YYYYMMDD_HHMMSS.txt`
+
+## Ejecución recomendada (admin)
+- Desarrollo: ejecutar consola/terminal como administrador y luego `python app.py`.
+- EXE: clic derecho -> "Ejecutar como administrador".
+
+## Recompilar e instalar
+1. `pyinstaller --clean packaging/driverswitch_gui.spec`
+2. Compilar `packaging/installer.iss` en Inno Setup.
+3. Instalar y abrir "DriverSwitch GUI" como administrador.
