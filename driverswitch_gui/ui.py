@@ -56,19 +56,35 @@ class DriverSwitchApp(tk.Tk):
     def _load_app_icons(self) -> None:
         ico = get_resource_path("image1.ico")
         png = get_resource_path("image1.png")
+
+        if os.name == "nt":
+            try:
+                import ctypes
+
+                app_id = "DriverSwitchGUI.Intel.Manager"
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app_id)
+                self.log_human(f"AppUserModelID configurado: {app_id}")
+            except Exception as exc:
+                self.log_error(f"No se pudo configurar AppUserModelID (taskbar): {exc}")
+
         if ico.exists():
             try:
                 self.iconbitmap(default=str(ico))
-                self.log_human(f"Icono .ico cargado: {ico}")
+                self.log_human(f"Icono de ventana (.ico) aplicado: {ico}")
             except Exception as exc:
-                self.log_error(f"No se pudo cargar iconbitmap: {exc}")
+                self.log_error(f"No se pudo aplicar iconbitmap (.ico): {exc}")
+        else:
+            self.log_human(f"Icono .ico no encontrado: {ico}")
+
         if png.exists():
             try:
                 self._icon_photo = tk.PhotoImage(file=str(png))
                 self.iconphoto(True, self._icon_photo)
-                self.log_human(f"Icono .png cargado: {png}")
+                self.log_human(f"Icono adicional (.png) aplicado: {png}")
             except Exception as exc:
-                self.log_error(f"No se pudo cargar iconphoto: {exc}")
+                self.log_error(f"No se pudo aplicar iconphoto (.png): {exc}")
+        else:
+            self.log_human(f"Icono .png no encontrado: {png}")
 
     def _build_ui(self) -> None:
         top = ttk.LabelFrame(self, text="Estado del sistema")

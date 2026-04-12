@@ -54,3 +54,13 @@ Para reducir advertencias en distribución real normalmente se requiere:
 3. Si no está en `31.0.101.2115`, aplicar INF Intel objetivo.
 4. Si Windows mantiene driver anterior por ranking OEM, usar desinstalación avanzada con precaución.
 5. Reiniciar y re-diagnosticar.
+
+
+## Iconos en Windows (fuente vs .exe)
+- **Icono de ventana Tkinter**: se aplica en runtime con `iconbitmap()` / `iconphoto()` y afecta la ventana visible.
+- **Icono de barra de tareas**: en Windows depende de AppUserModelID + icono de ventana; por eso la app configura `SetCurrentProcessExplicitAppUserModelID`.
+- **Icono del `.exe` (PyInstaller)**: se define en build (`icon='image1.ico'` en el `.spec`) y afecta el archivo ejecutable/firma visual en Explorer.
+
+Notas:
+- En `python app.py`, el icono puede depender del proceso `python.exe/pythonw.exe`, por lo que AppUserModelID ayuda a que taskbar use el icono correcto.
+- En `.exe` compilado, el icono del ejecutable y AppUserModelID suelen dar el resultado más consistente.
