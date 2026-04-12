@@ -117,3 +117,17 @@ Reportes:
 1. `pyinstaller --clean packaging/driverswitch_gui.spec`
 2. Compilar `packaging/installer.iss` en Inno Setup.
 3. Instalar y abrir "DriverSwitch GUI" como administrador.
+
+
+## Modo Device Manager (forzar instalación manual)
+Nuevo botón en GUI: **Forzar instalación manual (modo Device Manager)**.
+
+Flujo:
+1. Seleccionar manualmente `iigd_dch.inf`.
+2. Seleccionar dispositivo DISPLAY objetivo (ej. Intel UHD Graphics).
+3. Ejecutar instalación dirigida con prioridad:
+   - `devcon update <inf> <InstanceId>` (si `devcon.exe` está disponible)
+   - fallback `pnputil /add-driver ...` + `pnputil /update-driver oemXX.inf <InstanceId>`
+   - fallback final `rundll32 setupapi.dll,InstallHinfSection ...`
+
+Incluye advertencia explícita de posible pantalla negra temporal y log detallado de comando/resultado.

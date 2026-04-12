@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import platform
 import re
+import shutil
 import subprocess
 import time
 from dataclasses import dataclass
@@ -137,6 +138,78 @@ class DriverActionService:
             "Controlador Intel actual desinstalado. Es normal ver parpadeo, baja resolución o Microsoft Basic Display Adapter temporalmente. "
             "Reinicia y luego aplica Intel 31.0.101.2115."
         )
+
+
+    def list_display_devices(self) -> list[tuple[str, str]]:
+        """Retorna lista (FriendlyName, InstanceId) de dispositivos DISPLAY."""
+        cmd = [
+            "powershell",
+            "-NoProfile",
+            "-Command",
+            "Get-PnpDevice -Class Display | Select-Object FriendlyName,InstanceId,Status | ConvertTo-Json -Depth 4",
+        ]
+        code, stdout, stderr, _, timeout = self._run_process(cmd, 30)
+        if timeout or code != 0 or not stdout.strip():
+            self.log(f"No se pudo listar dispositivos display: {(stdout + stderr)[:260]}")
+            return []
+        try:
+            import json
+            data = json.loads(stdout)
+            items = data if isinstance(data, list) else [data]
+            result = []
+            for item in items:
+                name = str((item or {}).get("FriendlyName", "")).strip()
+                inst = str((item or {}).get("InstanceId", "")).strip()
+                if name and inst:
+                    result.append((name, inst))
+            return result
+        except Exception as exc:
+            self.log(f"Error parseando lista display: {exc}")
+            return []
+
+    def force_manual_install_device_manager_mode(self, inf_path: str, instance_id: str) -> tuple[bool, str]:
+        """Modo equivalente Device Manager: usa devcon si está disponible, si no fallback controlado."""
+        inf = Path(inf_path)
+        if not inf.exists():
+            return False, f"INF no encontrado: {inf_path}"
+
+        self.log(f"Modo Device Manager: INF seleccionado {inf}")
+        self.log(f"Modo Device Manager: dispositivo objetivo {instance_id}")
+
+        devcon = shutil.which("devcon")
+        if devcon:
+            cmd = [devcon, "update", str(inf), instance_id]
+            self.log(f"Comando Device Manager (devcon): {' '.join(cmd)}")
+            code, stdout, stderr, _, timeout = self._run_process(cmd, 120)
+            if timeout:
+                return False, f"Timeout ejecutando devcon update.\nSTDOUT:{stdout[:600]}\nSTDERR:{stderr[:600]}"
+            if code == 0:
+                return True, stdout.strip() or "devcon update completado."
+            self.log(f"devcon falló (rc={code}), probando fallback pnputil/update-driver")
+
+        add_code, add_out, add_err, _, add_timeout = self._run_process(["pnputil", "/add-driver", str(inf), "/install", "/force"], 120)
+        if add_timeout:
+            return False, f"Timeout en fallback pnputil add-driver.\nSTDOUT:{add_out[:600]}\nSTDERR:{add_err[:600]}"
+        combined = add_out + "\n" + add_err
+        oem = self._extract_oem_inf(combined) or self._resolve_oem_from_inf(str(inf))
+        if oem:
+            up_cmd = ["pnputil", "/update-driver", oem, instance_id]
+            self.log(f"Comando fallback update-driver: {' '.join(up_cmd)}")
+            up_code, up_out, up_err, _, up_timeout = self._run_process(up_cmd, 120)
+            if up_timeout:
+                return False, f"Timeout en update-driver fallback.\nSTDOUT:{up_out[:600]}\nSTDERR:{up_err[:600]}"
+            if up_code == 0:
+                return True, up_out.strip() or "update-driver completado en modo Device Manager."
+
+        rd_cmd = ["rundll32.exe", "setupapi.dll,InstallHinfSection", "DefaultInstall", "132", str(inf)]
+        self.log(f"Comando fallback setupapi: {' '.join(rd_cmd)}")
+        rd_code, rd_out, rd_err, _, rd_timeout = self._run_process(rd_cmd, 120)
+        if rd_timeout:
+            return False, f"Timeout en rundll32 setupapi.\nSTDOUT:{rd_out[:600]}\nSTDERR:{rd_err[:600]}"
+        if rd_code == 0:
+            return True, rd_out.strip() or "InstallHinfSection ejecutado. Valide driver activo."
+
+        return False, (combined + "\n" + rd_out + "\n" + rd_err).strip()[:2000] or "No se pudo forzar instalación manual."
 
     def _add_driver_force(self, plan: ApplyPlan, timeout_sec: int = 120) -> tuple[bool, str, str]:
         cmd = ["pnputil", "/add-driver", plan.inf_path, "/install", "/force"]

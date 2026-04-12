@@ -165,6 +165,7 @@ class DriverSwitchApp(tk.Tk):
             ("Refrescar estado", self.refresh_all_async),
             ("Agregar carpeta INF", self.add_external_folder),
             ("Aplicar Intel objetivo", self.apply_selected),
+            ("Forzar instalación manual (modo Device Manager)", self.force_manual_device_manager_install),
             ("Deshabilitar virtual displays", self.disable_virtual_displays),
             ("Restaurar virtual displays", self.restore_virtual_displays),
             ("Desinstalar Intel actual (avanzado)", self.uninstall_current_driver),
@@ -342,6 +343,63 @@ class DriverSwitchApp(tk.Tk):
             self.refresh_all_async()
 
         self._run_bg("Aplicar controlador Intel", worker)
+
+    def force_manual_device_manager_install(self) -> None:
+        if not self.state.is_admin:
+            messagebox.showwarning("Admin requerido", "Este modo requiere ejecutar como administrador.")
+            return
+        messagebox.showwarning("Advertencia", "Este modo puede causar pantalla negra temporal.")
+
+        inf = filedialog.askopenfilename(title="Seleccionar iigd_dch.inf", filetypes=[("INF", "*.inf")])
+        if not inf:
+            return
+
+        devices = self.action_service.list_display_devices()
+        if not devices:
+            messagebox.showerror("Dispositivos", "No se pudieron listar dispositivos DISPLAY.")
+            return
+
+        picker = tk.Toplevel(self)
+        picker.title("Seleccionar dispositivo DISPLAY")
+        picker.geometry("720x360")
+        lb = tk.Listbox(picker, width=120, height=12)
+        lb.pack(fill="both", expand=True, padx=10, pady=10)
+        for name, inst in devices:
+            lb.insert("end", f"{name} | {inst}")
+
+        selected = {"value": None}
+
+        def confirm_pick():
+            sel = lb.curselection()
+            if not sel:
+                return
+            selected["value"] = devices[sel[0]]
+            picker.destroy()
+
+        ttk.Button(picker, text="Usar dispositivo seleccionado", command=confirm_pick).pack(pady=6)
+        picker.transient(self)
+        picker.grab_set()
+        self.wait_window(picker)
+
+        if not selected["value"]:
+            return
+
+        name, instance_id = selected["value"]
+        if not messagebox.askyesno("Confirmar modo Device Manager", f"Se intentará instalar:\n{inf}\n\nSobre:\n{name}\n{instance_id}\n\n¿Continuar?"):
+            return
+
+        def worker() -> None:
+            ok, detail = self.action_service.force_manual_install_device_manager_mode(inf, instance_id)
+            self.log_human(f"Modo Device Manager -> dispositivo: {name}")
+            self.log_human(f"Modo Device Manager -> INF: {inf}")
+            self.log_human(f"Modo Device Manager -> resultado: {detail[:300]}")
+            if ok:
+                self.after(0, lambda: messagebox.showinfo("Modo Device Manager", detail))
+            else:
+                self.after(0, lambda: messagebox.showerror("Modo Device Manager", detail))
+            self.refresh_all_async()
+
+        self._run_bg("Forzar instalación manual Device Manager", worker)
 
     def uninstall_current_driver(self) -> None:
         if not self.state.is_admin:
