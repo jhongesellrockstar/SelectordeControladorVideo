@@ -79,3 +79,20 @@ pyinstaller --clean packaging/driverswitch_gui.spec
 1. Verifica que exista `dist/DriverSwitchGUI/`.
 2. Abre `packaging/installer.iss` con Inno Setup Compiler.
 3. Compila el script para generar `DriverSwitchGUI-Setup.exe`.
+
+
+## Política de búsqueda de INF (segura)
+La app **no** recorre todo el disco ni perfiles completos. Busca INF en este orden:
+1. Carpetas agregadas por el usuario (Agregar carpeta INF).
+2. Ruta definida en perfil (`RUTAS.intel2115`).
+3. `Intel2115` bajo carpeta de trabajo de la app.
+4. Carpeta `resources` de la app.
+
+Rutas excluidas explícitamente:
+- `AppData\Local\Microsoft\Windows\INetCache`
+- `AppData\Local\Temp`
+- `C:\Windows`
+- `C:\ProgramData`
+- symlinks/junctions/reparse points no confiables.
+
+Si no se encuentra `iigd_dch.inf` en rutas permitidas, la app pide usar **Agregar carpeta INF**.

@@ -226,7 +226,7 @@ class DriverSwitchApp(tk.Tk):
         candidates = self.inventory_service.list_driver_store(active_inf=state.intel_inf_name)
         for path in self.user_config.normalized_paths():
             candidates.extend(self.inventory_service.scan_external_folder(Path(path)))
-        intel = self.inventory_service.autodetect_intel2115([Path(p) for p in self.user_config.normalized_paths()] + [Path.cwd(), Path.home()])
+        intel = self.inventory_service.autodetect_intel2115(self._allowed_inf_roots())
         if intel and all(c.source_path != intel.source_path for c in candidates):
             candidates.append(intel)
         comparison = self.profile_service.comparar_perfil_vs_sistema(self.profile, state)
@@ -265,6 +265,26 @@ class DriverSwitchApp(tk.Tk):
 
     def _preferred_inf_path(self) -> str:
         return self.profile.get("RUTAS", "intel2115", "")
+
+    def _allowed_inf_roots(self) -> list[Path]:
+        roots: list[Path] = []
+        roots.extend(Path(p) for p in self.user_config.normalized_paths())
+        profile_inf = self.profile.get("RUTAS", "intel2115", "")
+        if profile_inf:
+            roots.append(Path(profile_inf).parent)
+        local_intel = Path.cwd() / "Intel2115"
+        if local_intel.exists():
+            roots.append(local_intel)
+        resources_intel = get_resource_path("resources")
+        if resources_intel.exists():
+            roots.append(resources_intel)
+        # unique preserving order
+        seen=set(); uniq=[]
+        for r in roots:
+            key=str(r)
+            if key not in seen:
+                seen.add(key); uniq.append(r)
+        return uniq
 
     def add_external_folder(self) -> None:
         folder = filedialog.askdirectory(title="Selecciona carpeta INF")
@@ -339,7 +359,7 @@ class DriverSwitchApp(tk.Tk):
         def worker() -> None:
             state = self.system_service.get_system_state()
             comparison = self.profile_service.comparar_perfil_vs_sistema(self.profile, state)
-            intel = self.inventory_service.autodetect_intel2115([Path(p) for p in self.user_config.normalized_paths()] + [Path.cwd(), Path.home()])
+            intel = self.inventory_service.autodetect_intel2115(self._allowed_inf_roots())
             result: DiagnosticResult = self.diagnostic_service.run(state, comparison, intel)
             self.after(0, lambda: self._show_diagnostic(result))
 
