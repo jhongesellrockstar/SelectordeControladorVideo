@@ -1,0 +1,13 @@
+[PERFIL]
+nombre=Perfil base Intel Quest3
+
+[EQUIPO]
+gpu=Intel(R) UHD Graphics
+
+[DRIVER]
+provider=Intel
+version=31.0.101.2115
+inf=iigd_dch.inf
+
+[RUTAS]
+intel2115=
