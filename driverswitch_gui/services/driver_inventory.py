@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import os
 import platform
 import re
+import stat
 import subprocess
 from pathlib import Path
 from typing import Callable
@@ -70,12 +72,17 @@ class DriverInventoryService:
     def scan_external_folder(self, folder: Path) -> list[DriverCandidate]:
         if not folder.exists() or not folder.is_dir():
             return []
-        self.log(f"Buscando INF externos en: {folder}")
+        if not self._is_allowed_root(folder):
+            self.log(f"Saltando ruta no confiable: {folder}")
+            return []
+
+        self.log(f"Buscando INF externos en carpeta permitida: {folder}")
         candidates: list[DriverCandidate] = []
-        for inf_path in folder.rglob("*.inf"):
+        for inf_path in self._iter_inf_files(folder):
             try:
                 content = inf_path.read_text(encoding="utf-8", errors="ignore")
-            except OSError:
+            except OSError as exc:
+                self.log(f"Advertencia leyendo INF {inf_path}: {exc}")
                 continue
             if not self._is_display_inf(content):
                 continue
@@ -98,16 +105,20 @@ class DriverInventoryService:
         return candidates
 
     def autodetect_intel2115(self, roots: list[Path]) -> DriverCandidate | None:
-        self.log("Buscando Intel2115\\iigd_dch.inf con prioridad por carpeta Intel2115...")
+        self.log("Buscando INF solo en rutas permitidas...")
+        allowed = [r for r in roots if self._is_allowed_root(r)]
+        if not allowed:
+            self.log("No hay rutas permitidas para búsqueda automática de Intel2115.")
+            return None
+
         found: list[Path] = []
-        for root in roots:
-            if not root.exists() or not root.is_dir():
-                continue
-            for path in root.rglob("iigd_dch.inf"):
-                found.append(path)
+        for root in allowed:
+            for inf in self._iter_inf_files(root):
+                if inf.name.lower() == "iigd_dch.inf":
+                    found.append(inf)
 
         if not found:
-            self.log("No se encontró iigd_dch.inf en rutas de búsqueda.")
+            self.log("No se encontró INF objetivo en rutas permitidas. Use 'Agregar carpeta INF'.")
             return None
 
         def score(path: Path) -> tuple[int, int]:
@@ -130,6 +141,65 @@ class DriverInventoryService:
             status=status,
             compatible=True,
         )
+
+    def _iter_inf_files(self, root: Path):
+        try:
+            for dirpath, dirnames, filenames in os.walk(root, topdown=True, followlinks=False):
+                current = Path(dirpath)
+                # prune subdirs no confiables
+                pruned = []
+                for d in dirnames:
+                    sub = current / d
+                    if self._is_allowed_root(sub):
+                        pruned.append(d)
+                    else:
+                        self.log(f"Saltando ruta no confiable: {sub}")
+                dirnames[:] = pruned
+
+                for name in filenames:
+                    if not name.lower().endswith(".inf"):
+                        continue
+                    p = current / name
+                    if not self._is_allowed_root(p.parent):
+                        continue
+                    yield p
+        except (PermissionError, OSError) as exc:
+            self.log(f"Advertencia al recorrer {root}: {exc}")
+
+    def _is_allowed_root(self, path: Path) -> bool:
+        try:
+            resolved = path.resolve(strict=False)
+        except OSError as exc:
+            self.log(f"Saltando ruta no confiable: {path} ({exc})")
+            return False
+
+        low = str(resolved).lower()
+        banned_fragments = [
+            r"\appdata\local\microsoft\windows\inetcache",
+            r"\appdata\local\temp",
+            r"\windows",
+            r"\programdata",
+        ]
+        if any(frag in low for frag in banned_fragments):
+            return False
+
+        if resolved.is_symlink():
+            self.log(f"Saltando junction/symlink: {resolved}")
+            return False
+
+        # evita mount points/reparse points en Windows
+        if os.name == "nt":
+            try:
+                st = os.lstat(resolved)
+                attrs = getattr(st, "st_file_attributes", 0)
+                reparse = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+                if attrs & reparse:
+                    self.log(f"Saltando ruta no confiable (reparse/mount point): {resolved}")
+                    return False
+            except Exception:
+                pass
+
+        return True
 
     @staticmethod
     def _parse_key_values(block: str) -> dict[str, str]:
