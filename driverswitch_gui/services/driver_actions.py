@@ -79,11 +79,14 @@ class DriverActionService:
         if not add_ok:
             return ApplyResult(False, add_msg, before_version, before_version, False)
 
-        inst_id = plan.target_pnp or self._find_intel_instance_id()
+        inst_id = self._find_intel_instance_id() or plan.target_pnp
+        self.log(f"InstanceId usado para update-driver: {inst_id or 'No detectado'}")
         if not inst_id:
             return ApplyResult(False, "No se detectó InstanceId Intel para actualizar dispositivo.", before_version, before_version, False)
 
+        self.log(f"oemXX.inf aplicado: {oem_inf}")
         update_ok, update_msg = self._update_driver_device(oem_inf, inst_id)
+        self.log(f"Resultado update-driver: {update_msg[:400]}")
         if not update_ok:
             return ApplyResult(False, update_msg, before_version, before_version, False)
 
@@ -97,7 +100,7 @@ class DriverActionService:
         reverted = after_version != TARGET_VERSION
         if reverted:
             msg = (
-                "Windows ha revertido el controlador automáticamente. "
+                "Windows mantiene el controlador anterior por prioridad de compatibilidad. "
                 "Esto puede deberse a políticas OEM o compatibilidad.\n"
                 f"Antes: {before_version}\nDespués: {after_version}\n"
                 f"Detalle actualización: {update_msg}\nRefresco: {refresh_msg}"
@@ -117,7 +120,8 @@ class DriverActionService:
         if code != 0:
             return False, (stdout + "\n" + stderr).strip() or "Falló /add-driver /install /force", ""
 
-        oem_inf = self._extract_oem_inf(stdout) or self._resolve_oem_from_inf(plan.inf_path)
+        combined_output = (stdout + "\n" + stderr)
+        oem_inf = self._extract_oem_inf(combined_output) or self._resolve_oem_from_inf(plan.inf_path)
         if not oem_inf:
             return False, "No se pudo determinar oemXX.inf después de agregar el driver.", ""
         self.log(f"OEM INF resultante: {oem_inf}")
@@ -156,19 +160,30 @@ class DriverActionService:
         return None
 
     def _find_intel_instance_id(self) -> str:
-        cmd = ["pnputil", "/enum-devices", "/class", "Display"]
-        code, stdout, _, _, _ = self._run_process(cmd, 30)
-        if code != 0:
+        cmd = [
+            "powershell",
+            "-NoProfile",
+            "-Command",
+            "Get-PnpDevice -Class Display | Select-Object FriendlyName,InstanceId,Status | ConvertTo-Json -Depth 4",
+        ]
+        code, stdout, stderr, _, timeout = self._run_process(cmd, 30)
+        if timeout or code != 0:
+            self.log(f"No se pudo leer InstanceId con Get-PnpDevice: {(stdout + stderr)[:260]}")
             return ""
-        blocks = re.split(r"\r?\n\r?\n", stdout)
-        for block in blocks:
-            low = block.lower()
-            if "intel" not in low:
-                continue
-            inst = self._find_field(block, ["instance id", "identificador de instancia"])
-            if inst:
-                self.log(f"InstanceId Intel detectado: {inst}")
-                return inst
+        try:
+            import json
+
+            data = json.loads(stdout)
+            items = data if isinstance(data, list) else [data]
+            for item in items:
+                name = str((item or {}).get("FriendlyName", "")).lower()
+                if "intel" in name and any(k in name for k in ["uhd", "iris", "graphics"]):
+                    inst = str((item or {}).get("InstanceId", "")).strip()
+                    if inst:
+                        self.log(f"InstanceId Intel detectado (Get-PnpDevice): {inst}")
+                        return inst
+        except Exception as exc:
+            self.log(f"Error parseando Get-PnpDevice: {exc}")
         return ""
 
     @staticmethod
