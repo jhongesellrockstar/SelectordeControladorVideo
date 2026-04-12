@@ -1,19 +1,22 @@
 # PyInstaller spec para DriverSwitch GUI
 # Ejecutar: pyinstaller packaging/driverswitch_gui.spec
 
+from pathlib import Path
+
 block_cipher = None
+ROOT = Path(__file__).resolve().parents[1]
 
 added_files = [
-    ('image1.ico', '.'),
-    ('image1.png', '.'),
-    ('resources/default_profile.txt', 'resources'),
-    ('objetivo_proyecto_driver_gui.txt', '.'),
-    ('README.md', '.'),
+    (str(ROOT / 'image1.ico'), '.'),
+    (str(ROOT / 'image1.png'), '.'),
+    (str(ROOT / 'resources' / 'default_profile.txt'), 'resources'),
+    (str(ROOT / 'objetivo_proyecto_driver_gui.txt'), '.'),
+    (str(ROOT / 'README.md'), '.'),
 ]
 
 a = Analysis(
-    ['app.py'],
-    pathex=['.'],
+    [str(ROOT / 'app.py')],
+    pathex=[str(ROOT)],
     binaries=[],
     datas=added_files,
     hiddenimports=[],
@@ -36,7 +39,7 @@ exe = EXE(
     strip=False,
     upx=True,
     console=False,
-    icon='image1.ico',
+    icon=str(ROOT / 'image1.ico'),
 )
 coll = COLLECT(
     exe,

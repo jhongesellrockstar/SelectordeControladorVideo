@@ -9,6 +9,8 @@ import time
 from dataclasses import dataclass
 from typing import Any, Callable
 
+from driverswitch_gui.services.subprocess_utils import run_hidden
+
 LogFn = Callable[[str], None]
 
 
@@ -178,7 +180,7 @@ class SystemInfoService:
         start = time.perf_counter()
         self.log(f"Ejecutando comando PowerShell: {command[:90]}...")
         try:
-            proc = subprocess.run(
+            proc = run_hidden(
                 ["powershell", "-NoProfile", "-Command", command],
                 capture_output=True,
                 text=True,

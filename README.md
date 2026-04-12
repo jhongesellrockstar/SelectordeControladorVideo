@@ -64,3 +64,18 @@ Para reducir advertencias en distribución real normalmente se requiere:
 Notas:
 - En `python app.py`, el icono puede depender del proceso `python.exe/pythonw.exe`, por lo que AppUserModelID ayuda a que taskbar use el icono correcto.
 - En `.exe` compilado, el icono del ejecutable y AppUserModelID suelen dar el resultado más consistente.
+
+
+## Limpieza UX en Windows (sin ventanas negras)
+Las llamadas a PowerShell/pnputil/cmd se ejecutan con banderas de proceso oculto (`CREATE_NO_WINDOW` + `STARTUPINFO/SW_HIDE`) para evitar flashes de consola y mantener captura de `stdout/stderr` en logs.
+
+## Comandos finales de recompilación
+### Ejecutable
+```powershell
+pyinstaller --clean packaging/driverswitch_gui.spec
+```
+
+### Instalador
+1. Verifica que exista `dist/DriverSwitchGUI/`.
+2. Abre `packaging/installer.iss` con Inno Setup Compiler.
+3. Compila el script para generar `DriverSwitchGUI-Setup.exe`.

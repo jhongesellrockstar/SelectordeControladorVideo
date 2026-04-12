@@ -5,9 +5,19 @@ from pathlib import Path
 
 
 def get_resource_path(relative_path: str) -> Path:
-    """Resuelve rutas en modo fuente y en modo PyInstaller (_MEIPASS)."""
-    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
-        base = Path(getattr(sys, "_MEIPASS"))
+    """Resuelve recursos en modo fuente y PyInstaller (onefile/onedir)."""
+    rel = Path(relative_path)
+
+    candidates: list[Path] = []
+    if getattr(sys, "frozen", False):
+        meipass = getattr(sys, "_MEIPASS", None)
+        if meipass:
+            candidates.append(Path(meipass) / rel)
+        candidates.append(Path(sys.executable).resolve().parent / rel)
     else:
-        base = Path(__file__).resolve().parents[1]
-    return base / relative_path
+        candidates.append(Path(__file__).resolve().parents[1] / rel)
+
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0] if candidates else Path(relative_path)

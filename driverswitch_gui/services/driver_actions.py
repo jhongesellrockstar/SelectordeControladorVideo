@@ -10,6 +10,7 @@ from typing import Callable
 
 from driverswitch_gui.models import DriverCandidate
 from driverswitch_gui.services.system_info import SystemInfoService, SystemState
+from driverswitch_gui.services.subprocess_utils import popen_hidden, run_hidden
 
 TARGET_VERSION = "31.0.101.2115"
 
@@ -175,7 +176,7 @@ class DriverActionService:
         return False, (stdout + "\n" + stderr).strip()
 
     def request_reboot(self) -> tuple[bool, str]:
-        proc = subprocess.run(["shutdown", "/r", "/t", "5"], capture_output=True, text=True, check=False)
+        proc = run_hidden(["shutdown", "/r", "/t", "5"], capture_output=True, text=True, check=False)
         return (proc.returncode == 0, "Reinicio programado en 5 segundos." if proc.returncode == 0 else proc.stderr.strip() or "No fue posible programar reinicio")
 
     def _resolve_inf_path(self, candidate: DriverCandidate) -> Path | None:
@@ -254,7 +255,7 @@ class DriverActionService:
 
     def _run_process(self, cmd: list[str], timeout_sec: int) -> tuple[int, str, str, float, bool]:
         start = time.perf_counter()
-        proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace")
+        proc = popen_hidden(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace")
         try:
             stdout, stderr = proc.communicate(timeout=timeout_sec)
             return proc.returncode, stdout, stderr, time.perf_counter() - start, False

@@ -68,6 +68,7 @@ class DriverSwitchApp(tk.Tk):
                 self.log_error(f"No se pudo configurar AppUserModelID (taskbar): {exc}")
 
         if ico.exists():
+            self.log_human(f"Archivo .ico encontrado: {ico}")
             try:
                 self.iconbitmap(default=str(ico))
                 self.log_human(f"Icono de ventana (.ico) aplicado: {ico}")
@@ -77,10 +78,12 @@ class DriverSwitchApp(tk.Tk):
             self.log_human(f"Icono .ico no encontrado: {ico}")
 
         if png.exists():
+            self.log_human(f"Archivo .png encontrado: {png}")
             try:
                 self._icon_photo = tk.PhotoImage(file=str(png))
                 self.iconphoto(True, self._icon_photo)
                 self.log_human(f"Icono adicional (.png) aplicado: {png}")
+                self.log_human("Nota: icono del .exe se define en PyInstaller (.spec), no en runtime.")
             except Exception as exc:
                 self.log_error(f"No se pudo aplicar iconphoto (.png): {exc}")
         else:

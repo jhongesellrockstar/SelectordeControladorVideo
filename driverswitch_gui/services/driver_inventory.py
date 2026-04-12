@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Callable
 
 from driverswitch_gui.models import DriverCandidate
+from driverswitch_gui.services.subprocess_utils import run_hidden
 
 TARGET_VERSION = "31.0.101.2115"
 
@@ -21,7 +22,7 @@ class DriverInventoryService:
             return []
         self.log("Leyendo Driver Store (pnputil /enum-drivers /class Display)...")
         try:
-            proc = subprocess.run(
+            proc = run_hidden(
                 ["pnputil", "/enum-drivers", "/class", "Display"],
                 capture_output=True,
                 text=True,
