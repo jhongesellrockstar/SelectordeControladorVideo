@@ -1,0 +1,264 @@
+PROYECTO: ESPECIFICACIÓN FUNCIONAL DE PERFIL DE EQUIPO Y CARGA INICIAL
+SOFTWARE: DriverSwitch GUI - Selector de controlador de video
+
+1. FINALIDAD DE ESTE DOCUMENTO
+Este archivo define los lineamientos para que Codex implemente una segunda capa funcional dentro de DriverSwitch GUI: la capacidad de trabajar con perfiles de equipo basados en archivos de texto estructurados. El propósito es que el software no dependa únicamente de la lectura dinámica del sistema actual, sino que también pueda cargar, interpretar, validar y utilizar información previamente guardada de un equipo específico.
+
+La intención principal es doble:
+- validar el funcionamiento del software utilizando de manera inmediata la configuración real de la computadora principal del proyecto;
+- extender el software para que otros usuarios puedan usarlo desde cero con sus propios archivos de perfil, incluso si el sistema aún no detecta automáticamente todos los datos necesarios.
+
+2. PROPÓSITO FUNCIONAL
+Codex debe usar este documento para desarrollar una funcionalidad que permita:
+- cargar por defecto un perfil predefinido correspondiente al equipo principal del proyecto;
+- mostrar ese perfil dentro de la GUI al iniciar, si dicho perfil está disponible;
+- permitir que el usuario cargue un archivo de perfil alternativo;
+- permitir trabajar con un perfil vacío si no existe un archivo compatible;
+- permitir editar o completar manualmente la información cuando el perfil esté incompleto;
+- usar el perfil cargado como base para filtrar, comparar, sugerir o aplicar controladores compatibles.
+
+3. IDEA CENTRAL DEL MODO PERFIL
+El software no debe depender únicamente de lo que detecte en tiempo real el sistema operativo. Debe existir un modo de operación respaldado por archivos de perfil legibles y editables por el usuario. Cada perfil debe representar un “estado técnico mínimo” de un equipo, especialmente enfocado en la gestión de controladores gráficos.
+
+Esto permitirá:
+- que el software se pruebe primero con el equipo base del proyecto;
+- que otros usuarios repliquen la lógica del software con sus propios equipos;
+- que el programa tenga una ruta de uso aun cuando la detección automática falle o sea parcial;
+- que un usuario pueda construir manualmente su perfil desde cero.
+
+4. COMPORTAMIENTO GENERAL ESPERADO
+Al iniciar el software, la aplicación debe seguir este orden lógico:
+
+4.1. Intento de detección automática
+La aplicación debe intentar leer el estado real de la computadora actual:
+- nombre del equipo;
+- sistema operativo;
+- adaptadores de video;
+- controlador activo;
+- versiones de controladores detectadas;
+- proveedor y archivos INF asociados si están disponibles.
+
+4.2. Carga de perfil por defecto
+Si existe un archivo de perfil por defecto dentro del proyecto, el software debe poder cargarlo automáticamente. Ese perfil servirá como referencia inicial y permitirá validar el comportamiento del programa sobre el caso real del autor principal.
+
+4.3. Comparación entre sistema real y perfil
+Si el software puede detectar el sistema real y además existe un perfil cargado, debe comparar ambos estados y mostrar:
+- coincidencias;
+- diferencias;
+- campos faltantes;
+- advertencias de incompatibilidad;
+- sugerencias visuales.
+
+4.4. Modo perfil vacío
+Si el usuario no tiene aún un archivo de perfil o si el software se usa por primera vez en otro equipo, debe aparecer la opción de trabajar con:
+- “Perfil vacío”;
+- “Crear nuevo perfil”;
+- “Cargar perfil existente”.
+
+5. CASO DE USO DEL EQUIPO BASE DEL PROYECTO
+Codex debe considerar que el primer caso funcional debe estar orientado al equipo principal ya identificado durante el desarrollo. Este equipo debe tomarse como ejemplo práctico de validación del software.
+
+6. DATOS DEL EQUIPO BASE DEL PROYECTO
+Los siguientes datos corresponden al caso real de referencia y deben poder guardarse en un archivo de perfil por defecto para ser cargado por la aplicación:
+
+[PERFIL_BASE]
+perfil_nombre=Equipo base Jhon Gesell
+perfil_descripcion=Perfil de referencia para validación inicial del software DriverSwitch GUI
+autor=Jhon Gesell Villanueva Portella
+correo=astrorockstart@gmail.com
+whatsapp=+51952354282
+ubicacion=Lima, Perú
+
+[EQUIPO]
+nombre_equipo=DESKTOP-55F347R
+fabricante=Acer
+modelo=Aspire A315-57G
+bios_version=V1.06
+procesador=Intel(R) Core(TM) i5-1035G1 CPU @ 1.00GHz
+memoria_ram=12 GB
+sistema_operativo=Windows 11 Pro 64 bits
+version_windows=25H2
+compilacion_windows=10.0.26200
+directx=12
+
+[GPU_PRINCIPAL]
+nombre=Intel(R) UHD Graphics
+fabricante=Intel Corporation
+device_id=PCI\VEN_8086&DEV_8A56&SUBSYS_14291025&REV_07\3&11583659&0&10
+servicio=igfxn
+driver_activo_version=31.0.101.2115
+driver_activo_inf=iigd_dch.inf
+driver_activo_origen=Intel exportado manualmente por Usar disco
+driver_oem_antiguo_version=26.20.100.7372
+driver_oem_antiguo_inf=oem68.inf
+driver_preferido_version=31.0.101.2115
+driver_preferido_origen=Intel2115\iigd_dch.inf
+
+[GPU_SECUNDARIA]
+nombre=NVIDIA GeForce MX330
+fabricante=NVIDIA
+driver_version=32.0.15.8228
+
+[ADAPTADOR_VIRTUAL]
+nombre=Meta Virtual Monitor
+fabricante=Meta Inc.
+driver_version=14.30.21.903
+inf=oem28.inf
+
+[RUTA_RESPALDO]
+carpeta_driver_exportado=Intel2115
+archivo_inf_principal=Intel2115\iigd_dch.inf
+
+[OBJETIVO_FUNCIONAL]
+meta_principal=Evitar que Windows mantenga o restaure el driver Intel OEM antiguo y facilitar la selección del driver correcto para compatibilidad con realidad mixta
+software_objetivo=Vinculo de realidad mixta / Windows App / Meta Quest 3
+
+7. FORMATO DE PERFIL PROPUESTO
+Para simplicidad inicial, el perfil puede representarse en un archivo .txt con formato tipo INI extendido o clave=valor por secciones. Codex debe implementar un parser robusto, tolerante a:
+- líneas vacías;
+- comentarios;
+- campos opcionales;
+- secciones no presentes;
+- rutas con doble barra invertida.
+
+El formato de perfil recomendado es:
+
+[SECCION]
+clave=valor
+
+Ejemplo:
+[EQUIPO]
+nombre_equipo=DESKTOP-55F347R
+fabricante=Acer
+modelo=Aspire A315-57G
+
+8. NOMBRE SUGERIDO DEL ARCHIVO DE PERFIL
+Codex debe permitir trabajar con nombres como:
+- perfil_equipo_base.txt
+- profile_default.txt
+- equipo_jhon_a31557g.txt
+- perfil_vacio.txt
+
+Se recomienda que el proyecto tenga al menos dos archivos:
+- un perfil real del equipo base;
+- un perfil vacío de ejemplo.
+
+9. PERFIL VACÍO
+El proyecto debe incluir un archivo base vacío que permita a cualquier usuario comenzar desde cero. Ese archivo debe contener la estructura mínima, aunque los valores estén pendientes de completar. Ejemplo:
+
+[PERFIL_BASE]
+perfil_nombre=
+perfil_descripcion=
+autor=
+correo=
+whatsapp=
+ubicacion=
+
+[EQUIPO]
+nombre_equipo=
+fabricante=
+modelo=
+bios_version=
+procesador=
+memoria_ram=
+sistema_operativo=
+version_windows=
+compilacion_windows=
+directx=
+
+[GPU_PRINCIPAL]
+nombre=
+fabricante=
+device_id=
+servicio=
+driver_activo_version=
+driver_activo_inf=
+driver_activo_origen=
+driver_oem_antiguo_version=
+driver_oem_antiguo_inf=
+driver_preferido_version=
+driver_preferido_origen=
+
+[GPU_SECUNDARIA]
+nombre=
+fabricante=
+driver_version=
+
+[ADAPTADOR_VIRTUAL]
+nombre=
+fabricante=
+driver_version=
+inf=
+
+[RUTA_RESPALDO]
+carpeta_driver_exportado=
+archivo_inf_principal=
+
+[OBJETIVO_FUNCIONAL]
+meta_principal=
+software_objetivo=
+
+10. REQUISITOS DE LA GUI RELACIONADOS CON EL PERFIL
+Codex debe añadir en la interfaz gráfica, como mínimo, estas acciones:
+- Cargar perfil
+- Guardar perfil
+- Guardar perfil como
+- Nuevo perfil vacío
+- Comparar sistema actual con perfil
+- Usar perfil por defecto
+- Editar perfil
+- Exportar perfil actual
+
+La GUI debe mostrar claramente si el software está trabajando con:
+- datos del sistema en vivo;
+- datos de un perfil cargado;
+- datos mixtos;
+- perfil vacío.
+
+11. COMPORTAMIENTO VISUAL ESPERADO
+La GUI debe reflejar el origen de la información con claridad. Por ejemplo:
+- etiquetas o badges que indiquen “Sistema actual”, “Perfil cargado”, “Perfil vacío”, “Coincide con sistema”, “Difiere del sistema”.
+- campos en color o con iconografía que destaquen si un driver preferido coincide o no con el activo.
+- advertencias si el archivo INF definido en el perfil no existe en disco.
+
+12. RELACIÓN ENTRE PERFIL Y FUNCIONES DEL SOFTWARE
+El perfil no debe ser decorativo. Debe usarse activamente para:
+- preseleccionar el controlador preferido;
+- sugerir la carpeta INF correcta;
+- advertir si el sistema ha vuelto a un driver antiguo;
+- facilitar el modo recuperación;
+- reconstruir el flujo de trabajo tras una reinstalación del sistema.
+
+13. LÓGICA DE PRIORIDAD
+Codex debe respetar esta prioridad operativa:
+1. Si existe detección real del sistema, mostrarla.
+2. Si existe perfil cargado, compararlo con el sistema.
+3. Si no hay detección suficiente, usar el perfil como fuente principal de referencia.
+4. Si no hay perfil, ofrecer crear uno vacío o cargar uno existente.
+
+14. VALIDACIONES MÍNIMAS DEL PARSER
+El lector de perfiles debe validar como mínimo:
+- existencia de secciones esperadas;
+- integridad de campos principales;
+- formato básico de clave=valor;
+- ausencia de errores críticos de lectura;
+- posibilidad de continuar aun con campos faltantes.
+
+15. RESTRICCIONES DE DISEÑO
+Codex no debe convertir esta funcionalidad en un sistema complejo de base de datos desde la primera versión. El objetivo inicial es simple:
+- perfiles legibles;
+- perfiles editables;
+- perfiles cargables;
+- integración directa con la GUI;
+- trazabilidad clara del origen de los datos.
+
+16. OBJETIVO DE VALIDACIÓN
+Esta funcionalidad debe permitir que el autor principal valide el software sobre su propia computadora desde el primer momento, mientras otros usuarios puedan reutilizar la herramienta con archivos vacíos o personalizados. De esta manera, el proyecto mantiene un caso real comprobable y al mismo tiempo gana capacidad de generalización.
+
+17. RESULTADO ESPERADO
+El resultado esperado es que DriverSwitch GUI pueda abrirse y, por defecto, trabajar con la información del equipo base del proyecto si dicho perfil existe. A la vez, debe permitir que cualquier usuario sin ese perfil inicie desde un archivo vacío, complete sus datos y utilice el software de manera progresiva hasta resolver su propio escenario de controladores.
+
+18. DECLARACIÓN DE CONTROL
+Este documento debe usarse como guía funcional para evitar que la característica de perfiles de equipo pierda foco. Toda implementación debe responder a esta pregunta:
+“¿La nueva contribución mejora la capacidad del software para cargar, interpretar, comparar y reutilizar información real de un equipo mediante archivos simples y útiles para el usuario?”
+Si la respuesta es negativa, la implementación debe ser reconsiderada.
