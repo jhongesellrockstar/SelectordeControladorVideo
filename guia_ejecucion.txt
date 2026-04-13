@@ -1,0 +1,15 @@
+Get-CimInstance Win32_VideoController | Select Name, DriverVersion
+
+
+cd "C:\Users\ACER\Documents\GitHub\SelectorDeControladorVideo"
+C:\Users\ACER\anaconda3\envs\TW\python.exe app.py
+
+
+pnputil /enum-drivers | findstr 2115
+pnputil /enum-drivers | findstr 7372
+
+
+
+Get-CimInstance Win32_VideoController | Select Name, DriverVersion
+
+>> output: Intel(R) UHD Graphics   31.0.101.2115
